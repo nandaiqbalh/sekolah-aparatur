@@ -20,7 +20,7 @@ npm run db:seed              # once — super admin only
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) — redirected to `/en` or `/id`.
+Open [http://localhost:3000](http://localhost:3000). Locale comes from the `locale` cookie (default `id`). `/en` and `/id` redirect to the same path without a prefix.
 
 Admin login: [http://localhost:3000/admin/login](http://localhost:3000/admin/login)  
 Seeded user (see `.env`):
@@ -62,15 +62,15 @@ Set `NEXT_PUBLIC_SITE_URL` in `.env`. Production deploy: [docs/engineering/branc
 ## Structure
 
 ```
-app/[locale]/          # public routes (RSC)
-app/admin/             # staff back office (no locale prefix)
+app/(public)/          # public routes (RSC, no locale prefix)
+app/admin/             # staff back office
 features/              # domain modules
 prisma/                # schema, migrations, seed
 docs/
   rules/               # engineering conventions
   engineering/         # branching and deployment
   product-vision/      # product goals
-proxy.ts               # locale redirect + /admin cookie gate
+proxy.ts               # locale cookie + /admin cookie gate
 ```
 
 ## Documentation

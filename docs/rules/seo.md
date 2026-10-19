@@ -19,15 +19,14 @@ Brand string: `SITE_NAME` (`"Sekolah Aparatur"`) in [`lib/site.ts`](../../lib/si
 
 | API | File | Purpose |
 |-----|------|---------|
-| `buildPageMetadata({ locale, path, title, description })` | [`lib/seo.ts`](../../lib/seo.ts) | canonical, hreflang per path, Open Graph, Twitter |
+| `buildPageMetadata({ locale, path, title, description })` | [`lib/seo.ts`](../../lib/seo.ts) | canonical, Open Graph, Twitter |
 | `jsonLdScript(data)` | [`lib/seo.ts`](../../lib/seo.ts) | JSON-LD string with `<` escaped |
 | `SITE_NAME` / `absoluteUrl` | [`lib/site.ts`](../../lib/site.ts) | brand + absolute URLs |
 
 `buildPageMetadata` sets:
 
 - `metadataBase`
-- `alternates.canonical` → `/{locale}{path}`
-- `alternates.languages` → `{ en: "/en{path}", id: "/id{path}" }`
+- `alternates.canonical` → `/{path}` (no locale prefix)
 - `openGraph` + `twitter.card = summary_large_image`
 
 ## Files
@@ -35,8 +34,8 @@ Brand string: `SITE_NAME` (`"Sekolah Aparatur"`) in [`lib/site.ts`](../../lib/si
 | File | Role |
 |------|------|
 | `app/layout.tsx` | root `metadataBase` |
-| `app/[locale]/layout.tsx` | default title template + home metadata |
-| `app/sitemap.ts` | all locales × public routes |
+| `app/(public)/layout.tsx` | default title template + home metadata |
+| `app/sitemap.ts` | public routes (one URL each) |
 | `app/robots.ts` | `Allow: /` + sitemap URL |
 | `app/opengraph-image.tsx` | default OG image (`ImageResponse`) |
 | `app/twitter-image.tsx` | Twitter card image |

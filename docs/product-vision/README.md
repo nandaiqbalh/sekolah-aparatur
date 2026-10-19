@@ -4,7 +4,7 @@ Situs Sekolah Aparatur, dengan back office staf.
 
 ## What the site is for
 
-- Public pages in `en` and `id`
+- Public pages in `en` and `id` (cookie, no URL prefix)
 - Staff sign-in at `/admin/login`
 - Seed creates a super admin only
 

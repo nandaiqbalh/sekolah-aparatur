@@ -1,98 +1,178 @@
 "use client"
 
 import Link from "next/link"
-import { useEffect, useState } from "react"
-import { Menu, X } from "lucide-react"
+import { usePathname } from "next/navigation"
+import { useState } from "react"
+import { ChevronDown, Menu, X } from "lucide-react"
 
-import { LocaleSwitcher } from "@/components/shared/locale-switcher"
-import type { Locale } from "@/lib/i18n/config"
-import { useDictionary } from "@/lib/i18n/dictionary-provider"
-import { localizedPath, ADMIN_ROUTES } from "@/lib/routes"
+import { ROUTES } from "@/lib/routes"
 import { SITE_NAME } from "@/lib/site"
 import { cn } from "@/lib/utils"
 
-export function PublicNavbar({ locale }: { locale: Locale }) {
-  const dict = useDictionary()
-  const [scrolled, setScrolled] = useState(false)
+const links = [
+  { href: ROUTES.home, label: "Beranda" },
+  { href: ROUTES.profil, label: "Profil" },
+  { href: ROUTES.berita, label: "Berita" },
+  { href: ROUTES.galeri, label: "Galeri" },
+  { href: ROUTES.kontak, label: "Kontak" },
+]
+
+const programLinks = [
+  { href: ROUTES.daerahDesa, label: "Daerah dan Desa" },
+  { href: ROUTES.legislator, label: "Legislator" },
+]
+
+function isCurrent(pathname: string, href: string) {
+  if (href === "/") return pathname === "/"
+  return pathname === href || pathname.startsWith(`${href}/`)
+}
+
+const pillLink =
+  "cursor-pointer rounded-full px-4 py-2 text-sm text-white/85 hover:bg-white/10 hover:text-white"
+
+export function PublicNavbar() {
+  const pathname = usePathname()
   const [open, setOpen] = useState(false)
-
-  useEffect(() => {
-    function onScroll() {
-      setScrolled(window.scrollY > 80)
-    }
-    onScroll()
-    window.addEventListener("scroll", onScroll, { passive: true })
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [])
-
-  const links = [
-    { href: "#about", label: dict.home.navAbout },
-    { href: "#why-us", label: dict.home.navWhyUs },
-    { href: "#faq", label: dict.home.navFaq },
-  ]
-
-  const solid = scrolled || open
+  const [programsOpen, setProgramsOpen] = useState(false)
+  const programActive = pathname.startsWith(ROUTES.sekolahAparatur)
 
   return (
-    <header
-      className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-colors duration-300",
-        solid ? "bg-background/90 text-foreground shadow-sm backdrop-blur-lg" : "text-white",
-      )}
-    >
-      <div className="mx-auto flex h-16 max-w-[1440px] items-center gap-4 px-4 sm:px-6 lg:px-20">
-        <Link
-          href={localizedPath(locale, "")}
-          className="font-heading text-lg font-bold tracking-[0.18em]"
-        >
-          {SITE_NAME.replace(/\s+/g, " ").toUpperCase()}
+    <header className="sticky top-0 z-40 bg-[var(--sa-navy)] text-white">
+      <div className="relative mx-auto flex h-[4.75rem] max-w-[1280px] items-center px-4 sm:px-6 lg:px-8">
+        <Link href={ROUTES.home} className="cursor-pointer text-base font-semibold tracking-tight">
+          {SITE_NAME}
         </Link>
 
-        <nav className="hidden flex-1 items-center justify-center gap-8 text-sm font-medium lg:flex">
-          {links.map((link) => (
-            <a key={link.href} href={link.href} className="transition-opacity hover:opacity-80">
+        <nav
+          className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 rounded-full bg-black/25 p-1 lg:flex"
+          aria-label="Utama"
+        >
+          {links.slice(0, 2).map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={cn(pillLink, isCurrent(pathname, link.href) && "bg-white/10 text-white")}
+            >
               {link.label}
-            </a>
+            </Link>
+          ))}
+
+          <div className="relative">
+            <button
+              type="button"
+              className={cn(
+                "inline-flex cursor-pointer items-center gap-1 rounded-full px-4 py-2 text-sm text-white/85 hover:bg-white/10 hover:text-white",
+                programActive && "bg-white/10 text-white"
+              )}
+              aria-expanded={programsOpen}
+              aria-haspopup="true"
+              onClick={() => setProgramsOpen((value) => !value)}
+            >
+              Sekolah Aparatur
+              <ChevronDown className="size-4" aria-hidden />
+            </button>
+            {programsOpen ? (
+              <div className="absolute top-full left-1/2 z-20 mt-3 w-64 -translate-x-1/2 rounded-2xl border border-white/10 bg-[#1a2740] p-2 text-white shadow-lg">
+                <Link
+                  href={ROUTES.sekolahAparatur}
+                  className="block cursor-pointer rounded-full px-3 py-2 text-sm hover:bg-white/10"
+                  onClick={() => setProgramsOpen(false)}
+                >
+                  Semua program
+                </Link>
+                {programLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="block cursor-pointer rounded-full px-3 py-2 text-sm hover:bg-white/10"
+                    onClick={() => setProgramsOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            ) : null}
+          </div>
+
+          {links.slice(2).map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={cn(pillLink, isCurrent(pathname, link.href) && "bg-white/10 text-white")}
+            >
+              {link.label}
+            </Link>
           ))}
         </nav>
 
-        <div className="ml-auto flex items-center gap-2">
-          <LocaleSwitcher locale={locale} variant={solid ? "default" : "hero"} />
-          <Link
-            href={ADMIN_ROUTES.login}
-            className={cn(
-              "hidden h-9 items-center rounded-pill px-4 text-sm font-bold transition-colors sm:inline-flex",
-              solid
-                ? "bg-tiffany-blue text-[#6e1835] hover:bg-tiffany-blue/90"
-                : "bg-tiffany-blue text-[#6e1835] hover:bg-tiffany-blue/90",
-            )}
-          >
-            {dict.home.navAdmin}
-          </Link>
-          <button
-            type="button"
-            className="inline-flex size-10 items-center justify-center rounded-lg lg:hidden"
-            onClick={() => setOpen((v) => !v)}
-            aria-label={open ? dict.home.closeMenu : dict.home.openMenu}
-          >
-            {open ? <X className="size-5" /> : <Menu className="size-5" />}
-          </button>
-        </div>
+        <Link
+          href={ROUTES.sekolahAparatur}
+          className="ml-auto hidden h-11 cursor-pointer items-center rounded-full bg-white px-5 text-sm font-semibold text-[var(--sa-navy)] lg:inline-flex"
+        >
+          Pendaftaran
+        </Link>
+
+        <button
+          type="button"
+          className="ml-auto inline-flex size-10 cursor-pointer items-center justify-center rounded-full lg:hidden"
+          aria-expanded={open}
+          aria-label={open ? "Tutup menu" : "Buka menu"}
+          onClick={() => setOpen((value) => !value)}
+        >
+          {open ? <X className="size-5" /> : <Menu className="size-5" />}
+        </button>
       </div>
 
       {open ? (
-        <div className="border-t border-border bg-background px-4 py-4 text-foreground lg:hidden">
-          <nav className="flex flex-col gap-3 text-sm font-medium">
-            {links.map((link) => (
-              <a key={link.href} href={link.href} onClick={() => setOpen(false)}>
+        <nav className="border-t border-white/10 px-4 py-4 lg:hidden" aria-label="Menu mobile">
+          <div className="mx-auto grid max-w-[1280px] gap-1">
+            {links.slice(0, 2).map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="cursor-pointer rounded-full px-4 py-2 text-sm hover:bg-white/10"
+                onClick={() => setOpen(false)}
+              >
                 {link.label}
-              </a>
+              </Link>
             ))}
-            <Link href={ADMIN_ROUTES.login} onClick={() => setOpen(false)}>
-              {dict.home.navAdmin}
+            <p className="px-4 pt-3 text-xs font-semibold tracking-wide text-white/50">Sekolah Aparatur</p>
+            <Link
+              href={ROUTES.sekolahAparatur}
+              className="cursor-pointer rounded-full px-4 py-2 text-sm hover:bg-white/10"
+              onClick={() => setOpen(false)}
+            >
+              Semua program
             </Link>
-          </nav>
-        </div>
+            {programLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="cursor-pointer rounded-full px-4 py-2 text-sm hover:bg-white/10"
+                onClick={() => setOpen(false)}
+              >
+                {link.label}
+              </Link>
+            ))}
+            {links.slice(2).map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="cursor-pointer rounded-full px-4 py-2 text-sm hover:bg-white/10"
+                onClick={() => setOpen(false)}
+              >
+                {link.label}
+              </Link>
+            ))}
+            <Link
+              href={ROUTES.sekolahAparatur}
+              className="mt-2 inline-flex h-11 cursor-pointer items-center justify-center rounded-full bg-white text-sm font-semibold text-[var(--sa-navy)]"
+              onClick={() => setOpen(false)}
+            >
+              Pendaftaran
+            </Link>
+          </div>
+        </nav>
       ) : null}
     </header>
   )

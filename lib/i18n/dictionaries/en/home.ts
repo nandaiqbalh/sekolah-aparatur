@@ -21,7 +21,7 @@ const home = {
   aboutPoint1Title: "Layered domains",
   aboutPoint1Desc: "Repository → service → action → UI. Zod at the boundary.",
   aboutPoint2Title: "en / id i18n",
-  aboutPoint2Desc: "Cookie locale, prefixed routes, dictionaries as the source of copy.",
+  aboutPoint2Desc: "Cookie locale, dictionaries as the source of copy. Public URLs stay the same.",
   aboutPoint3Title: "Prisma staff RBAC",
   aboutPoint3Desc: "Roles, permissions, activity logs, and Super Admin bypass.",
   whyUsEyebrow: "Sekolah Aparatur",
@@ -42,7 +42,7 @@ const home = {
     "Run the database seed, then open /admin/login with the SEED_SUPER_ADMIN_* credentials from .env.example.",
   faq2Q: "How do locales work?",
   faq2A:
-    "Public URLs are /en and /id. A locale cookie plus proxy.ts remember the preference. Admin uses the same cookie without a URL prefix.",
+    "Public URLs have no /en or /id prefix. A locale cookie plus proxy.ts remember the preference. Admin uses the same cookie.",
   faq3Q: "Where should I add a new domain?",
   faq3A:
     "Create features/{name}/ with schemas, repositories, services, actions, and components. Wire a thin route in app/.",

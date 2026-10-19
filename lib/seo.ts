@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 
-import { SUPPORTED_LOCALES, type Locale } from "@/lib/i18n/config"
+import { type Locale } from "@/lib/i18n/config"
 import { SITE_NAME, absoluteUrl, getSiteUrl } from "@/lib/site"
 
 type BuildPageMetadataOptions = {
@@ -24,10 +24,7 @@ export function buildPageMetadata({
   type = "website",
 }: BuildPageMetadataOptions): Metadata {
   const normalizedPath = normalizePath(path)
-  const canonicalPath = `/${locale}${normalizedPath}`
-  const languages = Object.fromEntries(
-    SUPPORTED_LOCALES.map((code) => [code, `/${code}${normalizedPath}`])
-  )
+  const canonicalPath = normalizedPath || "/"
 
   return {
     metadataBase: new URL(getSiteUrl()),
@@ -35,7 +32,6 @@ export function buildPageMetadata({
     description,
     alternates: {
       canonical: canonicalPath,
-      languages,
     },
     openGraph: {
       title,

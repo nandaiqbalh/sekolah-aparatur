@@ -40,27 +40,39 @@ export function proxy(request: NextRequest) {
       }
     }
 
-    const requestHeaders = new Headers(request.headers)
-    requestHeaders.set(PATHNAME_HEADER, pathname)
-    return NextResponse.next({ request: { headers: requestHeaders } })
-  }
-
-  const pathnameHasLocale = SUPPORTED_LOCALES.some(
-    (locale) => pathname === `/${locale}` || pathname.startsWith(`/${locale}/`)
-  )
-
-  if (pathnameHasLocale) {
-    const locale = pathname.split("/")[1] as Locale
+    const locale = resolvePreferredLocale(request)
     const requestHeaders = new Headers(request.headers)
     requestHeaders.set("x-locale", locale)
     requestHeaders.set(PATHNAME_HEADER, pathname)
     return NextResponse.next({ request: { headers: requestHeaders } })
   }
 
+  // Legacy locale-prefixed URLs → bare paths
+  if (
+    pathname === "/id" ||
+    pathname.startsWith("/id/") ||
+    pathname === "/en" ||
+    pathname.startsWith("/en/")
+  ) {
+    const url = request.nextUrl.clone()
+    url.pathname = pathname.replace(/^\/(id|en)(?=\/|$)/, "") || "/"
+    return NextResponse.redirect(url)
+  }
+
   const locale = resolvePreferredLocale(request)
-  const url = request.nextUrl.clone()
-  url.pathname = pathname === "/" ? `/${locale}` : `/${locale}${pathname}`
-  return NextResponse.redirect(url)
+  const requestHeaders = new Headers(request.headers)
+  requestHeaders.set("x-locale", locale)
+  requestHeaders.set(PATHNAME_HEADER, pathname)
+
+  const response = NextResponse.next({ request: { headers: requestHeaders } })
+  if (!request.cookies.get(LOCALE_COOKIE)?.value) {
+    response.cookies.set(LOCALE_COOKIE, locale, {
+      path: "/",
+      maxAge: 365 * 24 * 60 * 60,
+      sameSite: "lax",
+    })
+  }
+  return response
 }
 
 export const config = {

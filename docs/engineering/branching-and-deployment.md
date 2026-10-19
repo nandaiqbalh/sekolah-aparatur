@@ -53,7 +53,7 @@ Comment the local `DATABASE_URL` in `.env.local` and set:
 
 `npm run db:migrate` and `npm run db:seed` use `DIRECT_URL` when it is set. There is no local Postgres container in this mode.
 
-Open [http://localhost:3000](http://localhost:3000) — redirected to `/en` or `/id`.
+Open [http://localhost:3000](http://localhost:3000). Locale comes from the `locale` cookie (default `id`). `/en` and `/id` redirect to the same path without a prefix.
 
 Admin login: [http://localhost:3000/admin/login](http://localhost:3000/admin/login)  
 Default seed user (see `.env.example`):
@@ -123,7 +123,7 @@ push master (repo connected in Vercel)
 | `DATABASE_URL` | Yes | Supabase pooler URL |
 | `DIRECT_URL` | Yes | Direct URL (migrations only; not used at runtime) |
 | `NEXT_PUBLIC_SITE_URL` | Yes | e.g. `https://your-app.vercel.app` |
-| `DEFAULT_LOCALE` | No | Default `en` |
+| `DEFAULT_LOCALE` | No | Documented only. Runtime default is `id` in `lib/i18n/config.ts` |
 
 5. Run migrations from your machine (`.env.local` with Supabase URLs). Do not add `SEED_*` to Vercel:
 

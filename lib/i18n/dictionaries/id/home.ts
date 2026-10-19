@@ -21,7 +21,7 @@ const home = {
   aboutPoint1Title: "Domain berlapis",
   aboutPoint1Desc: "Repository → service → action → UI. Zod di batas validasi.",
   aboutPoint2Title: "i18n en / id",
-  aboutPoint2Desc: "Locale cookie, rute berawalan, dictionary sebagai sumber salinan.",
+  aboutPoint2Desc: "Locale lewat cookie, dictionary sebagai sumber salinan. URL publik tetap sama.",
   aboutPoint3Title: "RBAC staf Prisma",
   aboutPoint3Desc: "Peran, izin, log aktivitas, dan bypass Super Admin.",
   whyUsEyebrow: "Sekolah Aparatur",
@@ -42,7 +42,7 @@ const home = {
     "Jalankan seed database, lalu buka /admin/login dengan kredensial SEED_SUPER_ADMIN_* dari .env.example.",
   faq2Q: "Bagaimana locale bekerja?",
   faq2A:
-    "URL publik adalah /en dan /id. Cookie locale plus proxy.ts mengingat preferensi. Admin memakai cookie yang sama tanpa prefix URL.",
+    "URL publik tidak memakai prefix /en atau /id. Cookie locale plus proxy.ts mengingat preferensi. Admin memakai cookie yang sama.",
   faq3Q: "Di mana menambahkan domain baru?",
   faq3A:
     "Buat features/{name}/ berisi schemas, repositories, services, actions, dan components. Hubungkan rute tipis di app/.",

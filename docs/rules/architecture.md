@@ -4,7 +4,7 @@ Production-oriented layering for the Sekolah Aparatur Next.js App Router app.
 
 - **Domains** live in `features/{name}/`
 - **Cross-cutting** utilities live in `lib/`
-- Routes live in `app/[locale]/` (public) and `app/admin/` (staff) and only compose UI + call services/actions
+- Routes live in `app/(public)/` (public, no locale prefix) and `app/admin/` (staff) and only compose UI + call services/actions
 
 ## Layer flow
 
@@ -38,10 +38,10 @@ app/
     (protected)/             # cookie session + RBAC shell
       page.tsx               # dashboard
       profile/ system/
-  [locale]/
+  (public)/
     layout.tsx               # dictionary Providers, metadata, public shell
     page.tsx                 # marketing landing
-    not-found.tsx
+  not-found.tsx
   sitemap.ts  robots.ts
   opengraph-image.tsx  twitter-image.tsx
 proxy.ts                     # locale redirect + /admin cookie gate
@@ -140,7 +140,7 @@ Admin list UI conventions: [backoffice.md](./backoffice.md).
 3. Implement repository (swap in-memory for DB later behind the same interface).
 4. Implement service methods.
 5. Expose mutations via actions; reads via service from RSC.
-6. Add a thin `app/[locale]/{route}/page.tsx` that only composes.
+6. Add a thin `app/(public)/{route}/page.tsx` that only composes.
 7. Wire `ROUTES`, `app/sitemap.ts`, and dictionary keys (`en` + `id`).
 
 ## Related docs

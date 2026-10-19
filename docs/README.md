@@ -34,7 +34,7 @@ Product goals, audience, UX principles, and roadmap for Sekolah Aparatur.
 
 ## Quick links
 
-- Public landing: `/en` or `/id`
+- Public landing: `/` (locale cookie, default `id`)
 - Admin: `/admin` (staff RBAC)
 - Env template: [`.env.example`](../.env.example)
 - Agent entry: [`AGENTS.md`](../AGENTS.md)

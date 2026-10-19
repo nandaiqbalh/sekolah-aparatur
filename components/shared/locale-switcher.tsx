@@ -1,11 +1,10 @@
 "use client"
 
-import { usePathname, useRouter } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { useTransition } from "react"
 
 import { SUPPORTED_LOCALES, type Locale } from "@/lib/i18n/config"
 import { setLocaleAction } from "@/lib/i18n/locale.actions"
-import { switchLocalePath } from "@/lib/i18n/localized-href"
 import { cn } from "@/lib/utils"
 
 export function LocaleSwitcher({
@@ -18,19 +17,13 @@ export function LocaleSwitcher({
   variant?: "default" | "hero"
 }) {
   const router = useRouter()
-  const pathname = usePathname()
   const [pending, startTransition] = useTransition()
 
   function switchLocale(next: Locale) {
     if (next === locale) return
-    const nextPath = switchLocalePath(pathname, next)
     startTransition(async () => {
       await setLocaleAction(next)
-      if (pathname.startsWith("/admin")) {
-        router.refresh()
-        return
-      }
-      router.push(nextPath)
+      router.refresh()
     })
   }
 
@@ -51,7 +44,7 @@ export function LocaleSwitcher({
           disabled={pending}
           onClick={() => switchLocale(code)}
           className={cn(
-            "relative rounded-md px-2 py-1 uppercase cursor-pointer disabled:pointer-events-none disabled:opacity-50",
+            "relative rounded-md px-2 py-1 uppercase cursor-pointer transition-colors duration-300 disabled:pointer-events-none disabled:opacity-50",
             locale === code
               ? variant === "hero"
                 ? "bg-tiffany-blue text-[#6e1835]"

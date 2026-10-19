@@ -1,7 +1,7 @@
 const meta = {
   title: "Sekolah Aparatur",
   description:
-    "Situs Sekolah Aparatur dengan halaman publik bilingual dan back office staf.",
+    "Profil dan informasi program Sekolah Aparatur untuk aparatur daerah, perangkat desa, dan legislator.",
 } as const
 
 export default meta

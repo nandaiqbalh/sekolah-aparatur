@@ -40,7 +40,7 @@ Also read Next.js guides in `node_modules/next/dist/docs/` — this project uses
 
 | Put it here | When |
 |-------------|------|
-| `app/[locale]/…` | Route / page / layout only |
+| `app/(public)/…` | Public route / page / layout only |
 | `features/{domain}/` | Domain schemas, repo, service, actions, UI |
 | `components/shared/` | Cross-page small widgets |
 | `components/sections/` | Page-bound composition blocks |
@@ -59,7 +59,7 @@ Also read Next.js guides in `node_modules/next/dist/docs/` — this project uses
 
 ## New page checklist
 
-- [ ] Page under `app/[locale]/…`
+- [ ] Page under `app/(public)/…`
 - [ ] `generateMetadata` via `buildPageMetadata` + dictionary (`en` + `id`)
 - [ ] Exactly one `<h1>`
 - [ ] Internal links via `localizedPath`
