@@ -1,0 +1,103 @@
+# Build and push production image to GHCR.
+# Does NOT deploy to the VPS. Admin deploys manually (see docs/engineering/branching-and-deployment.md).
+name: Build and push images
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: build-images
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      # postinstall runs prisma generate; no database is contacted.
+      DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/sekolah_aparatur
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit tests
+        run: npm test
+
+  build-and-push:
+    needs: [test]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pre-pull Node base image
+        run: |
+          IMAGE=public.ecr.aws/docker/library/node:22-alpine
+          for attempt in 1 2 3; do
+            echo "Pull attempt ${attempt}..."
+            if docker pull "${IMAGE}"; then
+              exit 0
+            fi
+            sleep 20
+          done
+          exit 1
+
+      - name: Set image metadata
+        id: meta
+        run: |
+          SHORT_SHA="${GITHUB_SHA:0:7}"
+          echo "Image tag: ${SHORT_SHA}"
+          echo "short_sha=${SHORT_SHA}" >> "$GITHUB_OUTPUT"
+
+      - name: Extract metadata for Docker
+        id: docker_meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=sha,prefix=,format=short
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: docker/Dockerfile
+          push: true
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          labels: ${{ steps.docker_meta.outputs.labels }}
+          build-args: |
+            NODE_IMAGE=public.ecr.aws/docker/library/node:22-alpine
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64

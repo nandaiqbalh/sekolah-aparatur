@@ -1,0 +1,46 @@
+# Host nginx site — reverse proxy to the app container.
+#
+# Install on the VPS host (not inside Compose). App listens on 127.0.0.1:3002.
+# App path on VPS: ~/opt/apps/sekolah-aparatur (user: ubuntu)
+#
+# Typical layout:
+#   sudo cp ~/opt/apps/sekolah-aparatur/deploy/nginx.conf.example \
+#     /etc/nginx/sites-available/sekolah-aparatur
+#   sudo ln -sf /etc/nginx/sites-available/sekolah-aparatur /etc/nginx/sites-enabled/
+#   sudo nginx -t && sudo systemctl reload nginx
+#   sudo certbot --nginx -d example.com
+#
+# Replace example.com with the real hostname.
+
+upstream sekolah_aparatur_app {
+	server 127.0.0.1:3002;
+	keepalive 32;
+}
+
+server {
+	listen 80;
+	listen [::]:80;
+	server_name example.com;
+
+	real_ip_header X-Forwarded-For;
+	set_real_ip_from 127.0.0.1;
+
+	add_header X-Content-Type-Options nosniff always;
+	add_header X-Frame-Options DENY always;
+	add_header Referrer-Policy strict-origin-when-cross-origin always;
+	server_tokens off;
+
+	client_max_body_size 10M;
+
+	location / {
+		proxy_pass http://sekolah_aparatur_app;
+		proxy_http_version 1.1;
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Forwarded-Proto $scheme;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection "";
+		proxy_read_timeout 60s;
+	}
+}

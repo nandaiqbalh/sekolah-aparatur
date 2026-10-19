@@ -1,0 +1,57 @@
+# Production stack — pull prebuilt GHCR images only (no build on VPS).
+# Deploy: set IMAGE_TAG in .env, then ./scripts/deploy-prod.sh
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: sekolah-aparatur-db
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${DB_PORT:-5434}:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-sekolah_aparatur}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-sekolah_aparatur}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - sekolah-aparatur-network
+
+  app:
+    image: ${IMAGE_REGISTRY:-ghcr.io/nandaiqbalh/sekolah-aparatur}:${IMAGE_TAG}
+    container_name: sekolah-aparatur-app
+    restart: unless-stopped
+    pull_policy: always
+    ports:
+      - "127.0.0.1:${APP_PORT:-3002}:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-sekolah_aparatur}"
+      NEXT_PUBLIC_SITE_URL: "${SITE_URL:-http://localhost:3002}"
+      DEFAULT_LOCALE: "${DEFAULT_LOCALE:-en}"
+      RUN_DB_SEED: "${RUN_DB_SEED:-false}"
+      SEED_SUPER_ADMIN_EMAIL: "${SEED_SUPER_ADMIN_EMAIL:-}"
+      SEED_SUPER_ADMIN_PASSWORD: "${SEED_SUPER_ADMIN_PASSWORD:-}"
+      SEED_SUPER_ADMIN_NAME: "${SEED_SUPER_ADMIN_NAME:-Super Admin}"
+      SEED_SUPER_ADMIN_USERNAME: "${SEED_SUPER_ADMIN_USERNAME:-superadmin}"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+    networks:
+      - sekolah-aparatur-network
+
+volumes:
+  pgdata:
+
+networks:
+  sekolah-aparatur-network:
+    driver: bridge

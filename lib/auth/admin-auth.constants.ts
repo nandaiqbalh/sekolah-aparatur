@@ -1,0 +1,11 @@
+import {
+  LOGIN_LOCK_MINUTES,
+  LOGIN_MAX_ATTEMPTS,
+} from "@/lib/auth/login-lockout.constants"
+
+export const ADMIN_LOGIN_MAX_ATTEMPTS = LOGIN_MAX_ATTEMPTS
+export const ADMIN_LOGIN_LOCK_MINUTES = LOGIN_LOCK_MINUTES
+
+export const ADMIN_SESSION_INACTIVITY_DAYS = 5
+
+export const ADMIN_SESSION_ACTIVITY_TOUCH_MS = 15 * 60 * 1000

@@ -1,0 +1,66 @@
+const home = {
+  navAbout: "Tentang",
+  navWhyUs: "Mengapa kami",
+  navFaq: "FAQ",
+  navAdmin: "Back office",
+  openMenu: "Buka menu",
+  closeMenu: "Tutup menu",
+  heroEyebrow: "Sekolah Aparatur",
+  heroTitlePrefix: "Kirim back office staf",
+  heroTitleAccent: "bilingual",
+  heroTitleSuffix: "tanpa mulai dari nol.",
+  heroDescription:
+    "App Router, Prisma RBAC, fitur berlapis, dan UI admin yang rapi untuk Sekolah Aparatur.",
+  heroPrimaryCta: "Buka back office",
+  heroSecondaryCta: "Baca dokumentasi",
+  aboutEyebrow: "Yang Anda dapat",
+  aboutTitlePrefix: "Sekolah",
+  aboutTitleAccent: "Aparatur",
+  aboutDescription:
+    "Halaman publik tetap sederhana. Kerja staf ada di /admin dengan sesi cookie, gerbang izin, dan daftar yang tersimpan di URL.",
+  aboutPoint1Title: "Domain berlapis",
+  aboutPoint1Desc: "Repository → service → action → UI. Zod di batas validasi.",
+  aboutPoint2Title: "i18n en / id",
+  aboutPoint2Desc: "Locale cookie, rute berawalan, dictionary sebagai sumber salinan.",
+  aboutPoint3Title: "RBAC staf Prisma",
+  aboutPoint3Desc: "Peran, izin, log aktivitas, dan bypass Super Admin.",
+  whyUsEyebrow: "Sekolah Aparatur",
+  whyUsTitlePrefix: "Konvensi yang",
+  whyUsTitleAccent: "tumbuh",
+  whyUsDescription:
+    "Pola yang sama dipakai di produksi Lencir — back office yang tenang dan konsisten untuk Sekolah Aparatur.",
+  whyUsPoint1Title: "Arsitektur",
+  whyUsPoint1Desc: "Lapisan jelas agar agen dan manusia tahu di mana kode baru diletakkan.",
+  whyUsPoint2Title: "Bilingual dari awal",
+  whyUsPoint2Desc: "Setiap string UI ada di dictionary en dan id — tanpa salinan hardcoded.",
+  whyUsPoint3Title: "RBAC staf",
+  whyUsPoint3Desc: "Dasbor, pengguna, peran, dan log audit di-gate oleh kunci izin.",
+  faqEyebrow: "FAQ",
+  faqTitle: "Pertanyaan",
+  faq1Q: "Bagaimana cara masuk ke back office?",
+  faq1A:
+    "Jalankan seed database, lalu buka /admin/login dengan kredensial SEED_SUPER_ADMIN_* dari .env.example.",
+  faq2Q: "Bagaimana locale bekerja?",
+  faq2A:
+    "URL publik adalah /en dan /id. Cookie locale plus proxy.ts mengingat preferensi. Admin memakai cookie yang sama tanpa prefix URL.",
+  faq3Q: "Di mana menambahkan domain baru?",
+  faq3A:
+    "Buat features/{name}/ berisi schemas, repositories, services, actions, dan components. Hubungkan rute tipis di app/.",
+  faq4Q: "Bagaimana cara deploy?",
+  faq4A:
+    "VPS lewat Docker + GHCR, atau Vercel + Supabase Postgres. Lihat docs/engineering/branching-and-deployment.md.",
+  ctaTitleLine1: "Siap kelola staf?",
+  ctaTitleLine2Prefix: "Buka",
+  ctaTitleBrand: "back office",
+  ctaButton: "Masuk",
+  footerTagline:
+    "Sekolah Aparatur — situs bilingual dengan Prisma RBAC dan shell admin yang siap produksi.",
+  footerProduct: "Produk",
+  footerDocs: "Docs",
+  footerGithub: "GitHub",
+  footerDocsLink: "Dokumentasi teknik",
+  footerDashboard: "Dasbor",
+  footerCopyright: "Sekolah Aparatur.",
+} as const
+
+export default home
