@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { ArrowRight } from "lucide-react"
 import Link from "next/link"
 
 import { Reveal } from "@/components/motion/reveal"
@@ -24,25 +25,26 @@ export default function ProgramIndexPage() {
       <PageHero
         eyebrow="Program"
         title="Sekolah Aparatur"
-        description="Pilih program sesuai peran peserta. Kurikulum, jadwal, dan biaya resmi belum ditampilkan sebagai angka final."
+        description="Sarjana aparatur daerah dan desa di UM Tapsel, serta pascasarjana aparatur dan legislator di Universitas Nasional."
       />
-      <div className="mx-auto max-w-[1280px] px-4 pt-8 pb-24 sm:px-6 lg:px-8">
-        <ul className="divide-y divide-[var(--sa-line)] border-t border-[var(--sa-line)]">
+      <div className="bg-[var(--sa-canvas)] py-16">
+        <ul className="mx-auto grid max-w-[1280px] gap-4 px-4 sm:px-6 lg:px-8">
           {programs.map((program, index) => (
             <li key={program.slug}>
-              <Reveal delay={index * 0.1} className="grid gap-6 py-12 lg:grid-cols-[1fr_auto] lg:items-end">
+              <Reveal delay={index * 0.1} className="grid gap-6 rounded-[28px] bg-white p-8 lg:grid-cols-[1fr_auto] lg:items-end">
               <div>
-                <h2 className="text-3xl font-semibold tracking-tight">{program.title}</h2>
+                <h2 className="font-heading text-3xl font-semibold tracking-tight">{program.title}</h2>
                 <p className="mt-3 max-w-xl leading-7 text-[var(--sa-muted)]">{program.summary}</p>
               </div>
-              <div className="flex gap-5 text-sm font-semibold">
+              <div className="flex flex-wrap gap-3 text-sm font-semibold">
                 <Link
                   href={program.slug === "legislator" ? ROUTES.legislator : ROUTES.daerahDesa}
-                  className="cursor-pointer text-[var(--sa-blue)]"
+                  className="inline-flex h-11 cursor-pointer items-center gap-2 rounded-full bg-[var(--sa-navy)] px-5 text-white"
                 >
                   Baca detail
+                  <ArrowRight className="size-4" />
                 </Link>
-                <Link href={registrationPath(program.slug)} className="cursor-pointer">
+                <Link href={registrationPath(program.slug)} className="inline-flex h-11 cursor-pointer items-center rounded-full bg-[var(--sa-gold)] px-5 text-[var(--sa-navy)]">
                   Pendaftaran
                 </Link>
               </div>

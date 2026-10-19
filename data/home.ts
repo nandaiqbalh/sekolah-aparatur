@@ -1,60 +1,62 @@
 export const homeContent = {
-  heroTitle: "Pendidikan aparatur yang tertata dan mudah dipahami.",
-  heroDescription:
-    "Sekolah Aparatur menyiapkan informasi program bagi aparatur daerah, perangkat desa, dan legislator. Halaman ini pratinjau. Data resmi masih dilengkapi.",
-  introTitle: "Lembaga untuk memperkuat kapasitas aparatur",
+  heroTitle: "Sekolah Aparatur untuk gelar yang bisa ditempuh sambil bertugas.",
+  introTitle: "Pendidikan tinggi yang mengakui pengalaman kerja",
   introDescription:
-    "Situs ini membantu calon peserta mengenal program sebelum pendaftaran dibuka. Narasi lembaga, visi, dan misi masih placeholder sampai naskah resmi tersedia.",
-  strengthsTitle: "Yang kami jaga dalam setiap program",
+    "Program sarjana daerah dan desa ditempuh di Universitas Muhammadiyah Tapanuli Selatan. Program pascasarjana aparatur dan legislator ditempuh di Universitas Nasional.",
+  strengthsTitle: "Yang ditawarkan kedua program",
   strengths: [
     {
-      title: "Bahasa yang jelas",
-      description: "Materi dijelaskan dengan alur yang bisa diikuti peserta dari latar belakang berbeda.",
+      title: "Jalur RPL",
+      description:
+        "Capaian dari pendidikan formal, pelatihan, dan pengalaman kerja dapat diakui menjadi SKS setelah asesmen.",
     },
     {
-      title: "Latihan, bukan hanya paparan",
-      description: "Kerangka program menyiapkan diskusi dan latihan kasus di samping sesi pengantar.",
+      title: "Waktu studi lebih singkat",
+      description:
+        "S1 daerah dan desa 1,5–2 tahun. S2 daerah dan desa 1–1,5 tahun. S2 Ilmu Politik UNAS jalur RPL 1 tahun.",
     },
     {
-      title: "Jejak yang bisa ditinjau",
-      description: "Kegiatan didokumentasikan agar peserta dan penyelenggara bisa meninjau ulang.",
+      title: "Belajar yang bisa diselaraskan tugas",
+      description:
+        "Daerah dan desa kuliah daring sinkron dan asinkron. Pascasarjana UNAS memakai hybrid, daring dan tatap muka.",
     },
     {
-      title: "Informasi yang jujur",
-      description: "Jadwal, biaya, dan persyaratan tidak diisi angka palsu sebelum keputusan resmi.",
+      title: "UKT yang dijelaskan di profil",
+      description:
+        "Biaya mengikuti kebijakan kampus mitra dan dibayar sebagai Uang Kuliah Tunggal. Angka hanya dicantumkan jika tertulis di profil.",
     },
   ],
-  stepsTitle: "Tiga langkah mengenal program",
+  stepsTitle: "Jalan dari sosialisasi sampai kuliah",
   steps: [
     {
-      title: "Pilih program",
-      description: "Bandingkan Sekolah Aparatur Daerah dan Desa dengan Sekolah Legislator.",
+      title: "Asesmen RPL",
+      description: "Tim asesor universitas menilai data dan dokumen, lalu kampus mengumumkan hasilnya.",
     },
     {
-      title: "Baca persyaratan",
-      description: "Periksa sasaran peserta dan dokumen. Bagian yang belum final ditandai placeholder.",
-    },
-    {
-      title: "Siapkan pendaftaran",
-      description: "Formulir sudah bisa dilihat. Pengiriman data menyusul ketika sistem backend siap.",
+      title: "Registrasi dan perkuliahan",
+      description: "Peserta yang lulus melakukan registrasi di universitas mitra, kemudian mulai kuliah.",
     },
   ],
   faqs: [
     {
-      question: "Apakah pendaftaran sudah dibuka?",
-      answer: "Belum. Formulir hanya menampilkan validasi di peramban dan tidak menyimpan isian.",
+      question: "Siapa penyelenggara akademiknya?",
+      answer:
+        "LPSDM Aparatur merancang program. Perkuliahan dijalankan universitas mitra: Universitas Muhammadiyah Tapanuli Selatan untuk sarjana daerah dan desa, serta Universitas Nasional untuk pascasarjana aparatur dan legislator.",
     },
     {
-      question: "Di mana saya melihat dua program utama?",
-      answer: "Buka menu Sekolah Aparatur, lalu pilih Daerah dan Desa atau Legislator.",
+      question: "Apakah formulir di situs ini sudah menyimpan data?",
+      answer:
+        "Belum. Formulir memeriksa isian di peramban. Penyimpanan pendaftar menyusul setelah tampilan ini ditinjau.",
     },
     {
-      question: "Mengapa beberapa data tertulis placeholder?",
-      answer: "Narasi, jadwal, biaya, dan kontak resmi belum diserahkan pemilik situs.",
+      question: "Berapa biaya kuliah?",
+      answer:
+        "Profil UNAS menuliskan S2 Rp17.500.000 per semester (total Rp35.000.000 untuk 2 semester) dan S3 Rp17.500.000 per semester (total Rp105.000.000 untuk 6 semester), di luar tugas akhir. Profil daerah dan desa menyebut UKT dan kemungkinan Dana Desa, tanpa nominal.",
     },
     {
-      question: "Bagaimana menghubungi lembaga?",
-      answer: "Halaman Kontak menampilkan kanal yang sudah dikonfirmasi. Nomor yang belum ada tidak dikarang.",
+      question: "Bagaimana menghubungi panitia?",
+      answer:
+        "WhatsApp dan telepon yang tercantum di profil: +62 822-4962-1229, +62 852-1917-7031, dan +62 813-1141-4210. Surel lpsdm.aparatur@gmail.com.",
     },
   ],
 }

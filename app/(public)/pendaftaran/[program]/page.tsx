@@ -41,10 +41,14 @@ export default async function RegistrationPage({ params }: PageProps) {
         title={program.title}
         description="Program terkunci dari tautan. Unggahan berkas hanya tampilan dan tidak disimpan."
       />
-      <div className="mx-auto max-w-xl px-4 pt-12 pb-24 sm:px-6">
-        <Reveal y={80}>
-          <RegistrationForm programSlug={program.slug} />
-        </Reveal>
+      <div className="bg-[var(--sa-canvas)]">
+        <div className="mx-auto max-w-xl px-4 py-16 sm:px-6">
+          <Reveal y={80}>
+            <div className="rounded-[28px] bg-white p-6 sm:p-8">
+              <RegistrationForm programSlug={program.slug} />
+            </div>
+          </Reveal>
+        </div>
       </div>
     </>
   )

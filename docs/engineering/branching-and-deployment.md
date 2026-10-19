@@ -74,25 +74,23 @@ CI **does not deploy**. Image registry: `ghcr.io/${github.repository}`.
 
 ### Deploy on the VPS
 
-Suggested path: `~/opt/apps/sekolah-aparatur` (user `ubuntu`). Neighbor ports already taken:
+Suggested path: `~/opt/apps/sekolah-aparatur` (user `ubuntu`) on `43.173.15.207`. Host Caddy (`/etc/caddy/Caddyfile`) proxies the public hostname to the app. Do not reuse ports already bound on that VPS (`3000`–`3013`, `5433`–`5439`, `5442`, `5443`).
 
 | Host port | Service |
 |-----------|---------|
-| `3000` | lencir-app |
-| `3001` | healthy-app |
-| **`3002`** | **sekolah-aparatur-app (this project)** |
-| `5432` | lencir-db |
-| `5433` | healthy-app-db |
-| **`5434`** | **sekolah-aparatur-db (this project)** |
+| **`3014`** | **sekolah-aparatur-app** (`127.0.0.1` only) |
+| **`5444`** | **sekolah-aparatur-db** (`127.0.0.1` only) |
+
+Public host: `sekolah-aparatur.nandaiqbalh.com` → `127.0.0.1:3014`.
 
 ```bash
 git pull
-# set IMAGE_TAG=<sha7> in .env  (APP_PORT=3002, DB_PORT=5434)
+# set IMAGE_TAG=<sha7>, APP_PORT=3014, DB_PORT=5444, SITE_URL=https://sekolah-aparatur.nandaiqbalh.com
 chmod +x scripts/deploy-prod.sh
 ./scripts/deploy-prod.sh
-# first time only, after migrate:
-docker compose -f docker-compose.prod.yml exec app npx prisma db seed
 ```
+
+First boot with `RUN_DB_SEED=true` creates the super admin, then set `RUN_DB_SEED=false` before the next recreate.
 
 Rollback: set `IMAGE_TAG` to an older GHCR SHA and rerun the script.
 

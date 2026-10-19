@@ -1,53 +1,34 @@
 # Requirement — Sekolah Aparatur
 
-## Latar belakang
-
-Situs ini memperkenalkan Sekolah Aparatur sebagai lembaga pendidikan dan pengembangan kapasitas aparatur. Tahap ini hanya membangun tampilan publik dan konten dummy agar pemilik situs bisa meninjau struktur halaman sebelum data resmi tersedia.
+Nama situs: Sekolah Aparatur.
 
 ## Tujuan
 
-- Menyediakan profil lembaga.
-- Mempromosikan program pendidikan dan pelatihan.
-- Menyediakan informasi Sekolah Aparatur Daerah dan Desa serta Sekolah Legislator.
-- Menampilkan berita dan dokumentasi kegiatan.
-- Menyediakan formulir pendaftaran secara visual.
-- Menyediakan layanan informasi dan kontak.
+Profil lembaga, promosi program, pendaftaran peserta, penjualan, dan layanan informasi.
 
-## Target pengguna
+Penjualan di sini adalah penawaran program lewat halaman program dan formulir pendaftaran. Tidak ada halaman atau gerbang pembayaran.
 
-- Aparatur pemerintah.
-- Perangkat desa dan kalurahan.
-- Anggota legislatif.
-- Calon peserta pendidikan dan pelatihan.
-- Instansi pemerintah, lembaga, dan masyarakat yang membutuhkan informasi program.
+## Halaman
 
-## Kebutuhan fungsional
+1. Beranda
+2. Profil
+3. Sekolah Aparatur
+   - Sekolah Aparatur Daerah dan Desa
+   - Sekolah Legislator
+4. Berita
+5. Galeri
+6. Kontak
 
-- Navigasi: Beranda, Profil, Sekolah Aparatur (submenu dua program), Berita, Galeri, Kontak, serta CTA pendaftaran.
-- Halaman program menampilkan deskripsi, sasaran, materi, metode, jadwal, persyaratan, dokumen, biaya, FAQ, dan CTA. Data yang belum resmi ditandai placeholder.
-- Daftar berita dan detail berdasarkan slug, dari data statis.
-- Galeri foto dan video dengan filter kategori dan lightbox. Video hanya thumbnail, tanpa embed eksternal.
-- Formulir kontak dan pendaftaran dengan validasi di peramban. Tidak mengirim atau menyimpan data.
-- Daftar unduhan dokumen. Tombol unduh nonaktif sampai berkas asli ada.
-- Tombol WhatsApp dari satu konfigurasi. Tanpa nomor resmi, tombol tidak membuka tautan.
+## Fitur
 
-## Kebutuhan nonfungsional
+- Formulir pendaftaran di situs ini. Isian tersimpan dan dikelola admin. Tidak dialihkan ke formulir luar.
+- Unduhan dokumen.
+- WhatsApp.
 
-- Bahasa Indonesia di seluruh situs publik.
-- Responsif pada mobile, tablet, dan desktop.
-- HTML semantik, label formulir, kontras teks, dan focus state.
-- Server Components sebagai default. Client Component hanya untuk menu, slider, lightbox, dan formulir.
-- Admin, Prisma, dan autentikasi yang sudah ada tetap berjalan.
+## Konten
 
-## Batasan tahap ini
+Teks profil, foto, video, logo, informasi program, dan kontak. Admin mengubah konten itu dari dashboard, plus melihat pendaftar.
 
-Tidak ada backend, API, database baru, autentikasi baru, CMS, pengiriman formulir, penyimpanan pendaftar, pembayaran, WhatsApp API, email, peta eksternal, atau pemutar video eksternal.
+## Tautan keluar
 
-## Asumsi yang perlu dikonfirmasi
-
-- Identitas visual resmi (logo, warna, foto).
-- Visi, misi, struktur organisasi, dan narasi lembaga.
-- Kurikulum, jadwal, durasi, biaya, dan persyaratan tiap program.
-- Nomor telepon, email, alamat, jam layanan, dan nomor WhatsApp.
-- Berkas unduhan resmi.
-- Berita dan dokumentasi kegiatan yang boleh dipublikasikan.
+Hanya untuk WhatsApp, alamat atau peta, dan hal lain yang memang harus membuka layanan luar. Halaman program, berita, galeri, dan pendaftaran tetap di situs ini.

@@ -1,13 +1,15 @@
 # Sekolah Aparatur
 
-Situs Sekolah Aparatur, dengan back office staf.
+Public site for the institution profile, program promotion, participant registration, program sales, and information services.
 
-## What the site is for
+## Pages
 
-- Public pages in `en` and `id` (cookie, no URL prefix)
-- Staff sign-in at `/admin/login`
-- Seed creates a super admin only
+Home, profile, Sekolah Aparatur (Daerah dan Desa, Legislator), news, gallery, and contact.
 
-## Audience
+## What visitors do
 
-To be filled in when the product brief is ready. Staff manage site content from the back office.
+Read the profile and programs, submit a registration form on this site, download documents, and open WhatsApp. Sales means offering the programs through those pages and the form. There is no payment page.
+
+## What admins edit
+
+Profile text, photos, videos, logo, program information, contact details, documents, and registration records.

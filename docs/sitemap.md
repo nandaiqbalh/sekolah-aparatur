@@ -1,6 +1,6 @@
 # Sitemap — Sekolah Aparatur
 
-## Navigasi utama
+## Navigasi
 
 - Beranda → `/`
 - Profil → `/profil`
@@ -11,12 +11,21 @@
   - Detail → `/berita/[slug]`
 - Galeri → `/galeri`
 - Kontak → `/kontak`
-- Pendaftaran (CTA) → `/pendaftaran/[program]`
+- Pendaftaran → `/pendaftaran/[program]`
 
-## Hubungan halaman
+Pendaftaran dibuka dari halaman program. WhatsApp dan unduhan dokumen ada di halaman yang membutuhkan, bukan sebagai menu utama.
 
-Beranda mengarah ke kedua program, tiga berita terbaru, cuplikan galeri, dan kontak. Kartu program di `/sekolah-aparatur` membuka halaman detail. CTA di halaman program membuka `/pendaftaran/daerah-dan-desa` atau `/pendaftaran/legislator`. Detail berita menautkan berita lain. Galeri dan kontak berdiri sendiri. Footer mengulang tautan utama.
+## Admin
 
-## Di luar situs publik
+`/admin` tidak masuk navigasi pengunjung. Menu konten mengikuti isi situs:
 
-`/admin` tetap back office staf dan tidak masuk navigasi pengunjung.
+- Profil
+- Program (Daerah dan Desa, Legislator)
+- Berita
+- Galeri
+- Kontak dan WhatsApp
+- Dokumen
+- Pendaftaran
+- Logo
+
+Layar pengguna staf yang sudah ada tetap untuk akun operator.

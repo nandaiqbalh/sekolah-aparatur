@@ -78,6 +78,8 @@
   --sa-ink: #142033;
   --sa-muted: #5c6775;
   --sa-line: #d5dee8;
+  --sa-gold: #e8b31a;
+  --sa-canvas: #f3f4f6;
 
   --space-xs: 4px;
   --space-sm: 8px;
@@ -230,6 +232,45 @@ html:has(.admin-font) .font-sans {
   font-family: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
 }
 
+@keyframes hero-fade-zoom {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+  50% {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+  90% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.hero-slide {
+  animation: hero-fade-zoom 10s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide {
+    animation: none;
+    opacity: 0;
+    transform: none;
+  }
+
+  .hero-slide:first-child {
+    opacity: 1;
+  }
+}
+
 .public-font {
   --font-sans: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
@@ -241,8 +282,10 @@ html:has(.admin-font) .font-sans {
   --sa-ink: #142033;
   --sa-muted: #5c6775;
   --sa-line: #d5dee8;
+  --sa-gold: #e8b31a;
+  --sa-canvas: #f3f4f6;
 
-  --background: #f5f7fa;
+  --background: var(--sa-canvas);
   --foreground: var(--sa-ink);
   --card: var(--white);
   --card-foreground: var(--sa-ink);

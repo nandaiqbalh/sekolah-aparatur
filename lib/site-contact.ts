@@ -1,14 +1,14 @@
 /**
- * Kontak resmi. Kosongkan sampai pemilik situs mengisi.
- * Jangan mengisi nomor atau alamat fiktif.
+ * Kontak dari profil LPSDM Aparatur (PDF daerah dan desa serta PDF UNAS).
  */
 export const siteContact = {
   address: null as string | null,
-  phone: null as string | null,
-  email: null as string | null,
+  phones: ["+62 822-4962-1229", "+62 852-1917-7031", "+62 813-1141-4210"],
+  email: "lpsdm.aparatur@gmail.com",
+  website: "https://www.lpsdmaparatur.com",
   hours: null as string | null,
-  /** Digit internasional tanpa tanda tambah, misalnya 6281234567890. */
-  whatsappNumber: null as string | null,
+  /** Nomor yang tercantum di kedua profil. */
+  whatsappNumber: "6282249621229",
 }
 
 export function whatsappHref(message?: string): string | null {

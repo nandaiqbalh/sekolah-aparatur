@@ -1,10 +1,9 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { Play } from "lucide-react"
+import Image from "next/image"
 
 import { Reveal } from "@/components/motion/reveal"
-import { MediaPlaceholder } from "@/components/public/media-placeholder"
 import { galleryCategories, galleryItems } from "@/data/gallery"
 import { cn } from "@/lib/utils"
 
@@ -28,8 +27,8 @@ export function GalleryBrowser() {
             key={item}
             type="button"
             className={cn(
-              "h-9 cursor-pointer rounded-full px-4 text-sm",
-              category === item ? "bg-[var(--sa-navy)] text-white" : "text-[var(--sa-muted)] hover:text-[var(--sa-ink)]"
+              "h-9 cursor-pointer rounded-full px-4 text-sm font-medium",
+              category === item ? "bg-[var(--sa-gold)] text-[var(--sa-navy)]" : "bg-white text-[var(--sa-muted)]"
             )}
             aria-pressed={category === item}
             onClick={() => setCategory(item)}
@@ -43,11 +42,10 @@ export function GalleryBrowser() {
           <li key={item.id}>
             <Reveal y={80} delay={(index % 3) * 0.1}>
             <button type="button" className="w-full cursor-pointer text-left" onClick={() => setActiveId(item.id)}>
-              <MediaPlaceholder quiet label={item.title} className="h-56 rounded-[1.75rem]" />
-              <p className="mt-4 flex items-center gap-2 font-semibold">
-                {item.kind === "video" ? <Play className="size-4 shrink-0" aria-hidden /> : null}
-                {item.title}
-              </p>
+              <span className="relative block h-56 overflow-hidden rounded-[28px] bg-white">
+                <Image src={item.image} alt={item.title} fill className="object-cover" sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" />
+              </span>
+              <p className="mt-4 font-semibold">{item.title}</p>
               <p className="mt-1 text-sm text-[var(--sa-muted)]">
                 {item.category} · {item.date}
               </p>
@@ -64,17 +62,13 @@ export function GalleryBrowser() {
           aria-label={active.title}
         >
           <div className="w-full max-w-3xl">
-            <MediaPlaceholder
-              quiet
-              label={active.kind === "video" ? `Pratinjau video: ${active.title}` : active.title}
-              className="h-80 rounded-[1.75rem] sm:h-[28rem]"
-            />
+            <span className="relative block h-80 overflow-hidden rounded-[1.75rem] sm:h-[28rem]">
+              <Image src={active.image} alt={active.title} fill className="object-cover" sizes="48rem" />
+            </span>
             <div className="mt-4 flex items-end justify-between gap-4 text-white">
               <div>
                 <p className="text-lg font-semibold">{active.title}</p>
-                <p className="text-sm text-white/70">
-                  {active.kind === "video" ? "Video belum diputar." : active.category}
-                </p>
+                <p className="text-sm text-white/70">{active.category}</p>
               </div>
               <button
                 type="button"

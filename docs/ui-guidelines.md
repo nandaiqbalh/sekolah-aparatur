@@ -2,7 +2,9 @@
 
 ## Arah
 
-Tampilan lembaga pendidikan: tenang, mudah dipindai, dan kredibel. Ritme section mengikuti referensi layout (hero gelap, pengenalan terbelah, daftar layanan, sorotan kegiatan, langkah, pertanyaan, kontak, footer). Bukan salinan template pemasaran dan bukan dashboard admin.
+Tampilan lembaga pendidikan: tenang, mudah dipindai, dan kredibel. Ritme section mengikuti referensi layout (hero gelap, pengenalan terbelah, daftar program, sorotan kegiatan, langkah, pertanyaan, kontak, footer). Bukan salinan template pemasaran dan bukan dashboard admin.
+
+Halaman publik: beranda, profil, Sekolah Aparatur (Daerah dan Desa serta Legislator), berita, galeri, dan kontak. Pendaftaran diisi di situs ini. Fitur lain: unduhan dokumen dan WhatsApp. Tautan keluar hanya untuk WhatsApp, alamat atau peta, dan hal yang memang harus membuka layanan lain.
 
 ## Palet sementara
 

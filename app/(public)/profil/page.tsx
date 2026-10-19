@@ -12,26 +12,30 @@ export async function generateMetadata(): Promise<Metadata> {
     locale,
     path: ROUTES.profil,
     title: "Profil",
-    description: "Profil lembaga Sekolah Aparatur. Narasi resmi masih placeholder.",
+    description: "LPSDM Aparatur merancang Sekolah Aparatur bersama universitas mitra, PPDI, dan APDESI.",
   })
 }
 
 const sections = [
   {
-    title: "Latar belakang",
-    body: "Teks ini placeholder. Latar belakang pendirian, dasar hukum, dan posisi lembaga akan ditulis setelah naskah resmi tersedia.",
+    title: "Lembaga",
+    body: "LPSDM Aparatur merancang program secara akademik. Anggotanya akademisi dan praktisi ilmu politik, administrasi publik, administrasi negara, dan ilmu pemerintahan. Perkuliahan dijalankan universitas mitra.",
+  },
+  {
+    title: "Latar",
+    body: "Otonomi daerah menggerakkan pembangunan, tetapi ketersediaan SDM aparatur belum sebanding. Profil daerah dan desa mengutip data 2022: 4,39 persen penduduk berpendidikan strata satu. Profil pascasarjana menempatkan penguatan aparatur dan legislator sebagai bagian dari jalan menuju Indonesia Emas 2045.",
   },
   {
     title: "Visi",
-    body: "Visi resmi belum dicantumkan. Kalimat visi tidak dikarang agar tidak terbaca sebagai pernyataan lembaga.",
+    body: "Menghasilkan lulusan yang unggul, berintegritas, dan profesional dalam kebirokrasian, legislasi, politik, dan kebijakan publik, serta mendorong kebijakan yang berpihak pada rakyat.",
   },
   {
     title: "Misi",
-    body: "Misi resmi menyusul. Sementara, situs hanya menjelaskan bahwa program ditujukan untuk aparatur daerah, perangkat desa, dan legislator.",
+    body: "Menyelenggarakan pendidikan tinggi yang relevan bagi aparatur dan legislator, dengan pembelajaran hybrid, riset kebijakan berbasis data, dan kerja sama akademisi, praktisi, serta masyarakat sipil.",
   },
   {
-    title: "Struktur",
-    body: "Bagan pengurus dan narasumber belum ditampilkan karena nama dan jabatan belum dikonfirmasi.",
+    title: "Mitra",
+    body: "Program sarjana daerah dan desa didukung PPDI dan APDESI, serta diselenggarakan Universitas Muhammadiyah Tapanuli Selatan. Program pascasarjana aparatur dan legislator diselenggarakan Universitas Nasional, dengan dukungan asosiasi dewan perwakilan rakyat pusat dan daerah.",
   },
 ]
 
@@ -40,18 +44,20 @@ export default function ProfilPage() {
     <>
       <PageHero
         eyebrow="Profil"
-        title="Mengenal Sekolah Aparatur"
-        description="Halaman ini menyiapkan ruang untuk narasi lembaga. Bagian yang belum final ditandai agar tidak dianggap fakta resmi."
+        title="LPSDM Aparatur"
+        description="Lembaga yang merancang Sekolah Aparatur untuk aparatur daerah, perangkat desa, dan legislator."
       />
-      <div className="mx-auto max-w-[1280px] px-4 pt-12 pb-24 sm:px-6 lg:px-8">
-        {sections.map((section, index) => (
-          <Reveal key={section.title} delay={index * 0.08}>
-            <section className="grid gap-3 border-t border-[var(--sa-line)] py-10 lg:grid-cols-[16rem_1fr] lg:gap-16">
-              <h2 className="text-xl font-semibold">{section.title}</h2>
-              <p className="max-w-2xl leading-7 text-[var(--sa-muted)]">{section.body}</p>
-            </section>
-          </Reveal>
-        ))}
+      <div className="bg-[var(--sa-canvas)] py-16 lg:py-24">
+        <div className="mx-auto grid max-w-[1280px] gap-4 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+          {sections.map((section, index) => (
+            <Reveal key={section.title} delay={index * 0.08}>
+              <section className="h-full rounded-[28px] bg-white p-6">
+                <h2 className="font-heading text-2xl font-semibold">{section.title}</h2>
+                <p className="mt-4 text-sm leading-7 text-[var(--sa-muted)]">{section.body}</p>
+              </section>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </>
   )

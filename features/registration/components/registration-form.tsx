@@ -88,9 +88,9 @@ export function RegistrationForm({ programSlug }: { programSlug: string }) {
           aria-invalid={Boolean(errors.schedule)}
           {...register("schedule")}
         >
-          <option value="">Pilih gelombang</option>
-          <option value="gelombang-a">Gelombang A — jadwal menyusul</option>
-          <option value="gelombang-b">Gelombang B — jadwal menyusul</option>
+          <option value="">Pilih semester</option>
+          <option value="ganjil">Semester ganjil — kuliah September</option>
+          <option value="genap">Semester genap — kuliah Maret</option>
         </select>
       </Field>
       <Field label="Unggah dokumen" error={fileError ?? undefined}>

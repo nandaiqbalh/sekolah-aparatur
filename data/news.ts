@@ -9,55 +9,50 @@ export type NewsArticle = {
 
 export const newsArticles: NewsArticle[] = [
   {
-    slug: "penyusunan-kerangka-program",
-    title: "Penyusunan kerangka program pendidikan aparatur",
-    category: "Kegiatan",
-    publishedAt: "2026-03-12",
+    slug: "kesepahaman-ucsi-unas-lpsdm",
+    title: "Perbincangan kesepahaman UCSI, UNAS, dan LPSDM",
+    category: "Kerja sama",
+    publishedAt: "2025-01-01",
     summary:
-      "Tim penyusun menata urutan materi agar peserta memahami alur kerja sebelum masuk ke latihan kasus.",
+      "Galeri profil pascasarjana mencatat perbincangan kesepahaman antara UCSI, Universitas Nasional, dan LPSDM Aparatur.",
     paragraphs: [
-      "Catatan ini adalah artikel dummy untuk pratinjau halaman berita. Kegiatan yang disebut belum diverifikasi sebagai peristiwa resmi lembaga.",
-      "Kerangka program memisahkan pengenalan lembaga, materi inti, dan latihan. Urutan itu membantu peserta melihat hubungan antar sesi.",
-      "Naskah final, tanggal pelaksanaan, dan narasumber akan menggantikan teks ini setelah pemilik situs menyerahkan materi.",
+      "Keterangan ini diambil dari halaman galeri profil Sekolah Aparatur di Universitas Nasional. Tanggal hari pelaksanaan tidak tertulis di profil.",
+      "Foto kegiatan ada di galeri situs, pada bagian pascasarjana aparatur dan legislator.",
     ],
   },
   {
-    slug: "diskusi-pelayanan-desa",
-    title: "Diskusi awal pelayanan di tingkat desa",
-    category: "Diskusi",
-    publishedAt: "2026-02-20",
+    slug: "perkuliahan-angkatan-1-dan-2",
+    title: "Perkuliahan mahasiswa angkatan 1 dan 2",
+    category: "Perkuliahan",
+    publishedAt: "2025-01-01",
     summary:
-      "Forum membahas cara menjelaskan prosedur layanan agar warga tidak harus datang berulang tanpa kejelasan.",
+      "Profil pascasarjana menampilkan dokumentasi perkuliahan mahasiswa angkatan 1 dan 2.",
     paragraphs: [
-      "Artikel dummy ini menggambarkan jenis berita yang nanti bisa diisi dokumentasi nyata.",
-      "Diskusi menekankan bahasa yang lugas, alur loket, dan catatan tindak lanjut. Tidak ada angka capaian karena datanya belum ada.",
-      "Foto kegiatan akan ditambahkan ketika dokumentasi resmi tersedia.",
+      "Kegiatan ini disebut pada halaman galeri profil Universitas Nasional. Profil tidak merinci mata kuliah atau jumlah peserta.",
+      "Dokumentasi foto dapat dilihat di galeri.",
     ],
   },
   {
-    slug: "catatan-fungsi-legislasi",
-    title: "Catatan belajar fungsi legislasi",
-    category: "Materi",
-    publishedAt: "2026-01-28",
-    summary:
-      "Ringkasan bahan bacaan tentang membedakan fungsi legislasi, anggaran, dan pengawasan.",
+    slug: "kelas-legislator-2025",
+    title: "Kelas Legislator 2025",
+    category: "Perkuliahan",
+    publishedAt: "2025-01-01",
+    summary: "Galeri profil mencatat Kelas Legislator pada tahun 2025.",
     paragraphs: [
-      "Teks ini placeholder bahan bacaan, bukan modul yang sudah disahkan.",
-      "Peserta diajak membedakan dokumen perencanaan, catatan rapat, dan tindak lanjut agar tidak tercampur dalam satu berkas.",
-      "Versi resmi modul akan menggantikan ringkasan ini.",
+      "Keterangan “Kelas Legislator (2025)” tercetak di halaman galeri profil Sekolah Aparatur Universitas Nasional.",
+      "Foto kelas ada di galeri situs.",
     ],
   },
   {
-    slug: "agenda-pratinjau-situs",
-    title: "Situs informasi dibuka untuk pratinjau internal",
-    category: "Pengumuman",
-    publishedAt: "2026-01-08",
+    slug: "kuliah-umum-aparatur-desa-2024",
+    title: "Kuliah umum peningkatan kualitas aparatur desa",
+    category: "Kuliah umum",
+    publishedAt: "2024-04-26",
     summary:
-      "Halaman publik disiapkan agar struktur informasi bisa ditinjau sebelum data lembaga dilengkapi.",
+      "Spanduk pada foto galeri program sarjana mencatat kuliah umum bagi mahasiswa baru RPL administrasi publik, 26 April 2024.",
     paragraphs: [
-      "Pengumuman ini menjelaskan status situs pada tahap antarmuka.",
-      "Formulir belum terhubung ke penyimpanan. Pengunjung tidak perlu mengirim data pribadi sungguhan.",
-      "Masukan tata letak bisa disampaikan lewat kanal yang nanti dicantumkan di halaman kontak.",
+      "Foto di profil Program Sarjana Aparatur Daerah dan Desa memuat kuliah umum “Peningkatan Kualitas Aparatur Desa dalam Pelaksanaan Pemerintahan dan Pembangunan di Provinsi Sumatera Utara”.",
+      "Spanduk menyebut mahasiswa baru Rekognisi Pembelajaran Lampau, program studi administrasi publik, 26 April 2024, pukul 17.00–18.30 WIB.",
     ],
   },
 ]

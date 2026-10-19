@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
     locale,
     path: ROUTES.berita,
     title: "Berita",
-    description: "Daftar berita dummy Sekolah Aparatur untuk pratinjau situs.",
+    description: "Kegiatan yang disebut di profil LPSDM Aparatur: kesepahaman, perkuliahan, dan kuliah umum.",
   })
 }
 
@@ -24,15 +24,16 @@ export default function NewsPage() {
       <PageHero
         eyebrow="Berita"
         title="Berita dan catatan kegiatan"
-        description="Artikel di halaman ini adalah data dummy. Tanggal dan peristiwa belum diverifikasi sebagai arsip resmi."
+        description="Catatan kegiatan yang tertulis di profil. Tanggal hanya ditampilkan jika profil menyebutkannya."
       />
-      <ul className="mx-auto max-w-[1280px] divide-y divide-[var(--sa-line)] border-t border-[var(--sa-line)] px-4 pt-4 pb-24 sm:px-6 lg:px-8">
+      <div className="bg-[var(--sa-canvas)]">
+      <ul className="mx-auto grid max-w-[1280px] gap-4 px-4 py-16 sm:px-6 lg:px-8">
         {newsArticles.map((article, index) => (
-          <li key={article.slug}>
+          <li key={article.slug} className="rounded-[28px] bg-white">
             <Reveal delay={index * 0.08}>
             <Link
               href={newsPath(article.slug)}
-              className="grid cursor-pointer gap-2 py-8 sm:grid-cols-[11rem_1fr] sm:gap-10"
+              className="grid cursor-pointer gap-2 px-6 py-8 sm:grid-cols-[11rem_1fr] sm:gap-10"
             >
               <p className="text-sm text-[var(--sa-muted)]">
                 {article.category}
@@ -47,6 +48,7 @@ export default function NewsPage() {
           </li>
         ))}
       </ul>
+      </div>
     </>
   )
 }

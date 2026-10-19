@@ -1,65 +1,70 @@
 import Link from "next/link"
 
 import { Reveal } from "@/components/motion/reveal"
-
 import { ROUTES } from "@/lib/routes"
 import { SITE_NAME } from "@/lib/site"
+import { siteContact, whatsappHref } from "@/lib/site-contact"
 
-const groups = [
-  {
-    title: "Lembaga",
-    links: [
-      { href: ROUTES.profil, label: "Profil" },
-      { href: ROUTES.kontak, label: "Kontak" },
-    ],
-  },
-  {
-    title: "Program",
-    links: [
-      { href: ROUTES.sekolahAparatur, label: "Semua program" },
-      { href: ROUTES.daerahDesa, label: "Daerah dan Desa" },
-      { href: ROUTES.legislator, label: "Legislator" },
-    ],
-  },
-  {
-    title: "Informasi",
-    links: [
-      { href: ROUTES.berita, label: "Berita" },
-      { href: ROUTES.galeri, label: "Galeri" },
-    ],
-  },
+const company = [
+  { href: ROUTES.profil, label: "Profil" },
+  { href: ROUTES.sekolahAparatur, label: "Semua program" },
+  { href: ROUTES.daerahDesa, label: "Daerah dan Desa" },
+  { href: ROUTES.legislator, label: "Legislator" },
+  { href: ROUTES.berita, label: "Berita" },
+  { href: ROUTES.galeri, label: "Galeri" },
+  { href: ROUTES.kontak, label: "Kontak" },
 ]
 
 export function PublicFooter() {
+  const whatsapp = whatsappHref("Halo, saya ingin bertanya tentang Sekolah Aparatur.")
+
   return (
     <footer className="bg-[var(--sa-navy)] text-white">
-      <Reveal y={80} className="mx-auto grid max-w-[1280px] gap-10 px-4 py-14 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr_1fr] lg:px-8">
-        <div>
-          <p className="text-lg font-semibold">{SITE_NAME}</p>
-          <p className="mt-3 max-w-xs text-sm leading-6 text-white/70">
-            Informasi program pendidikan dan pelatihan aparatur. Konten yang belum resmi ditandai sebagai placeholder.
-          </p>
-        </div>
-        {groups.map((group) => (
-          <div key={group.title}>
-            <p className="text-sm font-semibold">{group.title}</p>
-            <ul className="mt-3 grid gap-2">
-              {group.links.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} className="cursor-pointer text-sm text-white/70 hover:text-white">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+      <Reveal>
+        <div className="mx-auto grid max-w-[1280px] gap-12 px-4 py-16 sm:px-6 lg:grid-cols-[1.3fr_0.8fr_0.9fr] lg:px-8">
+          <div>
+            <Link href={ROUTES.home} className="cursor-pointer font-heading text-lg font-semibold tracking-tight">
+              {SITE_NAME}
+            </Link>
+            <p className="mt-4 max-w-sm text-sm leading-6 text-white/70">
+              LPSDM Aparatur. Program sarjana daerah dan desa serta pascasarjana aparatur dan legislator.
+            </p>
           </div>
-        ))}
-      </Reveal>
-      <div className="border-t border-white/10">
-        <p className="mx-auto max-w-[1280px] px-4 py-4 text-xs text-white/55 sm:px-6 lg:px-8">
-          {SITE_NAME}. Pratinjau situs publik.
+          <div>
+            <p className="text-sm font-semibold">Halaman</p>
+            <div className="mt-4 flex flex-col gap-3 text-sm text-white/70">
+              {company.map((link) => (
+                <Link key={link.href} href={link.href} className="cursor-pointer hover:text-white">
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+          <div>
+            <p className="text-sm font-semibold">Kontak</p>
+            <a href={`mailto:${siteContact.email}`} className="mt-4 block cursor-pointer text-sm text-white/70 hover:text-white">
+              {siteContact.email}
+            </a>
+            {siteContact.phones.map((phone) => (
+              <p key={phone} className="mt-2 text-sm text-white/70">
+                {phone}
+              </p>
+            ))}
+            {whatsapp ? (
+              <a href={whatsapp} target="_blank" rel="noreferrer" className="mt-3 inline-flex cursor-pointer text-sm text-[var(--sa-gold)] hover:text-white">
+                WhatsApp
+              </a>
+            ) : null}
+          </div>
+        </div>
+        <p className="border-t border-white/10 px-4 py-5 text-xs text-white/45 sm:px-6 lg:px-8">
+          <Link href={ROUTES.home} className="cursor-pointer hover:text-white">
+            {SITE_NAME}
+          </Link>
+          {" · "}
+          {new Date().getFullYear()}
         </p>
-      </div>
+      </Reveal>
     </footer>
   )
 }

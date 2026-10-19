@@ -1,37 +1,17 @@
 # Rencana implementasi — Sekolah Aparatur
 
-## Audit starter
+Sumber arah: [requirements.md](./requirements.md).
 
-- Next.js 16 App Router, React 19, TypeScript, Tailwind CSS 4, shadcn/Base UI, Lucide, React Hook Form, Zod.
-- Halaman publik di `app/(public)/`. Locale tanpa prefix URL. Cookie `locale`, default `id`.
-- Admin di `app/admin/` dengan Prisma dan sesi. Tidak diubah pada tahap ini.
-- Boleh dipakai ulang: `Accordion`, `Button`, `Input`, layout publik, `buildPageMetadata`, `ROUTES`.
+## Sudah ada sebagai pratinjau
 
-## Struktur data dummy
+Halaman publik dengan data statis, formulir yang belum menyimpan data, unduhan yang belum berupa berkas, dan tombol WhatsApp. Pratinjau tayang di `sekolah-aparatur.nandaiqbalh.com`.
 
-- `data/programs.ts`, `data/news.ts`, `data/gallery.ts`, `data/home.ts`
-- `lib/site-contact.ts` untuk telepon, email, alamat, dan WhatsApp
+## Berikutnya
 
-## Halaman
+1. Admin mengubah teks profil, foto, video, logo, informasi kedua program, dan kontak.
+2. Berita dan galeri diisi dari admin, lalu tampil di halaman publik.
+3. Formulir pendaftaran menyimpan peserta per program. Admin melihat daftar, detail, dan status.
+4. Dokumen resmi bisa diunggah dan diunduh. Sebelum berkas ada, unduhan tetap tidak aktif.
+5. Nomor WhatsApp dan pesan pembuka diubah dari pengaturan kontak.
 
-1. Layout, header, footer
-2. Beranda
-3. Profil
-4. Pengantar Sekolah Aparatur
-5. Daerah dan Desa
-6. Legislator
-7. Berita dan detail
-8. Galeri
-9. Kontak
-10. Pendaftaran
-11. Unduhan dokumen dan tombol WhatsApp
-
-## Status
-
-- [x] Dokumentasi requirement, sitemap, dan panduan UI
-- [x] UI halaman publik
-- [x] Lint, tes, dan build (`npm run lint`, `npm test` 15 lulus, `npm run build`)
-
-## Menunggu konfirmasi pemilik situs
-
-Logo, palet resmi, narasi lembaga, kurikulum, jadwal, biaya, persyaratan, kontak, nomor WhatsApp, berkas unduhan, serta berita dan foto yang boleh tayang.
+Tidak menambah halaman di luar daftar requirement. Tidak menambah pembayaran.

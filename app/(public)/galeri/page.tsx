@@ -12,7 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
     locale,
     path: ROUTES.galeri,
     title: "Galeri",
-    description: "Galeri foto dan video placeholder Sekolah Aparatur.",
+    description: "Foto dari halaman galeri profil program daerah dan desa serta profil Universitas Nasional.",
   })
 }
 
@@ -22,10 +22,12 @@ export default function GalleryPage() {
       <PageHero
         eyebrow="Galeri"
         title="Dokumentasi kegiatan"
-        description="Foto dan video di sini berlabel placeholder. Tidak ada tautan ke platform video eksternal."
+        description="Foto diambil dari halaman galeri kedua profil. Tidak ada tautan ke platform video."
       />
-      <div className="mx-auto max-w-[1280px] px-4 pt-12 pb-24 sm:px-6 lg:px-8">
+      <div className="bg-[var(--sa-canvas)]">
+      <div className="mx-auto max-w-[1280px] px-4 py-16 sm:px-6 lg:px-8">
         <GalleryBrowser />
+      </div>
       </div>
     </>
   )

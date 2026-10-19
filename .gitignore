@@ -43,3 +43,6 @@ next-env.d.ts
 
 # generated prisma client
 /generated
+
+# asset-data
+/asset-data

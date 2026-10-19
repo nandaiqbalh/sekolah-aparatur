@@ -27,7 +27,7 @@ Index: [rules/README.md](./rules/README.md)
 
 ## `product-vision/` — product
 
-Product goals, audience, UX principles, and roadmap for Sekolah Aparatur.
+Product goals for Sekolah Aparatur. The working summary is [requirements.md](./requirements.md).
 
 - Current brief: [product-vision/README.md](./product-vision/README.md)
 - Expand as the product brief lands (e.g. `overview.md`, `roadmap.md`)
