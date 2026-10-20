@@ -12,9 +12,9 @@ export function ProgramSpotlight() {
         return (
           <li
             key={program.slug}
-            className="flex h-full flex-col rounded-[28px] bg-[var(--sa-canvas)] px-6 py-8 sm:px-8"
+            className="flex h-full min-w-0 flex-col rounded-[28px] bg-[var(--sa-canvas)] px-5 py-6 sm:px-8 sm:py-8"
           >
-            <h3 className="text-xl font-semibold tracking-tight sm:text-2xl">{program.title}</h3>
+            <h3 className="text-lg font-semibold tracking-tight break-words sm:text-2xl">{program.title}</h3>
             <p className="mt-3 flex-1 text-sm leading-7 text-[var(--sa-muted)] sm:text-base">
               {program.summary}
             </p>

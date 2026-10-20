@@ -143,7 +143,7 @@ export default async function Home() {
               Lihat seluruh galeri
             </Link>
           </Reveal>
-          <ul className="mt-10 grid gap-4 sm:grid-cols-3 sm:items-stretch">
+          <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:items-stretch">
             {galleryAlbums.slice(0, 3).map((item, index) => (
               <li key={item.slug} className="h-full">
                 <Reveal y={80} delay={index * 0.1} className="h-full">
@@ -207,7 +207,7 @@ export default async function Home() {
           <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">{homeContent.partnersTitle}</h2>
           <ul className="mt-6 grid gap-4 sm:grid-cols-2">
             {homeContent.partners.map((partner) => (
-              <li key={partner.name} className="flex items-center gap-5 rounded-[28px] bg-[var(--sa-canvas)] px-6 py-6 sm:px-8">
+              <li key={partner.name} className="flex min-w-0 items-center gap-4 rounded-[28px] bg-[var(--sa-canvas)] px-5 py-5 sm:gap-5 sm:px-8 sm:py-6">
                 <Image
                   src={partner.logo}
                   alt=""
@@ -215,8 +215,8 @@ export default async function Home() {
                   height={96}
                   className="h-16 w-16 shrink-0 rounded-xl bg-white object-contain p-1.5"
                 />
-                <div>
-                  <p className="text-lg font-semibold tracking-tight text-[var(--sa-navy)] sm:text-xl">{partner.name}</p>
+                <div className="min-w-0">
+                  <p className="text-base font-semibold tracking-tight text-[var(--sa-navy)] sm:text-xl">{partner.name}</p>
                   <p className="mt-1 text-sm leading-6 text-[var(--sa-muted)]">{partner.program}</p>
                 </div>
               </li>

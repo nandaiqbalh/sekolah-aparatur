@@ -29,10 +29,10 @@ export default function ProgramIndexPage() {
       <div className="bg-white py-12 lg:py-16">
         <ul className="mx-auto flex max-w-[1280px] flex-col gap-4 px-4 sm:px-6 lg:px-8">
           {programs.map((program) => (
-            <li key={program.slug} className="rounded-[28px] bg-[var(--sa-canvas)] px-6 py-8 sm:px-8">
-              <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end">
-                <div>
-                  <h2 className="text-xl font-semibold tracking-tight text-[var(--sa-navy)] sm:text-2xl">
+            <li key={program.slug} className="min-w-0 rounded-[28px] bg-[var(--sa-canvas)] px-5 py-6 sm:px-8 sm:py-8">
+              <div className="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-end lg:gap-6">
+                <div className="min-w-0">
+                  <h2 className="text-lg font-semibold tracking-tight break-words text-[var(--sa-navy)] sm:text-2xl">
                     {program.title}
                   </h2>
                   <p className="mt-3 max-w-2xl text-sm leading-7 text-[var(--sa-muted)] sm:text-base">

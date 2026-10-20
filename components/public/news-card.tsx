@@ -42,7 +42,7 @@ export function NewsCard({
               {formatArticleDate(article.publishedAt)}
             </time>
           </span>
-          <span className="text-xl font-semibold tracking-tight text-[var(--sa-navy)] group-hover:text-[var(--brand-primary-dark)] sm:text-2xl">
+          <span className="text-lg font-semibold tracking-tight break-words text-[var(--sa-navy)] group-hover:text-[var(--brand-primary-dark)] sm:text-2xl">
             {article.title}
           </span>
           <span className="max-w-2xl text-sm leading-7 text-[var(--sa-muted)] sm:text-base">

@@ -194,40 +194,56 @@ export function PublicNavbar() {
       </header>
 
       <div
-        className={cn(
-          "fixed inset-0 z-[60] lg:hidden",
-          open ? "visible" : "invisible pointer-events-none",
-        )}
+        className={cn("fixed inset-0 z-[60] lg:hidden", open ? "visible" : "invisible")}
         aria-hidden={!open}
       >
         <button
           type="button"
-          className="absolute inset-0 cursor-pointer bg-black/20"
+          className={cn(
+            "absolute inset-0 cursor-pointer bg-black/35 backdrop-blur-md transition-opacity duration-300",
+            open ? "opacity-100" : "pointer-events-none opacity-0",
+          )}
           aria-label="Tutup menu"
           onClick={() => setOpen(false)}
         />
         <nav
           className={cn(
-            "absolute inset-x-3 top-[5.25rem] mx-auto flex max-h-[calc(100svh-6.5rem)] max-w-[1280px] flex-col gap-1 overflow-y-auto rounded-[2rem] bg-white p-3 text-sm font-medium text-[var(--sa-navy)] shadow-[0_10px_30px_rgba(31,44,114,0.14)] transition-transform duration-300 ease-out motion-reduce:transition-none sm:inset-x-4",
-            open ? "translate-y-0" : "-translate-y-[120%]",
+            "absolute inset-y-0 right-0 flex w-[min(20rem,86vw)] flex-col overflow-y-auto bg-white px-4 py-5 text-sm font-medium text-[var(--sa-navy)] shadow-2xl transition-transform duration-300 ease-out motion-reduce:transition-none",
+            open ? "translate-x-0" : "pointer-events-none translate-x-full",
           )}
+          aria-label="Menu"
         >
+          <div className="mb-4 flex items-center justify-between">
+            <p className="text-base font-semibold">Menu</p>
+            <button
+              type="button"
+              className="inline-flex size-9 cursor-pointer items-center justify-center rounded-full hover:bg-[var(--sa-canvas)]"
+              aria-label="Tutup menu"
+              onClick={() => setOpen(false)}
+            >
+              <X className="size-5" />
+            </button>
+          </div>
           {links.slice(0, 2).map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="cursor-pointer rounded-full px-4 py-2 hover:bg-[var(--sa-canvas)]"
+              aria-current={isCurrent(pathname, link.href) ? "page" : undefined}
+              className="cursor-pointer rounded-xl px-3 py-2.5 hover:bg-[var(--sa-canvas)]"
               onClick={() => setOpen(false)}
             >
               {link.label}
             </Link>
           ))}
-          <p className="px-4 pt-2 text-xs font-semibold text-[var(--sa-muted)]">Sekolah Aparatur</p>
+          <p className="px-3 pt-4 pb-1 text-xs font-semibold tracking-wide text-[var(--sa-muted)] uppercase">
+            Sekolah Aparatur
+          </p>
           {programLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="cursor-pointer rounded-full px-4 py-2 hover:bg-[var(--sa-canvas)]"
+              aria-current={isCurrent(pathname, link.href) ? "page" : undefined}
+              className="cursor-pointer rounded-xl py-2.5 pr-3 pl-7 hover:bg-[var(--sa-canvas)]"
               onClick={() => setOpen(false)}
             >
               {link.label}
@@ -237,14 +253,15 @@ export function PublicNavbar() {
             <Link
               key={link.href}
               href={link.href}
-              className="cursor-pointer rounded-full px-4 py-2 hover:bg-[var(--sa-canvas)]"
+              aria-current={isCurrent(pathname, link.href) ? "page" : undefined}
+              className="cursor-pointer rounded-xl px-3 py-2.5 hover:bg-[var(--sa-canvas)]"
               onClick={() => setOpen(false)}
             >
               {link.label}
             </Link>
           ))}
           {whatsapp ? (
-            <a href={whatsapp} target="_blank" rel="noreferrer" className={cn(ctaClassName, "mt-2")} onClick={() => setOpen(false)}>
+            <a href={whatsapp} target="_blank" rel="noreferrer" className={cn(ctaClassName, "mt-6")} onClick={() => setOpen(false)}>
               {ctaInner}
             </a>
           ) : null}

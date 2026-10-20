@@ -312,9 +312,11 @@ html:has(.admin-font) .font-sans {
 
 /* Konten rincian program / berita — siap untuk HTML dari editor */
 .program-content {
+  max-width: 100%;
+  overflow-x: auto;
   border-radius: 28px;
   background: var(--sa-canvas);
-  padding: 2rem 1.5rem;
+  padding: 1.5rem 1.15rem;
   color: var(--sa-ink);
   font-size: 1rem;
   line-height: 1.75;
