@@ -4,7 +4,10 @@ export type NewsArticle = {
   category: string
   publishedAt: string
   summary: string
-  paragraphs: string[]
+  thumbnail: string
+  gallery: string[]
+  /** Konten artikel dari HTML editor. */
+  bodyHtml: string
 }
 
 export const newsArticles: NewsArticle[] = [
@@ -14,11 +17,13 @@ export const newsArticles: NewsArticle[] = [
     category: "Kerja sama",
     publishedAt: "2025-01-01",
     summary:
-      "Galeri profil pascasarjana mencatat perbincangan kesepahaman antara UCSI, Universitas Nasional, dan LPSDM Aparatur.",
-    paragraphs: [
-      "Keterangan ini diambil dari halaman galeri profil Sekolah Aparatur di Universitas Nasional. Tanggal hari pelaksanaan tidak tertulis di profil.",
-      "Foto kegiatan ada di galeri situs, pada bagian pascasarjana aparatur dan legislator.",
-    ],
+      "Perbincangan kesepahaman antara UCSI, Universitas Nasional, dan LPSDM Aparatur dalam rangka penguatan kerja sama pendidikan tinggi.",
+    thumbnail: "/profile/unas-000.png",
+    gallery: ["/profile/unas-000.png"],
+    bodyHtml: `
+<p>LPSDM Aparatur, Universitas Nasional, dan UCSI melaksanakan perbincangan kesepahaman untuk memperkuat kerja sama di bidang pendidikan tinggi bagi aparatur dan legislator.</p>
+<p>Kegiatan ini merupakan bagian dari upaya memperluas jejaring kelembagaan dan meningkatkan mutu penyelenggaraan program Sekolah Aparatur.</p>
+`.trim(),
   },
   {
     slug: "perkuliahan-angkatan-1-dan-2",
@@ -26,22 +31,26 @@ export const newsArticles: NewsArticle[] = [
     category: "Perkuliahan",
     publishedAt: "2025-01-01",
     summary:
-      "Profil pascasarjana menampilkan dokumentasi perkuliahan mahasiswa angkatan 1 dan 2.",
-    paragraphs: [
-      "Kegiatan ini disebut pada halaman galeri profil Universitas Nasional. Profil tidak merinci mata kuliah atau jumlah peserta.",
-      "Dokumentasi foto dapat dilihat di galeri.",
-    ],
+      "Dokumentasi perkuliahan mahasiswa angkatan 1 dan 2 pada Program Pascasarjana Sekolah Aparatur dan Legislator.",
+    thumbnail: "/profile/unas-001.png",
+    gallery: ["/profile/unas-001.png"],
+    bodyHtml: `
+<p>Perkuliahan mahasiswa angkatan 1 dan 2 Program Pascasarjana Sekolah Aparatur dan Legislator berlangsung sesuai kalender akademik yang ditetapkan bersama universitas mitra.</p>
+<p>Kegiatan perkuliahan mendukung peningkatan kualifikasi formal aparatur negara dan legislator melalui pendekatan pembelajaran yang adaptif.</p>
+`.trim(),
   },
   {
     slug: "kelas-legislator-2025",
     title: "Kelas Legislator 2025",
     category: "Perkuliahan",
     publishedAt: "2025-01-01",
-    summary: "Galeri profil mencatat Kelas Legislator pada tahun 2025.",
-    paragraphs: [
-      "Keterangan “Kelas Legislator (2025)” tercetak di halaman galeri profil Sekolah Aparatur Universitas Nasional.",
-      "Foto kelas ada di galeri situs.",
-    ],
+    summary: "Kelas Legislator tahun 2025 sebagai bagian dari Program Pascasarjana Sekolah Aparatur dan Legislator.",
+    thumbnail: "/profile/unas-002.png",
+    gallery: ["/profile/unas-002.png", "/profile/unas-003.png"],
+    bodyHtml: `
+<p>Kelas Legislator 2025 diselenggarakan dalam rangka peningkatan kapasitas anggota legislatif melalui pendidikan tinggi di bidang politik, pemerintahan, dan kebijakan publik.</p>
+<p>Program ini menjadi salah satu jalur penguatan kompetensi formal bagi legislator di pusat dan daerah.</p>
+`.trim(),
   },
   {
     slug: "kuliah-umum-aparatur-desa-2024",
@@ -49,11 +58,13 @@ export const newsArticles: NewsArticle[] = [
     category: "Kuliah umum",
     publishedAt: "2024-04-26",
     summary:
-      "Spanduk pada foto galeri program sarjana mencatat kuliah umum bagi mahasiswa baru RPL administrasi publik, 26 April 2024.",
-    paragraphs: [
-      "Foto di profil Program Sarjana Aparatur Daerah dan Desa memuat kuliah umum “Peningkatan Kualitas Aparatur Desa dalam Pelaksanaan Pemerintahan dan Pembangunan di Provinsi Sumatera Utara”.",
-      "Spanduk menyebut mahasiswa baru Rekognisi Pembelajaran Lampau, program studi administrasi publik, 26 April 2024, pukul 17.00–18.30 WIB.",
-    ],
+      "Kuliah umum bagi mahasiswa baru RPL Administrasi Publik mengenai peningkatan kualitas aparatur desa, 26 April 2024.",
+    thumbnail: "/profile/daerah-002.png",
+    gallery: ["/profile/daerah-002.png", "/profile/daerah-000.png", "/profile/daerah-001.png"],
+    bodyHtml: `
+<p>Kuliah umum bertema “Peningkatan Kualitas Aparatur Desa dalam Pelaksanaan Pemerintahan dan Pembangunan di Provinsi Sumatera Utara” diselenggarakan bagi mahasiswa baru Rekognisi Pembelajaran Lampau pada program studi Administrasi Publik.</p>
+<p>Kegiatan berlangsung pada 26 April 2024 pukul 17.00–18.30 WIB sebagai bagian dari rangkaian pengenalan program Sarjana Aparatur Daerah dan Desa.</p>
+`.trim(),
   },
 ]
 

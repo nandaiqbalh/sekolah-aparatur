@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 
-import { Reveal } from "@/components/motion/reveal"
+import { NewsGallery } from "@/components/public/news-gallery"
 import { PageHero } from "@/components/public/page-hero"
 import { formatArticleDate, getArticle, newsArticles } from "@/data/news"
 import { getLocale } from "@/lib/i18n/get-locale"
@@ -24,8 +24,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return buildPageMetadata({
     locale,
     path: newsPath(slug),
-    title: article?.title ?? "Berita",
-    description: article?.summary ?? "Artikel berita Sekolah Aparatur.",
+    title: article?.title ?? "Informasi",
+    description: article?.summary ?? "Informasi kegiatan Sekolah Aparatur.",
     type: "article",
   })
 }
@@ -34,7 +34,6 @@ export default async function NewsDetailPage({ params }: PageProps) {
   const { slug } = await params
   const article = getArticle(slug)
   if (!article) notFound()
-  const others = newsArticles.filter((item) => item.slug !== article.slug).slice(0, 3)
 
   return (
     <>
@@ -43,36 +42,23 @@ export default async function NewsDetailPage({ params }: PageProps) {
         title={article.title}
         description={article.summary}
       />
-      <article className="bg-[var(--sa-canvas)]">
-        <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
-          <Reveal>
-            <div className="rounded-[28px] bg-white p-6 sm:p-8">
-              <div className="grid gap-5">
-                {article.paragraphs.map((paragraph) => (
-                  <p key={paragraph} className="leading-8 text-[var(--sa-ink)]">
-                    {paragraph}
-                  </p>
-                ))}
-              </div>
-              <div className="mt-12 border-t border-[var(--sa-line)] pt-8">
-                <h2 className="text-sm font-semibold text-[var(--sa-muted)]">Berita lain</h2>
-                <ul className="mt-4 grid gap-3">
-                  {others.map((item) => (
-                    <li key={item.slug}>
-                      <Link href={newsPath(item.slug)} className="cursor-pointer font-semibold">
-                        {item.title}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-                <Link href={ROUTES.berita} className="mt-8 inline-flex cursor-pointer text-sm font-semibold">
-                  Kembali ke daftar berita
-                </Link>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </article>
+      <div className="bg-white py-12 lg:py-16">
+        <article className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
+          <div
+            className="program-content max-w-3xl"
+            dangerouslySetInnerHTML={{ __html: article.bodyHtml }}
+          />
+          <div className="mt-12">
+            <NewsGallery images={article.gallery} title={article.title} />
+          </div>
+          <Link
+            href={ROUTES.berita}
+            className="mt-12 inline-flex cursor-pointer border-b-2 border-[var(--sa-gold)] pb-1 text-sm font-semibold text-[var(--sa-navy)]"
+          >
+            Kembali ke daftar informasi
+          </Link>
+        </article>
+      </div>
     </>
   )
 }

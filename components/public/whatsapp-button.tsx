@@ -10,20 +10,36 @@ export function WhatsappButton({
   className?: string
   label?: string
 }) {
-  const href = whatsappHref("Halo, saya ingin bertanya tentang Sekolah Aparatur.")
+  const href = whatsappHref(
+    "Yth. Panitia LPSDM Aparatur, saya ingin menanyakan informasi program Sekolah Aparatur.",
+  )
+
   const classNames = cn(
-    "inline-flex h-11 items-center gap-2 rounded-lg px-4 text-sm font-semibold",
+    "inline-flex h-12 items-center gap-2 rounded-full py-1 pr-5 pl-1.5 text-sm font-semibold transition duration-300 ease-out",
     href
-      ? "cursor-pointer bg-[#128C7E] text-white"
+      ? "cursor-pointer bg-[var(--sa-navy)] text-white hover:-translate-y-0.5 hover:shadow-lg"
       : "cursor-not-allowed bg-[#d5dee8] text-[#5c6775]",
-    className
+    className,
+  )
+
+  const inner = (
+    <>
+      <span
+        className={cn(
+          "inline-flex size-9 items-center justify-center rounded-full",
+          href ? "bg-[var(--sa-gold)] text-[var(--sa-navy)]" : "bg-white/50 text-[#5c6775]",
+        )}
+      >
+        <MessageCircle className="size-4" aria-hidden />
+      </span>
+      {label}
+    </>
   )
 
   if (!href) {
     return (
       <button type="button" disabled className={classNames}>
-        <MessageCircle className="size-4" aria-hidden />
-        {label}
+        {inner}
         <span className="sr-only">Nomor WhatsApp resmi belum tersedia.</span>
       </button>
     )
@@ -31,8 +47,7 @@ export function WhatsappButton({
 
   return (
     <a href={href} className={classNames} target="_blank" rel="noreferrer">
-      <MessageCircle className="size-4" aria-hidden />
-      {label}
+      {inner}
     </a>
   )
 }

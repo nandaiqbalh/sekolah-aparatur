@@ -30,3 +30,7 @@ export function registrationPath(programSlug: string): string {
 export function newsPath(slug: string): string {
   return `/berita/${slug}`
 }
+
+export function galleryPath(slug: string): string {
+  return `/galeri/${slug}`
+}

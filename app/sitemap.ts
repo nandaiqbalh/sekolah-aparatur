@@ -1,8 +1,9 @@
 import type { MetadataRoute } from "next"
 
+import { galleryAlbums } from "@/data/gallery"
 import { newsArticles } from "@/data/news"
 import { programs } from "@/data/programs"
-import { ROUTES, newsPath, registrationPath } from "@/lib/routes"
+import { ROUTES, galleryPath, newsPath, registrationPath } from "@/lib/routes"
 import { absoluteUrl } from "@/lib/site"
 
 const STATIC_ROUTES = [
@@ -21,6 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const paths = [
     ...STATIC_ROUTES,
     ...newsArticles.map((article) => newsPath(article.slug)),
+    ...galleryAlbums.map((album) => galleryPath(album.slug)),
     ...programs.map((program) => registrationPath(program.slug)),
   ]
 

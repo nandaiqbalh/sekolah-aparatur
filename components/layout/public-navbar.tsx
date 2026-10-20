@@ -1,27 +1,27 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import { ChevronDown, Menu, Phone, X } from "lucide-react"
 
 import { ROUTES } from "@/lib/routes"
-import { SITE_NAME } from "@/lib/site"
 import { whatsappHref } from "@/lib/site-contact"
 import { cn } from "@/lib/utils"
 
 const links = [
   { href: ROUTES.home, label: "Beranda" },
   { href: ROUTES.profil, label: "Profil" },
-  { href: ROUTES.berita, label: "Berita" },
+  { href: ROUTES.berita, label: "Informasi" },
   { href: ROUTES.galeri, label: "Galeri" },
   { href: ROUTES.kontak, label: "Kontak" },
 ]
 
 const programLinks = [
-  { href: ROUTES.sekolahAparatur, label: "Semua program" },
+  { href: ROUTES.sekolahAparatur, label: "Daftar program" },
   { href: ROUTES.daerahDesa, label: "Daerah dan Desa" },
-  { href: ROUTES.legislator, label: "Legislator" },
+  { href: ROUTES.legislator, label: "Aparatur dan Legislator" },
 ]
 
 function isCurrent(pathname: string, href: string) {
@@ -37,7 +37,9 @@ export function PublicNavbar() {
   const [hidden, setHidden] = useState(false)
   const lastY = useRef(0)
   const downDistance = useRef(0)
-  const whatsapp = whatsappHref("Halo, saya ingin bertanya tentang Sekolah Aparatur.")
+  const whatsapp = whatsappHref(
+    "Yth. Panitia LPSDM Aparatur, saya ingin menanyakan informasi program Sekolah Aparatur.",
+  )
   const programActive = pathname.startsWith(ROUTES.sekolahAparatur)
 
   if (menuPath !== pathname) {
@@ -111,9 +113,16 @@ export function PublicNavbar() {
           hidden && !open && "-translate-y-[140%]",
         )}
       >
-        <div className="mx-auto flex h-16 max-w-[1280px] items-center gap-3 rounded-full bg-white px-2 text-[var(--sa-navy)] shadow-[0_10px_30px_rgba(16,25,43,0.14)] sm:px-3">
-          <Link href={ROUTES.home} className="cursor-pointer font-heading text-lg font-semibold tracking-tight">
-            {SITE_NAME}
+        <div className="mx-auto flex h-16 max-w-[1280px] items-center gap-3 rounded-full bg-white px-2 text-[var(--sa-navy)] shadow-[0_10px_30px_rgba(31,44,114,0.14)] sm:px-3">
+          <Link href={ROUTES.home} className="inline-flex cursor-pointer items-center pl-1">
+            <Image
+              src="/brand/logo-lpsdm.jpeg"
+              alt="LPSDM Aparatur"
+              width={36}
+              height={48}
+              className="h-10 w-auto object-contain"
+              priority
+            />
           </Link>
 
           <nav className="hidden flex-1 items-center justify-center gap-1 text-[15px] lg:flex" aria-label="Utama">
@@ -193,7 +202,7 @@ export function PublicNavbar() {
         />
         <nav
           className={cn(
-            "absolute inset-x-3 top-[5.25rem] mx-auto flex max-h-[calc(100svh-6.5rem)] max-w-[1280px] flex-col gap-1 overflow-y-auto rounded-[2rem] bg-white p-3 text-sm font-medium text-[var(--sa-navy)] shadow-[0_10px_30px_rgba(16,25,43,0.14)] transition-transform duration-300 ease-out motion-reduce:transition-none sm:inset-x-4",
+            "absolute inset-x-3 top-[5.25rem] mx-auto flex max-h-[calc(100svh-6.5rem)] max-w-[1280px] flex-col gap-1 overflow-y-auto rounded-[2rem] bg-white p-3 text-sm font-medium text-[var(--sa-navy)] shadow-[0_10px_30px_rgba(31,44,114,0.14)] transition-transform duration-300 ease-out motion-reduce:transition-none sm:inset-x-4",
             open ? "translate-y-0" : "-translate-y-4",
           )}
         >

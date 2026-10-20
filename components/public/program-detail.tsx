@@ -1,124 +1,45 @@
+import { ArrowRight } from "lucide-react"
 import Link from "next/link"
 
-import { Reveal } from "@/components/motion/reveal"
-import { DocumentList } from "@/components/public/document-list"
 import { PageHero } from "@/components/public/page-hero"
-import type { Program, ProgramBlock } from "@/data/programs"
+import { WhatsappButton } from "@/components/public/whatsapp-button"
+import type { Program } from "@/data/programs"
+import { programBodyHtml } from "@/lib/program-html"
 import { registrationPath } from "@/lib/routes"
-
-function BlockView({ block }: { block: ProgramBlock }) {
-  if (block.kind === "paragraphs") {
-    return (
-      <div className="grid max-w-2xl gap-4">
-        {block.paragraphs.map((paragraph) => (
-          <p key={paragraph} className="leading-7 text-[var(--sa-muted)]">
-            {paragraph}
-          </p>
-        ))}
-      </div>
-    )
-  }
-
-  if (block.kind === "list") {
-    return (
-      <ul className="max-w-2xl list-disc space-y-2 pl-5 leading-7 text-[var(--sa-muted)]">
-        {block.items.map((item) => (
-          <li key={item}>{item}</li>
-        ))}
-      </ul>
-    )
-  }
-
-  if (block.kind === "steps") {
-    return (
-      <ol className="grid max-w-2xl gap-4">
-        {block.steps.map((step, index) => (
-          <li key={step.title}>
-            <p className="text-sm font-semibold text-[var(--sa-muted)]">0{index + 1}</p>
-            <p className="mt-1 font-semibold">{step.title}</p>
-            <p className="mt-1 leading-7 text-[var(--sa-muted)]">{step.body}</p>
-          </li>
-        ))}
-      </ol>
-    )
-  }
-
-  return (
-    <div className="overflow-x-auto">
-      <table className="w-full min-w-[36rem] text-left text-sm">
-        <thead>
-          <tr className="border-b border-[var(--sa-line)]">
-            {block.headers.map((header) => (
-              <th key={header} className="py-3 pr-4 font-semibold">
-                {header}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {block.rows.map((row) => (
-            <tr key={row.join("|")} className="border-b border-[var(--sa-line)]">
-              {row.map((cell, index) => (
-                <td key={`${index}-${cell}`} className="py-3 pr-4 align-top leading-6 text-[var(--sa-muted)]">
-                  {cell}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )
-}
 
 export function ProgramDetail({ program }: { program: Program }) {
   return (
     <>
       <PageHero eyebrow="Program" title={program.title} description={program.summary} />
-      <div className="bg-[var(--sa-canvas)]">
-      <div className="mx-auto grid max-w-[1280px] gap-6 px-4 py-16 sm:px-6 lg:grid-cols-[1.4fr_0.7fr] lg:px-8">
-        <Reveal>
-          <div className="grid gap-4">
-            {program.sections.map((block) => (
-              <section key={block.title} className="rounded-[28px] bg-white p-6 sm:p-8">
-                <h2 className="font-heading text-2xl font-semibold">{block.title}</h2>
-                <div className="mt-4">
-                  <BlockView block={block} />
-                </div>
-              </section>
-            ))}
-            {program.documents.length > 0 ? (
-              <section className="rounded-[28px] bg-white p-6 sm:p-8">
-                <h2 className="font-heading text-2xl font-semibold">Unduhan</h2>
-                <div className="mt-2">
-                  <DocumentList documents={program.documents} />
-                </div>
-              </section>
-            ) : null}
+
+      <div className="bg-white py-12 lg:py-16">
+        <article
+          className="program-content mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8"
+          dangerouslySetInnerHTML={{ __html: programBodyHtml(program) }}
+        />
+      </div>
+
+      <section className="bg-[var(--sa-canvas)] py-16 lg:py-20">
+        <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
+          <div className="max-w-2xl">
+            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Pendaftaran mahasiswa baru</h2>
+            <p className="mt-4 text-sm leading-7 text-[var(--sa-muted)] sm:text-base">
+              Informasi mengenai penerimaan mahasiswa baru dapat disampaikan kepada LPSDM Aparatur melalui WhatsApp
+              atau melalui formulir pendaftaran pada situs ini.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <WhatsappButton label="WhatsApp" />
+              <Link
+                href={registrationPath(program.slug)}
+                className="inline-flex h-12 cursor-pointer items-center gap-2 rounded-full border border-[var(--sa-navy)] bg-white px-6 text-sm font-semibold text-[var(--sa-navy)] hover:bg-[var(--sa-navy)] hover:text-white"
+              >
+                Formulir pendaftaran
+                <ArrowRight className="size-4" />
+              </Link>
+            </div>
           </div>
-        </Reveal>
-        <aside className="h-fit rounded-[28px] bg-white p-6 lg:sticky lg:top-28">
-          <h2 className="text-sm font-semibold text-[var(--sa-muted)]">Peserta</h2>
-          <p className="mt-2 leading-7">{program.audience}</p>
-          <h3 className="mt-8 text-sm font-semibold text-[var(--sa-muted)]">Kalender</h3>
-          <p className="mt-2 leading-7">{program.scheduleNote}</p>
-          <h3 className="mt-8 text-sm font-semibold text-[var(--sa-muted)]">Berkas pendaftaran</h3>
-          <ul className="mt-2 list-disc space-y-2 pl-5 leading-7">
-            {program.requirements.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-          <h3 className="mt-8 text-sm font-semibold text-[var(--sa-muted)]">Biaya</h3>
-          <p className="mt-2 leading-7">{program.feeNote}</p>
-          <Link
-            href={registrationPath(program.slug)}
-            className="mt-8 inline-flex h-12 cursor-pointer items-center rounded-full bg-[var(--sa-gold)] px-6 text-sm font-semibold text-[var(--sa-navy)]"
-          >
-            Isi formulir pendaftaran
-          </Link>
-        </aside>
-      </div>
-      </div>
+        </div>
+      </section>
     </>
   )
 }

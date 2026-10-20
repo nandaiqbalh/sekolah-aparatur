@@ -3,11 +3,11 @@
  */
 export const siteContact = {
   address: null as string | null,
-  phones: ["+62 822-4962-1229", "+62 852-1917-7031", "+62 813-1141-4210"],
+  phones: ["+62 822-4962-1229"],
   email: "lpsdm.aparatur@gmail.com",
   website: "https://www.lpsdmaparatur.com",
   hours: null as string | null,
-  /** Nomor yang tercantum di kedua profil. */
+  /** Nomor WhatsApp/telepon resmi (satu nomor). */
   whatsappNumber: "6282249621229",
 }
 

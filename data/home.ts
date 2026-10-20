@@ -1,62 +1,60 @@
 export const homeContent = {
-  heroTitle: "Sekolah Aparatur untuk gelar yang bisa ditempuh sambil bertugas.",
-  introTitle: "Pendidikan tinggi yang mengakui pengalaman kerja",
-  introDescription:
-    "Program sarjana daerah dan desa ditempuh di Universitas Muhammadiyah Tapanuli Selatan. Program pascasarjana aparatur dan legislator ditempuh di Universitas Nasional.",
-  strengthsTitle: "Yang ditawarkan kedua program",
-  strengths: [
+  heroMessages: [
     {
-      title: "Jalur RPL",
-      description:
-        "Capaian dari pendidikan formal, pelatihan, dan pengalaman kerja dapat diakui menjadi SKS setelah asesmen.",
+      eyebrow: "LPSDM Aparatur",
+      title: "Gelar sarjana dan magister bagi aparatur daerah dan desa melalui jalur RPL.",
     },
     {
-      title: "Waktu studi lebih singkat",
-      description:
-        "S1 daerah dan desa 1,5–2 tahun. S2 daerah dan desa 1–1,5 tahun. S2 Ilmu Politik UNAS jalur RPL 1 tahun.",
-    },
-    {
-      title: "Belajar yang bisa diselaraskan tugas",
-      description:
-        "Daerah dan desa kuliah daring sinkron dan asinkron. Pascasarjana UNAS memakai hybrid, daring dan tatap muka.",
-    },
-    {
-      title: "UKT yang dijelaskan di profil",
-      description:
-        "Biaya mengikuti kebijakan kampus mitra dan dibayar sebagai Uang Kuliah Tunggal. Angka hanya dicantumkan jika tertulis di profil.",
+      eyebrow: "LPSDM Aparatur",
+      title: "Kualifikasi magister dan doktor bagi aparatur negara dan legislator.",
     },
   ],
-  stepsTitle: "Jalan dari sosialisasi sampai kuliah",
-  steps: [
+  introTitle: "Pendidikan tinggi untuk aparatur negara dan legislator",
+  introDescription:
+    "Program Sarjana Aparatur Daerah dan Desa serta Program Pascasarjana Sekolah Aparatur dan Legislator diselenggarakan melalui kerja sama dengan universitas mitra.",
+  strengthsTitle: "Keunggulan program",
+  strengths: [
     {
-      title: "Asesmen RPL",
-      description: "Tim asesor universitas menilai data dan dokumen, lalu kampus mengumumkan hasilnya.",
+      title: "Rekognisi Pembelajaran Lampau",
+      description:
+        "Capaian pembelajaran dari pendidikan formal, nonformal, informal, dan/atau pengalaman kerja diakui melalui asesmen untuk memperoleh satuan kredit semester (SKS).",
     },
     {
-      title: "Registrasi dan perkuliahan",
-      description: "Peserta yang lulus melakukan registrasi di universitas mitra, kemudian mulai kuliah.",
+      title: "Durasi studi yang efisien",
+      description:
+        "Sarjana (S1) ditempuh 1,5–2 tahun. Magister (S2) daerah dan desa 1–1,5 tahun. Magister Ilmu Politik jalur RPL ditempuh 1 tahun.",
+    },
+    {
+      title: "Pembelajaran yang adaptif",
+      description:
+        "Program daerah dan desa menggunakan perkuliahan daring sinkron dan asinkron. Program pascasarjana menerapkan hybrid learning, daring dan tatap muka.",
+    },
+    {
+      title: "Pembiayaan melalui UKT",
+      description:
+        "Biaya perkuliahan mengikuti kebijakan universitas mitra dan dibayarkan dengan sistem Uang Kuliah Tunggal (UKT). Program daerah dan desa dapat didukung skema Dana Desa sesuai ketentuan yang berlaku.",
     },
   ],
   faqs: [
     {
-      question: "Siapa penyelenggara akademiknya?",
+      question: "Siapa yang menyelenggarakan program secara akademik?",
       answer:
-        "LPSDM Aparatur merancang program. Perkuliahan dijalankan universitas mitra: Universitas Muhammadiyah Tapanuli Selatan untuk sarjana daerah dan desa, serta Universitas Nasional untuk pascasarjana aparatur dan legislator.",
+        "LPSDM Aparatur merancang program secara akademik. Perkuliahan diselenggarakan oleh universitas mitra sesuai jenjang dan program yang dipilih.",
     },
     {
-      question: "Apakah formulir di situs ini sudah menyimpan data?",
+      question: "Apakah formulir pada situs ini telah terhubung ke sistem pendaftaran?",
       answer:
-        "Belum. Formulir memeriksa isian di peramban. Penyimpanan pendaftar menyusul setelah tampilan ini ditinjau.",
+        "Belum. Formulir saat ini hanya memeriksa kelengkapan isian di peramban. Penyimpanan data pendaftar akan diaktifkan setelah tahap peninjauan tampilan selesai.",
     },
     {
-      question: "Berapa biaya kuliah?",
+      question: "Berapa biaya perkuliahan?",
       answer:
-        "Profil UNAS menuliskan S2 Rp17.500.000 per semester (total Rp35.000.000 untuk 2 semester) dan S3 Rp17.500.000 per semester (total Rp105.000.000 untuk 6 semester), di luar tugas akhir. Profil daerah dan desa menyebut UKT dan kemungkinan Dana Desa, tanpa nominal.",
+        "Untuk program pascasarjana, biaya Magister (S-2) sebesar Rp17.500.000 per semester (total Rp35.000.000 untuk dua semester) dan Doktor (S-3) sebesar Rp17.500.000 per semester (total Rp105.000.000 untuk enam semester), di luar biaya tugas akhir. Untuk program daerah dan desa, pembiayaan melalui sistem UKT dan dapat didukung skema Dana Desa sesuai ketentuan yang berlaku.",
     },
     {
-      question: "Bagaimana menghubungi panitia?",
+      question: "Bagaimana cara menghubungi panitia penerimaan mahasiswa baru?",
       answer:
-        "WhatsApp dan telepon yang tercantum di profil: +62 822-4962-1229, +62 852-1917-7031, dan +62 813-1141-4210. Surel lpsdm.aparatur@gmail.com.",
+        "Hubungi panitia melalui WhatsApp atau telepon: +62 822-4962-1229, atau melalui surel lpsdm.aparatur@gmail.com.",
     },
   ],
 }

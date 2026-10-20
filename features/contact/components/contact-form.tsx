@@ -28,21 +28,21 @@ export function ContactForm() {
   if (sent) {
     return (
       <p className="text-sm leading-6 text-[var(--sa-muted)]" role="status">
-        Isian lolos validasi di peramban. Pesan belum terkirim karena formulir ini belum terhubung ke backend.
+        Isian telah lolos pemeriksaan di peramban. Pesan belum terkirim karena formulir belum terhubung ke sistem penyimpanan.
       </p>
     )
   }
 
   return (
     <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)} noValidate>
-      <Field label="Nama" error={errors.name?.message}>
-        <Input className="h-11" aria-invalid={Boolean(errors.name)} {...register("name")} />
+      <Field label="Nama lengkap" error={errors.name?.message}>
+        <Input className="h-11" placeholder="Nama lengkap" aria-invalid={Boolean(errors.name)} {...register("name")} />
       </Field>
-      <Field label="Email atau nomor telepon" error={errors.contact?.message}>
-        <Input className="h-11" aria-invalid={Boolean(errors.contact)} {...register("contact")} />
+      <Field label="Surel atau nomor telepon" error={errors.contact?.message}>
+        <Input className="h-11" placeholder="nama@surel.com atau 08xxxxxxxxxx" aria-invalid={Boolean(errors.contact)} {...register("contact")} />
       </Field>
       <Field label="Pesan" error={errors.message?.message}>
-        <Textarea rows={5} aria-invalid={Boolean(errors.message)} {...register("message")} />
+        <Textarea rows={5} placeholder="Tuliskan pesan Anda" aria-invalid={Boolean(errors.message)} {...register("message")} />
       </Field>
       <button
         type="submit"

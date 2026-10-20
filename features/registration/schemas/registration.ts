@@ -8,8 +8,10 @@ export const registrationSchema = z.object({
   institution: z.string().trim().min(2, "Instansi atau lembaga wajib diisi."),
   position: z.string().trim().min(2, "Jabatan wajib diisi."),
   address: z.string().trim().min(5, "Alamat wajib diisi."),
-  schedule: z.string().min(1, "Pilih jadwal."),
-  consent: z.boolean().refine((value) => value, "Setujui pemrosesan data untuk melanjutkan."),
+  schedule: z.string().min(1, "Pilih semester."),
+  consent: z
+    .boolean()
+    .refine((value) => value, "Persetujuan atas pemrosesan data wajib dicentang untuk melanjutkan."),
 })
 
 export type RegistrationInput = z.infer<typeof registrationSchema>

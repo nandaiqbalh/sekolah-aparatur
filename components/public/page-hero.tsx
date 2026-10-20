@@ -1,5 +1,3 @@
-import { Reveal } from "@/components/motion/reveal"
-
 export function PageHero({
   eyebrow,
   title,
@@ -11,15 +9,13 @@ export function PageHero({
 }) {
   return (
     <section className="bg-[var(--sa-navy)] text-white">
-      <Reveal>
-        <div className="mx-auto max-w-[1280px] px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-          {eyebrow ? <p className="text-sm font-semibold text-[var(--sa-gold)]">{eyebrow}</p> : null}
-          <h1 className="mt-4 max-w-3xl border-l-4 border-[var(--sa-gold)] pl-5 text-4xl font-semibold tracking-tight sm:text-5xl sm:leading-[1.1]">
-            {title}
-          </h1>
-          <p className="mt-5 max-w-xl pl-6 text-base leading-7 text-white/75">{description}</p>
-        </div>
-      </Reveal>
+      <div className="mx-auto max-w-[1280px] px-4 pt-28 pb-10 sm:px-6 lg:px-8 lg:pt-32 lg:pb-12">
+        {eyebrow ? <p className="text-xs font-semibold tracking-wide text-[var(--sa-gold)] uppercase">{eyebrow}</p> : null}
+        <h1 className="mt-2 max-w-3xl text-2xl font-semibold tracking-tight sm:text-3xl sm:leading-snug">
+          {title}
+        </h1>
+        <p className="mt-3 max-w-2xl text-sm leading-6 text-white/70 sm:text-[0.95rem] sm:leading-7">{description}</p>
+      </div>
     </section>
   )
 }

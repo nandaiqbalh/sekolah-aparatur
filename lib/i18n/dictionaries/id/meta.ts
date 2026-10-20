@@ -1,7 +1,7 @@
 const meta = {
   title: "Sekolah Aparatur",
   description:
-    "Profil dan informasi program Sekolah Aparatur untuk aparatur daerah, perangkat desa, dan legislator.",
+    "Program pendidikan tinggi bagi aparatur daerah, perangkat desa, dan legislator melalui jalur Rekognisi Pembelajaran Lampau, bekerja sama dengan universitas mitra.",
 } as const
 
 export default meta

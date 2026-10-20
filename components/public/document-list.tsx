@@ -9,7 +9,7 @@ export function DocumentList({ documents }: { documents: ProgramDocument[] }) {
             <p className="font-semibold text-[var(--sa-ink)]">{document.name}</p>
             <p className="mt-1 text-sm text-[var(--sa-muted)]">
               {document.format}
-              {document.size ? ` · ${document.size}` : " · ukuran menyusul"}
+              {document.size ? ` · ${document.size}` : " · ukuran berkas akan diinformasikan kemudian"}
             </p>
             <p className="mt-2 text-sm leading-6 text-[var(--sa-muted)]">{document.description}</p>
           </div>
@@ -18,7 +18,7 @@ export function DocumentList({ documents }: { documents: ProgramDocument[] }) {
             disabled
             className="cursor-not-allowed text-left text-sm text-[var(--sa-muted)]"
           >
-            Unduh belum tersedia
+            Unduhan belum diaktifkan
           </button>
         </li>
       ))}

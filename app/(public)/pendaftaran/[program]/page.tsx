@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 
-import { Reveal } from "@/components/motion/reveal"
 import { PageHero } from "@/components/public/page-hero"
 import { getProgram, programs } from "@/data/programs"
 import { RegistrationForm } from "@/features/registration/components/registration-form"
@@ -25,7 +24,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     locale,
     path: registrationPath(slug),
     title: program ? `Pendaftaran ${program.title}` : "Pendaftaran",
-    description: "Formulir pendaftaran pratinjau. Data tidak dikirim ke server.",
+    description: "Formulir pendaftaran peserta. Data belum dikirim ke server pada tahap ini.",
   })
 }
 
@@ -37,17 +36,15 @@ export default async function RegistrationPage({ params }: PageProps) {
   return (
     <>
       <PageHero
-        eyebrow="Pendaftaran"
+        eyebrow="Pendaftaran peserta"
         title={program.title}
-        description="Program terkunci dari tautan. Unggahan berkas hanya tampilan dan tidak disimpan."
+        description="Program dipilih sesuai tautan yang dibuka. Unggahan dokumen pada tahap ini belum disimpan di server."
       />
-      <div className="bg-[var(--sa-canvas)]">
-        <div className="mx-auto max-w-xl px-4 py-16 sm:px-6">
-          <Reveal y={80}>
-            <div className="rounded-[28px] bg-white p-6 sm:p-8">
-              <RegistrationForm programSlug={program.slug} />
-            </div>
-          </Reveal>
+      <div className="bg-white py-12 lg:py-16">
+        <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
+          <div className="rounded-[28px] bg-[var(--sa-canvas)] px-6 py-8 sm:px-8">
+            <RegistrationForm programSlug={program.slug} />
+          </div>
         </div>
       </div>
     </>
