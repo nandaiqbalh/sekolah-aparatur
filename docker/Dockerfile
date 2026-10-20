@@ -4,7 +4,7 @@
 # Prisma migrate/seed use a small tool tree under /opt/tools.
 # =============================================================================
 
-ARG NODE_IMAGE=public.ecr.aws/docker/library/node:22-alpine
+ARG NODE_IMAGE=node:22-alpine
 
 # ---- Dependencies ----
 FROM ${NODE_IMAGE} AS deps
