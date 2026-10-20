@@ -122,7 +122,7 @@ export default async function Home() {
         </Reveal>
       </section>
 
-      <section className="bg-white py-16">
+      <section className="bg-white pt-16 pb-6">
         <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
           <Reveal>
             <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
@@ -135,7 +135,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="bg-white py-16 lg:py-20">
+      <section className="bg-white pt-6 pb-16 lg:pt-8 lg:pb-20">
         <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
           <Reveal className="flex items-end justify-between gap-6">
             <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Galeri kegiatan</h2>
@@ -184,7 +184,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="bg-white py-16 lg:py-20">
+      <section className="bg-white pt-16 pb-6 lg:pt-20 lg:pb-8">
         <Reveal>
           <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Pertanyaan yang sering diajukan</h2>
@@ -200,6 +200,29 @@ export default async function Home() {
             </Accordion>
           </div>
         </Reveal>
+      </section>
+
+      <section className="bg-white pt-4 pb-10 lg:pt-6 lg:pb-12">
+        <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">{homeContent.partnersTitle}</h2>
+          <ul className="mt-6 grid gap-4 sm:grid-cols-2">
+            {homeContent.partners.map((partner) => (
+              <li key={partner.name} className="flex items-center gap-5 rounded-[28px] bg-[var(--sa-canvas)] px-6 py-6 sm:px-8">
+                <Image
+                  src={partner.logo}
+                  alt=""
+                  width={96}
+                  height={96}
+                  className="h-16 w-16 shrink-0 rounded-xl bg-white object-contain p-1.5"
+                />
+                <div>
+                  <p className="text-lg font-semibold tracking-tight text-[var(--sa-navy)] sm:text-xl">{partner.name}</p>
+                  <p className="mt-1 text-sm leading-6 text-[var(--sa-muted)]">{partner.program}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
       </section>
 
       <section className="bg-[var(--sa-canvas)] py-16 lg:py-20">

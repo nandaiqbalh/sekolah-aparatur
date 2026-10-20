@@ -12,6 +12,19 @@ export const homeContent = {
   introTitle: "Pendidikan tinggi untuk aparatur negara dan legislator",
   introDescription:
     "Program Sarjana Aparatur Daerah dan Desa serta Program Pascasarjana Sekolah Aparatur dan Legislator diselenggarakan melalui kerja sama dengan universitas mitra.",
+  partnersTitle: "Universitas mitra",
+  partners: [
+    {
+      name: "Universitas Muhammadiyah Tapanuli Selatan",
+      program: "Program Sarjana Aparatur Daerah dan Desa",
+      logo: "/brand/um-tapsel.jpeg",
+    },
+    {
+      name: "Universitas Nasional",
+      program: "Program Pascasarjana Sekolah Aparatur dan Legislator",
+      logo: "/brand/universitas-nasional.png",
+    },
+  ],
   strengthsTitle: "Keunggulan program",
   strengths: [
     {
