@@ -193,17 +193,23 @@ export function PublicNavbar() {
         </div>
       </header>
 
-      <div className={cn("fixed inset-0 z-[60] lg:hidden", open ? "pointer-events-auto" : "pointer-events-none")} aria-hidden={!open}>
+      <div
+        className={cn(
+          "fixed inset-0 z-[60] lg:hidden",
+          open ? "visible" : "invisible pointer-events-none",
+        )}
+        aria-hidden={!open}
+      >
         <button
           type="button"
-          className={cn("absolute inset-0 cursor-pointer bg-transparent", open ? "opacity-100" : "opacity-0")}
+          className="absolute inset-0 cursor-pointer bg-black/20"
           aria-label="Tutup menu"
           onClick={() => setOpen(false)}
         />
         <nav
           className={cn(
             "absolute inset-x-3 top-[5.25rem] mx-auto flex max-h-[calc(100svh-6.5rem)] max-w-[1280px] flex-col gap-1 overflow-y-auto rounded-[2rem] bg-white p-3 text-sm font-medium text-[var(--sa-navy)] shadow-[0_10px_30px_rgba(31,44,114,0.14)] transition-transform duration-300 ease-out motion-reduce:transition-none sm:inset-x-4",
-            open ? "translate-y-0" : "-translate-y-4",
+            open ? "translate-y-0" : "-translate-y-[120%]",
           )}
         >
           {links.slice(0, 2).map((link) => (
