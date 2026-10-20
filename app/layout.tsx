@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
   icons: {
     icon: [
-      { url: "/brand/logo-lpsdm.jpeg", type: "image/jpeg" },
+      { url: "/brand/logo-lpsdm.png", type: "image/png" },
       { url: "/icon.png", type: "image/png" },
     ],
     apple: [{ url: "/apple-icon.png", type: "image/png" }],

@@ -2,6 +2,9 @@ export const ROUTES = {
   home: "/",
   profil: "/profil",
   sekolahAparatur: "/sekolah-aparatur",
+  aparaturPemerintah: "/sekolah-aparatur/aparatur-pemerintah",
+  aparaturDesa: "/sekolah-aparatur/aparatur-desa",
+  /** Alamat lama, diarahkan ke Kelas Aparatur Desa. */
   daerahDesa: "/sekolah-aparatur/daerah-dan-desa",
   legislator: "/sekolah-aparatur/legislator",
   berita: "/berita",

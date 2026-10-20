@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Providers } from "@/components/providers"
 import { PublicFooter } from "@/components/layout/public-footer"
 import { PublicNavbar } from "@/components/layout/public-navbar"
+import { WhatsappButton } from "@/components/public/whatsapp-button"
 import { getDictionary } from "@/lib/i18n/get-dictionary"
 import { getLocale } from "@/lib/i18n/get-locale"
 import { buildPageMetadata } from "@/lib/seo"
@@ -41,6 +42,10 @@ export default async function PublicLayout({
         <PublicNavbar />
         <main className="flex flex-1 flex-col">{children}</main>
         <PublicFooter />
+        <WhatsappButton
+          label="Konsultasi"
+          className="fixed right-4 bottom-4 z-40 shadow-lg sm:right-6 sm:bottom-6"
+        />
       </div>
     </Providers>
   )

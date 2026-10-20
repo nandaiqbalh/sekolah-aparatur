@@ -346,6 +346,23 @@ html:has(.admin-font) .font-sans {
   margin-top: 0;
 }
 
+.program-content .profile-pair {
+  display: grid;
+  gap: 1.75rem 2.5rem;
+  margin-top: 2rem;
+}
+
+.program-content .profile-pair h2 {
+  margin-top: 0;
+}
+
+@media (min-width: 768px) {
+  .program-content .profile-pair {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
 .program-content h3 {
   margin: 1.25rem 0 0.75rem;
   font-size: 1.05rem;

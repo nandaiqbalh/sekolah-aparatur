@@ -1,25 +1,23 @@
 import type { Metadata } from "next"
-import { notFound } from "next/navigation"
 
-import { ProgramDetail } from "@/components/public/program-detail"
-import { getProgram } from "@/data/programs"
+import { SekolahClassPage } from "@/components/public/sekolah-class-page"
+import { getSekolahClass } from "@/data/sekolah-classes"
 import { getLocale } from "@/lib/i18n/get-locale"
 import { ROUTES } from "@/lib/routes"
 import { buildPageMetadata } from "@/lib/seo"
 
+const kelas = getSekolahClass("legislator")
+
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale()
-  const program = getProgram("legislator")
   return buildPageMetadata({
     locale,
     path: ROUTES.legislator,
-    title: program?.title ?? "Legislator",
-    description: program?.summary ?? "Program Sekolah Legislator.",
+    title: kelas?.title ?? "Kelas Legislator",
+    description: kelas?.summary ?? "Kelas Legislator.",
   })
 }
 
 export default function LegislatorPage() {
-  const program = getProgram("legislator")
-  if (!program) notFound()
-  return <ProgramDetail program={program} />
+  return <SekolahClassPage slug="legislator" />
 }

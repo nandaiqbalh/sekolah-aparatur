@@ -13,10 +13,9 @@ export function ProgramDetail({ program }: { program: Program }) {
       <PageHero eyebrow="Program" title={program.title} description={program.summary} />
 
       <div className="bg-white py-12 lg:py-16">
-        <article
-          className="program-content mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8"
-          dangerouslySetInnerHTML={{ __html: programBodyHtml(program) }}
-        />
+        <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
+          <article className="program-content" dangerouslySetInnerHTML={{ __html: programBodyHtml(program) }} />
+        </div>
       </div>
 
       <section className="bg-[var(--sa-canvas)] py-16 lg:py-20">

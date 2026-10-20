@@ -35,7 +35,7 @@ export const newsArticles: NewsArticle[] = [
     thumbnail: "/profile/unas-001.png",
     gallery: ["/profile/unas-001.png"],
     bodyHtml: `
-<p>Perkuliahan mahasiswa angkatan 1 dan 2 Program Pascasarjana Sekolah Aparatur dan Legislator berlangsung sesuai kalender akademik yang ditetapkan bersama universitas mitra.</p>
+<p>Perkuliahan mahasiswa angkatan 1 dan 2 Program Pascasarjana Sekolah Aparatur dan Legislator berlangsung sesuai kalender akademik yang ditetapkan bersama universitas penyelenggara.</p>
 <p>Kegiatan perkuliahan mendukung peningkatan kualifikasi formal aparatur negara dan legislator melalui pendekatan pembelajaran yang adaptif.</p>
 `.trim(),
   },

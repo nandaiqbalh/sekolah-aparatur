@@ -2,19 +2,25 @@ import type { Metadata } from "next"
 import Link from "next/link"
 
 import { PageHero } from "@/components/public/page-hero"
-import { programs } from "@/data/programs"
+import { sekolahClasses } from "@/data/sekolah-classes"
 import { getLocale } from "@/lib/i18n/get-locale"
 import { ROUTES, registrationPath } from "@/lib/routes"
 import { buildPageMetadata } from "@/lib/seo"
+
+const classHref: Record<string, string> = {
+  "aparatur-pemerintah": ROUTES.aparaturPemerintah,
+  "aparatur-desa": ROUTES.aparaturDesa,
+  legislator: ROUTES.legislator,
+}
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale()
   return buildPageMetadata({
     locale,
     path: ROUTES.sekolahAparatur,
-    title: "Sekolah Aparatur",
+    title: "Program Sarjana dan Pascasarjana Aparatur",
     description:
-      "Program Sarjana Aparatur Daerah dan Desa serta Program Pascasarjana Sekolah Aparatur dan Legislator.",
+      "Kelas Aparatur Pemerintah Daerah, Kelas Aparatur Desa, dan Kelas Legislator.",
   })
 }
 
@@ -23,30 +29,28 @@ export default function ProgramIndexPage() {
     <>
       <PageHero
         eyebrow="Program"
-        title="Sekolah Aparatur"
-        description="Program Sarjana Aparatur Daerah dan Desa serta Program Pascasarjana Sekolah Aparatur dan Legislator, diselenggarakan bersama universitas mitra."
+        title="Program Sarjana dan Pascasarjana Aparatur"
+        description="Kelas Aparatur Pemerintah Daerah, Kelas Aparatur Desa, dan Kelas Legislator, diselenggarakan bersama universitas penyelenggara melalui jalur Rekognisi Pembelajaran Lampau (RPL)."
       />
       <div className="bg-white py-12 lg:py-16">
         <ul className="mx-auto flex max-w-[1280px] flex-col gap-4 px-4 sm:px-6 lg:px-8">
-          {programs.map((program) => (
-            <li key={program.slug} className="min-w-0 rounded-[28px] bg-[var(--sa-canvas)] px-5 py-6 sm:px-8 sm:py-8">
+          {sekolahClasses.map((item) => (
+            <li key={item.slug} className="min-w-0 rounded-[28px] bg-[var(--sa-canvas)] px-5 py-6 sm:px-8 sm:py-8">
               <div className="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-end lg:gap-6">
                 <div className="min-w-0">
                   <h2 className="text-lg font-semibold tracking-tight break-words text-[var(--sa-navy)] sm:text-2xl">
-                    {program.title}
+                    {item.title}
                   </h2>
-                  <p className="mt-3 max-w-2xl text-sm leading-7 text-[var(--sa-muted)] sm:text-base">
-                    {program.summary}
-                  </p>
+                  <p className="mt-3 max-w-2xl text-sm leading-7 text-[var(--sa-muted)] sm:text-base">{item.summary}</p>
                 </div>
                 <div className="flex flex-wrap gap-5 text-sm font-semibold">
                   <Link
-                    href={program.slug === "legislator" ? ROUTES.legislator : ROUTES.daerahDesa}
+                    href={classHref[item.slug]}
                     className="cursor-pointer text-[var(--sa-navy)] underline decoration-[var(--sa-gold)] decoration-2 underline-offset-4"
                   >
                     Rincian program
                   </Link>
-                  <Link href={registrationPath(program.slug)} className="cursor-pointer text-[var(--sa-ink)]">
+                  <Link href={registrationPath(item.slug)} className="cursor-pointer text-[var(--sa-ink)]">
                     Formulir pendaftaran
                   </Link>
                 </div>

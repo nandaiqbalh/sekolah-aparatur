@@ -4,8 +4,10 @@ import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
-import { ChevronDown, Menu, Phone, X } from "lucide-react"
+import { ChevronDown, Menu, X } from "lucide-react"
 
+import { WhatsappButton } from "@/components/public/whatsapp-button"
+import { sekolahClasses } from "@/data/sekolah-classes"
 import { ROUTES } from "@/lib/routes"
 import { whatsappHref } from "@/lib/site-contact"
 import { cn } from "@/lib/utils"
@@ -18,11 +20,16 @@ const links = [
   { href: ROUTES.kontak, label: "Kontak" },
 ]
 
-const programLinks = [
-  { href: ROUTES.sekolahAparatur, label: "Daftar program" },
-  { href: ROUTES.daerahDesa, label: "Daerah dan Desa" },
-  { href: ROUTES.legislator, label: "Aparatur dan Legislator" },
-]
+const classHref: Record<string, string> = {
+  "aparatur-pemerintah": ROUTES.aparaturPemerintah,
+  "aparatur-desa": ROUTES.aparaturDesa,
+  legislator: ROUTES.legislator,
+}
+
+const programLinks = sekolahClasses.map((item) => ({
+  href: classHref[item.slug],
+  label: item.title,
+}))
 
 function isCurrent(pathname: string, href: string) {
   if (href === "/") return pathname === "/"
@@ -87,18 +94,6 @@ export function PublicNavbar() {
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
-  const ctaClassName =
-    "inline-flex h-12 cursor-pointer items-center gap-2 rounded-full bg-[var(--sa-navy)] py-1 pr-5 pl-1.5 text-sm font-semibold text-white transition duration-300 ease-out hover:-translate-y-0.5 hover:shadow-lg"
-
-  const ctaInner = (
-    <>
-      <span className="inline-flex size-9 items-center justify-center rounded-full bg-[var(--sa-gold)] text-[var(--sa-navy)]">
-        <Phone className="size-4" />
-      </span>
-      WhatsApp
-    </>
-  )
-
   const linkClassName = (active: boolean) =>
     cn(
       "cursor-pointer rounded-full px-3 py-1.5 text-sm text-[var(--sa-muted)] hover:bg-[var(--sa-canvas)] hover:text-[var(--sa-navy)]",
@@ -116,7 +111,7 @@ export function PublicNavbar() {
         <div className="mx-auto flex h-16 max-w-[1280px] items-center gap-3 rounded-full bg-white px-2 text-[var(--sa-navy)] shadow-[0_10px_30px_rgba(31,44,114,0.14)] sm:px-3">
           <Link href={ROUTES.home} className="inline-flex cursor-pointer items-center pl-1">
             <Image
-              src="/brand/logo-lpsdm.jpeg"
+              src="/brand/logo-lpsdm.png"
               alt="LPSDM Aparatur"
               width={36}
               height={48}
@@ -136,29 +131,42 @@ export function PublicNavbar() {
                 {link.label}
               </Link>
             ))}
-            <div className="relative">
-              <button
-                type="button"
+            <div
+              className="relative"
+              onMouseEnter={() => setProgramsOpen(true)}
+              onMouseLeave={() => setProgramsOpen(false)}
+            >
+              <Link
+                href={ROUTES.sekolahAparatur}
+                aria-current={programActive ? "page" : undefined}
                 className={cn(linkClassName(programActive), "inline-flex cursor-pointer items-center gap-1")}
                 aria-expanded={programsOpen}
                 aria-haspopup="true"
-                onClick={() => setProgramsOpen((value) => !value)}
               >
                 Sekolah Aparatur
                 <ChevronDown className="size-4" aria-hidden />
-              </button>
+              </Link>
               {programsOpen ? (
-                <div className="absolute top-full left-1/2 z-20 mt-3 w-64 -translate-x-1/2 rounded-[20px] bg-white p-2 text-[var(--sa-navy)] shadow-xl">
+                <div className="absolute top-full left-1/2 z-20 w-80 -translate-x-1/2 pt-3">
+                <div className="rounded-[20px] bg-white p-2 text-[var(--sa-navy)] shadow-xl">
+                  <Link
+                    href={ROUTES.sekolahAparatur}
+                    className="block cursor-pointer rounded-xl px-3 py-2 text-sm font-semibold leading-snug hover:bg-[var(--sa-canvas)]"
+                    onClick={() => setProgramsOpen(false)}
+                  >
+                    Sekolah Aparatur
+                  </Link>
                   {programLinks.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
-                      className="block cursor-pointer rounded-xl px-3 py-2 text-sm hover:bg-[var(--sa-canvas)]"
+                      className="block cursor-pointer rounded-xl py-2 pr-3 pl-7 text-sm leading-snug hover:bg-[var(--sa-canvas)]"
                       onClick={() => setProgramsOpen(false)}
                     >
                       {link.label}
                     </Link>
                   ))}
+                </div>
                 </div>
               ) : null}
             </div>
@@ -176,9 +184,7 @@ export function PublicNavbar() {
 
           <div className="ml-auto flex items-center gap-3">
             {whatsapp ? (
-              <a href={whatsapp} target="_blank" rel="noreferrer" className={cn(ctaClassName, "hidden sm:inline-flex")}>
-                {ctaInner}
-              </a>
+              <WhatsappButton label="Konsultasi" className="hidden sm:inline-flex" />
             ) : null}
             <button
               type="button"
@@ -235,9 +241,14 @@ export function PublicNavbar() {
               {link.label}
             </Link>
           ))}
-          <p className="px-3 pt-4 pb-1 text-xs font-semibold tracking-wide text-[var(--sa-muted)] uppercase">
+          <Link
+            href={ROUTES.sekolahAparatur}
+            aria-current={isCurrent(pathname, ROUTES.sekolahAparatur) ? "page" : undefined}
+            className="cursor-pointer rounded-xl px-3 py-2.5 font-semibold hover:bg-[var(--sa-canvas)]"
+            onClick={() => setOpen(false)}
+          >
             Sekolah Aparatur
-          </p>
+          </Link>
           {programLinks.map((link) => (
             <Link
               key={link.href}
@@ -261,9 +272,7 @@ export function PublicNavbar() {
             </Link>
           ))}
           {whatsapp ? (
-            <a href={whatsapp} target="_blank" rel="noreferrer" className={cn(ctaClassName, "mt-6")} onClick={() => setOpen(false)}>
-              {ctaInner}
-            </a>
+            <WhatsappButton label="Konsultasi" className="mt-6" onClick={() => setOpen(false)} />
           ) : null}
         </nav>
       </div>

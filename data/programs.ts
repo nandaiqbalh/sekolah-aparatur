@@ -63,7 +63,7 @@ export const programs: Program[] = [
     scheduleNote:
       "Semester ganjil: sosialisasi pada Maret, pendaftaran pada April–Juni, seleksi RPL pada Juli, pengumuman pada Agustus, dan perkuliahan dimulai pada September. Semester genap: sosialisasi pada Desember–Januari, pemberkasan pada Januari–Februari, seleksi pada Februari, serta pengumuman dan perkuliahan pada Maret.",
     feeNote:
-      "Biaya pendidikan disesuaikan dengan kebijakan universitas mitra, dirancang seefisien mungkin, dan dibayarkan melalui sistem Uang Kuliah Tunggal (UKT). Program dapat didukung skema pendanaan Dana Desa sesuai ketentuan yang berlaku.",
+      "Biaya pendidikan disesuaikan dengan kebijakan universitas penyelenggara, dirancang seefisien mungkin, dan dibayarkan melalui sistem Uang Kuliah Tunggal (UKT). Program dapat didukung skema pendanaan Dana Desa sesuai ketentuan yang berlaku.",
     requirements: [
       "Daftar riwayat hidup (DRH) / curriculum vitae.",
       "Ijazah terakhir.",
@@ -91,7 +91,7 @@ export const programs: Program[] = [
       },
       {
         kind: "paragraphs",
-        title: "Rekognisi Pembelajaran Lampau",
+        title: "Rekognisi Pembelajaran Lampau (RPL)",
         paragraphs: [
           "Rekognisi Pembelajaran Lampau (RPL) memberikan pengakuan atas capaian pembelajaran yang diperoleh dari pendidikan formal, nonformal, informal, dan/atau pengalaman kerja untuk diakui dalam pendidikan formal pada jenjang Sarjana (S-1).",
           "Capaian pembelajaran dari perguruan tinggi sebelumnya dapat diakui melalui asesmen untuk keperluan transfer kredit. Capaian dari pengalaman kerja, pelatihan, dan pembelajaran mandiri diakui melalui asesmen dan rekognisi untuk memperoleh satuan kredit semester (SKS).",
@@ -143,48 +143,6 @@ export const programs: Program[] = [
           "Program Strata Satu (S-1) dapat ditempuh dalam 1,5–2 tahun (3–4 semester). Program Strata Dua (S-2) melalui jalur RPL dapat ditempuh dalam 1–1,5 tahun.",
         ],
       },
-      {
-        kind: "steps",
-        title: "Tahapan",
-        steps: [
-          { title: "Rekrutmen peserta", body: "Dilaksanakan oleh LPSDM Aparatur bersama asosiasi mitra." },
-          { title: "Bimbingan teknis program dan RPL", body: "Dilaksanakan oleh LPSDM Aparatur." },
-          { title: "Pemberkasan dan asesmen awal", body: "Dilaksanakan oleh LPSDM Aparatur." },
-          { title: "Rekognisi dan registrasi", body: "Dilaksanakan oleh universitas mitra." },
-          { title: "Perkuliahan", body: "Dilaksanakan oleh universitas mitra." },
-          { title: "Ujian, yudisium, dan wisuda", body: "Dilaksanakan oleh universitas mitra." },
-        ],
-      },
-      {
-        kind: "table",
-        title: "Kurikulum ringkas",
-        headers: ["Tahap", "Isi", "SKS"],
-        rows: [
-          ["1", "Mata kuliah dasar dan mata kuliah universitas", "22"],
-          ["3", "Mata kuliah program studi dan konsentrasi", "24"],
-          ["5", "Ujian dan wisuda", "—"],
-        ],
-      },
-      {
-        kind: "paragraphs",
-        title: "Kepengelolaan",
-        paragraphs: [
-          "Program dirancang secara akademik oleh LPSDM Aparatur dengan dukungan PPDI dan APDESI. Pelaksanaan perkuliahan dilakukan oleh universitas mitra yang telah menjalin kerja sama.",
-          "LPSDM Aparatur beranggotakan akademisi dan praktisi di bidang ilmu politik, administrasi publik, dan ilmu pemerintahan.",
-        ],
-      },
-      {
-        kind: "steps",
-        title: "Peta jalan",
-        steps: [
-          { title: "Sosialisasi", body: "Pengenalan program kepada aparatur desa oleh PPDI tingkat kabupaten." },
-          { title: "Pendaftaran daring", body: "Calon mahasiswa mengisi data melalui formulir pendaftaran." },
-          { title: "Bimbingan teknis dan pemberkasan", body: "LPSDM Aparatur memandu pengisian dokumen RPL." },
-          { title: "Asesmen RPL", body: "Tim asesor universitas menilai data dan dokumen calon peserta." },
-          { title: "Pengumuman hasil", body: "Hasil asesmen diumumkan oleh rektor atau dekan." },
-          { title: "Registrasi", body: "Mahasiswa baru melaksanakan registrasi di universitas mitra, termasuk pembayaran tahap pertama." },
-        ],
-      },
     ],
   },
   {
@@ -199,7 +157,7 @@ export const programs: Program[] = [
     feeNote:
       "Magister (S-2) Ilmu Politik: Rp17.500.000 per semester, total Rp35.000.000 untuk dua semester, di luar biaya tugas akhir. Doktor (S-3) Administrasi Publik: Rp17.500.000 per semester, total Rp105.000.000 untuk enam semester, di luar biaya tugas akhir. Pembayaran melalui sistem UKT dan dapat diangsur.",
     requirements: [
-      "Ijazah terakhir dan dokumen administrasi sesuai ketentuan universitas mitra pada saat pendaftaran.",
+      "Ijazah terakhir dan dokumen administrasi sesuai ketentuan universitas penyelenggara pada saat pendaftaran.",
       "Jalur RPL mensyaratkan asesmen atas capaian pembelajaran dari pendidikan formal, nonformal, informal, dan/atau pengalaman kerja.",
     ],
     documents: [],
@@ -254,7 +212,7 @@ export const programs: Program[] = [
       },
       {
         kind: "paragraphs",
-        title: "Rekognisi Pembelajaran Lampau",
+        title: "Rekognisi Pembelajaran Lampau (RPL)",
         paragraphs: [
           "Rekognisi Pembelajaran Lampau (RPL) mengakui capaian pembelajaran dari pendidikan formal, nonformal, informal, dan/atau pengalaman kerja. Transfer kredit dan pengakuan satuan kredit semester dilakukan setelah asesmen.",
         ],
@@ -324,56 +282,6 @@ export const programs: Program[] = [
           ["3", "Seminar hasil penelitian", "5"],
           ["4", "Publikasi karya ilmiah", "4"],
           ["4", "Tesis", "6"],
-        ],
-      },
-      {
-        kind: "list",
-        title: "Tim pengajar",
-        items: [
-          "Prof. Dr. Yudi Chrisnandi, M.E.",
-          "Prof. Dr. Djohermansyah Djohan",
-          "Prof. Dr. Umar Basalim, DES.",
-          "Prof. Dr. Lili Romli",
-          "Prof. Dr. Aris Munandar",
-          "Prof. Dr. Paisal Halim",
-          "Prof. Dr. Syarif Hidayat",
-          "Prof. Dr. Muh. Nur Sadik, MPM",
-          "Prof. Dr. Dra. Ernawati Chotim, M.Si.",
-          "Prof. Dr. Lijan P. Sinambela, MM",
-          "Prof. Dr. Sigit Rochadi, M.Si.",
-          "Prof. Dr. Adjat Darajat, M.Si.",
-          "Dr. Syaipudin, S.IP., M.Si.",
-          "Firdaus Syam, M.A., Ph.D.",
-          "Dr. Ramlan Siregar, M.Si.",
-          "Dr. Aos Yuli Firdaus, S.I.P., M.Si.",
-          "Dr. Andi Yusran, M.Si.",
-          "Dr. M. Alfan Alfian Mahyudin, M.Si.",
-          "Dr. Syafrizal Rambe, M.Si.",
-          "Dr. Diana Fauzi, M.A.",
-          "Dr. Syahrudin Lubis, M.A.",
-        ],
-      },
-      {
-        kind: "paragraphs",
-        title: "Fasilitator",
-        paragraphs: [
-          "Program dirancang secara akademik oleh LPSDM Aparatur dengan dukungan asosiasi dewan perwakilan rakyat di pusat dan daerah serta pemerintah daerah. Pelaksanaan perkuliahan dilakukan bersama universitas mitra.",
-          "LPSDM Aparatur beranggotakan akademisi dan praktisi di bidang ilmu politik, administrasi negara, dan ilmu pemerintahan.",
-        ],
-      },
-      {
-        kind: "steps",
-        title: "Peta jalan",
-        steps: [
-          {
-            title: "Sosialisasi",
-            body: "Pengenalan program kepada aparatur daerah dan legislator, termasuk anggota DPR RI serta DPRD provinsi, kabupaten, dan kota.",
-          },
-          { title: "Pendaftaran daring", body: "Calon mahasiswa mengisi data melalui formulir pendaftaran." },
-          { title: "Bimbingan teknis dan pemberkasan", body: "LPSDM Aparatur memandu pengisian dokumen RPL." },
-          { title: "Asesmen RPL", body: "Tim asesor universitas menilai data dan dokumen calon peserta." },
-          { title: "Pengumuman hasil", body: "Hasil asesmen diumumkan oleh rektor atau dekan." },
-          { title: "Registrasi", body: "Mahasiswa baru melaksanakan registrasi di universitas mitra, termasuk pembayaran tahap pertama." },
         ],
       },
     ],
