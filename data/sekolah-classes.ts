@@ -1,3 +1,5 @@
+import type { ProgramDocument } from "@/data/programs"
+
 export type RequirementGroup = {
   title: string
   items: string[]
@@ -12,6 +14,31 @@ export type SekolahClass = {
   image: string
   imageAlt: string
   requirementGroups: RequirementGroup[]
+  documents: ProgramDocument[]
+}
+
+const suratRekomendasi: ProgramDocument = {
+  name: "Format surat rekomendasi",
+  format: "DOCX",
+  size: "9 KB",
+  description: "Format surat rekomendasi untuk kelengkapan berkas pendaftaran.",
+  href: "/unduhan/format-surat-rekomendasi.docx",
+}
+
+const skpDesa: ProgramDocument = {
+  name: "Format penilaian capaian sasaran kerja perangkat (SKP) desa",
+  format: "DOCX",
+  size: "11 KB",
+  description: "Format sasaran kinerja perangkat desa, termasuk penyesuaian bagi kepala desa.",
+  href: "/unduhan/format-skp-perangkat-desa.docx",
+}
+
+const riwayatHidupLegislator: ProgramDocument = {
+  name: "Daftar riwayat hidup Kelas Legislator",
+  format: "DOCX",
+  size: "20 KB",
+  description: "Format daftar riwayat hidup untuk kelengkapan berkas pendaftaran Kelas Legislator.",
+  href: "/unduhan/daftar-riwayat-hidup-kelas-legislator.docx",
 }
 
 const desaRequirements: RequirementGroup[] = [
@@ -86,6 +113,7 @@ export const sekolahClasses: SekolahClass[] = [
     image: "/profile/aparatur-pemerintah-daerah.jpeg",
     imageAlt: "Kelas Aparatur Pemerintah Daerah",
     requirementGroups: pemerintahDanLegislatorRequirements,
+    documents: [suratRekomendasi],
   },
   {
     slug: "aparatur-desa",
@@ -96,6 +124,7 @@ export const sekolahClasses: SekolahClass[] = [
     image: "/profile/aparatur-desa.jpeg",
     imageAlt: "Kelas Aparatur Desa",
     requirementGroups: desaRequirements,
+    documents: [skpDesa, suratRekomendasi],
   },
   {
     slug: "legislator",
@@ -106,6 +135,7 @@ export const sekolahClasses: SekolahClass[] = [
     image: "/profile/sekolah-legislator.jpeg",
     imageAlt: "Kelas Legislator",
     requirementGroups: pemerintahDanLegislatorRequirements,
+    documents: [riwayatHidupLegislator, suratRekomendasi],
   },
 ]
 

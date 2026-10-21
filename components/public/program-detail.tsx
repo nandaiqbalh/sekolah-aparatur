@@ -173,11 +173,29 @@ export function ProgramDetail({
           {program.documents.length > 0 ? (
             <div>
               <SectionHeading icon={Download} title="Unduhan" />
-              <BulletList
-                items={program.documents.map(
-                  (document) => `${document.name} (${document.format}). ${document.description}`,
-                )}
-              />
+              <ul className="mt-6 flex flex-col gap-5">
+                {program.documents.map((document) => (
+                  <li key={document.name} className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                      <p className="font-semibold text-[var(--sa-navy)]">{document.name}</p>
+                      <p className="mt-1 text-sm text-[var(--sa-muted)]">
+                        {document.format}
+                        {document.size ? ` · ${document.size}` : ""}
+                      </p>
+                      <p className="mt-1 text-sm leading-6 text-[var(--sa-muted)]">{document.description}</p>
+                    </div>
+                    {document.href ? (
+                      <a
+                        href={document.href}
+                        download
+                        className="inline-flex h-11 shrink-0 cursor-pointer items-center justify-center rounded-full bg-[var(--sa-navy)] px-5 text-sm font-semibold text-white"
+                      >
+                        Unduh
+                      </a>
+                    ) : null}
+                  </li>
+                ))}
+              </ul>
             </div>
           ) : null}
           {mitra.length > 0 ? (

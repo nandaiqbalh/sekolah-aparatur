@@ -3,6 +3,7 @@ export type ProgramDocument = {
   format: string
   size: string | null
   description: string
+  href?: string
 }
 
 export type ProgramBlock =
@@ -66,27 +67,6 @@ const registrationPeriods: RegistrationPeriod[] = [
   },
 ]
 
-const daerahDocuments: ProgramDocument[] = [
-  {
-    name: "Format daftar riwayat hidup / CV",
-    format: "PDF",
-    size: null,
-    description: "Format daftar riwayat hidup untuk kelengkapan berkas pendaftaran. Unduhan akan diaktifkan setelah berkas tersedia.",
-  },
-  {
-    name: "Format SKP perangkat dan kepala desa",
-    format: "PDF",
-    size: null,
-    description: "Format sasaran kinerja perangkat dan kepala desa. Unduhan akan diaktifkan setelah berkas tersedia.",
-  },
-  {
-    name: "Format buku harian pekerjaan",
-    format: "PDF",
-    size: null,
-    description: "Format buku harian pekerjaan. Unduhan akan diaktifkan setelah berkas tersedia.",
-  },
-]
-
 export const legalBasis = [
   "UU Sisdiknas No. 20 Tahun 2003",
   "Peraturan Presiden Nomor 8 Tahun 2012 tentang Kerangka Kualifikasi Nasional Indonesia (KKNI)",
@@ -107,7 +87,7 @@ export const programs: Program[] = [
       "Semester ganjil: sosialisasi pada Maret, pendaftaran pada April–Juni, seleksi RPL pada Juli, pengumuman pada Agustus, dan perkuliahan dimulai pada September. Semester genap: sosialisasi pada Desember–Januari, pemberkasan pada Januari–Februari, seleksi pada Februari, serta pengumuman dan perkuliahan pada Maret.",
     feeNote:
       "Biaya pendidikan disesuaikan dengan kebijakan universitas penyelenggara, dirancang seefisien mungkin, dan dibayarkan melalui sistem Uang Kuliah Tunggal (UKT). Program dapat didukung skema pendanaan Dana Desa sesuai ketentuan yang berlaku.",
-    documents: daerahDocuments,
+    documents: [],
     mitra: ["PPDI", "APDESI"],
     highlights: [
       {

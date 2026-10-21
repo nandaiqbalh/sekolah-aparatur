@@ -11,7 +11,13 @@ export function SekolahClassPage({ slug }: { slug: string }) {
 
   return (
     <ProgramDetail
-      program={{ ...program, slug: item.slug, title: item.title, summary: item.summary }}
+      program={{
+        ...program,
+        slug: item.slug,
+        title: item.title,
+        summary: item.summary,
+        documents: item.documents,
+      }}
       image={item.image}
       imageAlt={item.imageAlt}
       requirementGroups={item.requirementGroups}
