@@ -1,7 +1,10 @@
+import { BookOpen, Compass, GraduationCap, Handshake, Landmark, Laptop, LineChart, Scale, type LucideIcon } from "lucide-react"
 import type { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
 
 import { PageHero } from "@/components/public/page-hero"
+import { PartnersSection } from "@/components/public/partners-section"
 import { getLocale } from "@/lib/i18n/get-locale"
 import { ROUTES } from "@/lib/routes"
 import { buildPageMetadata } from "@/lib/seo"
@@ -17,38 +20,40 @@ export async function generateMetadata(): Promise<Metadata> {
   })
 }
 
-const bodyHtml = `
-<h2>Lembaga</h2>
-<p>LPSDM Aparatur merancang program secara akademik. Anggotanya terdiri atas akademisi dan praktisi di bidang ilmu politik, administrasi publik, administrasi negara, dan ilmu pemerintahan. Pelaksanaan perkuliahan dilakukan oleh universitas penyelenggara yang telah menjalin kerja sama.</p>
-<h2>Latar belakang</h2>
-<p>Menuju Visi Indonesia Emas 2045, ketersediaan sumber daya manusia unggul, khususnya aparatur negara di pusat dan daerah serta legislator di DPR dan DPRD, menjadi prasyarat mutu penyelenggaraan pemerintahan. Peningkatan kompetensi melalui kualifikasi pendidikan formal merupakan keniscayaan.</p>
-<p>Dalam demokrasi yang terus berkembang, masih terdapat kesenjangan antara kualitas yang diharapkan dan kapasitas nyata birokrasi serta aktor politik. Sekolah Aparatur dan Legislator hadir sebagai pendidikan tinggi jenjang magister dan doktor di bidang politik, pemerintahan, dan kebijakan publik, guna memperkuat kepemimpinan yang berpihak pada rakyat serta kebijakan yang berbasis bukti.</p>
-<div class="profile-pair">
-<div>
-<h2>Visi</h2>
-<p>Menghasilkan lulusan yang unggul, berintegritas, dan profesional dalam bidang kebirokrasian, legislasi, politik, dan kebijakan publik; memperkuat kapasitas kepemimpinan politik nasional; serta mendorong lahirnya kebijakan yang berpihak pada rakyat melalui pendidikan tinggi yang adaptif, berbasis riset, dan responsif terhadap tantangan zaman.</p>
-</div>
-<div>
-<h2>Misi</h2>
-<ul>
-<li>Menyelenggarakan pendidikan tinggi yang unggul, inklusif, dan relevan pada jenjang sarjana, magister, dan doktor di bidang politik, pemerintahan, dan kebijakan publik.</li>
-<li>Merancang program melalui pendekatan pembelajaran adaptif dan hybrid learning.</li>
-<li>Mendorong riset kebijakan berbasis data dan kepentingan publik.</li>
-<li>Membangun ekosistem kolaboratif antara akademisi, praktisi, dan masyarakat sipil.</li>
-</ul>
-</div>
-</div>
-<h2>Mitra</h2>
-<ul>
-<li>Persatuan Perangkat Desa Indonesia (PPDI)</li>
-<li>Asosiasi Pemerintah Desa Seluruh Indonesia (APDESI)</li>
-<li>Asosiasi DPRD Kabupaten Seluruh Indonesia (ADKASI)</li>
-<li>Asosiasi DPRD Kota Seluruh Indonesia (ADEKSI)</li>
-<li>Universitas Muhammadiyah Tapanuli Selatan</li>
-<li>Universitas Nasional</li>
-<li>Asosiasi dewan perwakilan rakyat pusat dan daerah</li>
-</ul>
-`.trim()
+const misi: { icon: LucideIcon; text: string }[] = [
+  {
+    icon: GraduationCap,
+    text: "Menyelenggarakan pendidikan tinggi yang unggul, inklusif, dan relevan pada jenjang sarjana, magister, dan doktor di bidang politik, pemerintahan, dan kebijakan publik.",
+  },
+  {
+    icon: Laptop,
+    text: "Merancang program melalui pendekatan pembelajaran adaptif dan hybrid learning.",
+  },
+  {
+    icon: LineChart,
+    text: "Mendorong riset kebijakan berbasis data dan kepentingan publik.",
+  },
+  {
+    icon: Handshake,
+    text: "Membangun ekosistem kolaboratif antara akademisi, praktisi, dan masyarakat sipil.",
+  },
+]
+
+const latarBelakang = [
+  { icon: Compass, title: "Indonesia Emas 2045", text: "Sumber daya manusia unggul sebagai prasyarat mutu pemerintahan." },
+  { icon: Landmark, title: "Aparatur negara", text: "Kompetensi aparatur di pusat dan daerah melalui pendidikan formal." },
+  { icon: Scale, title: "Legislator", text: "Penguatan kapasitas anggota DPR dan DPRD di bidang kebijakan publik." },
+]
+
+function GoldIcon({ icon: Icon, size = "md" }: { icon: LucideIcon; size?: "md" | "sm" }) {
+  const box = size === "sm" ? "size-9 rounded-xl" : "size-12 rounded-2xl shadow-[0_8px_20px_rgba(255,190,89,0.45)]"
+  const glyph = size === "sm" ? "size-4" : "size-6"
+  return (
+    <span className={`inline-flex shrink-0 items-center justify-center bg-[var(--sa-gold)] text-[var(--sa-navy)] ${box}`}>
+      <Icon className={glyph} aria-hidden />
+    </span>
+  )
+}
 
 export default function ProfilPage() {
   return (
@@ -59,10 +64,83 @@ export default function ProfilPage() {
         description="Lembaga pengelola program Sekolah Aparatur bagi aparatur daerah, perangkat desa, dan legislator."
       />
 
-      <div className="bg-white py-12 lg:py-16">
+      <section className="bg-[var(--sa-canvas)] py-12 lg:py-16">
+        <div className="mx-auto grid max-w-[1280px] items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
+          <div className="relative h-64 overflow-hidden rounded-3xl sm:h-80">
+            <Image
+              src="/profile/image-profile.webp"
+              alt="Ilustrasi aparatur peserta program"
+              fill
+              className="object-cover"
+              sizes="(min-width: 1024px) 36rem, 100vw"
+            />
+          </div>
+          <div>
+            <GoldIcon icon={Landmark} />
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-[var(--sa-navy)]">Lembaga</h2>
+            <p className="mt-4 text-base leading-7 text-[var(--sa-muted)]">
+              LPSDM Aparatur merancang program secara akademik. Anggotanya terdiri atas akademisi dan praktisi di bidang ilmu politik, administrasi publik, administrasi negara, dan ilmu pemerintahan. Pelaksanaan perkuliahan dilakukan oleh universitas penyelenggara yang telah menjalin kerja sama.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-12 lg:py-16">
         <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
-          <article className="program-content" dangerouslySetInnerHTML={{ __html: bodyHtml }} />
-          <div className="mt-8">
+          <div className="flex items-center gap-4">
+            <GoldIcon icon={BookOpen} />
+            <h2 className="text-3xl font-semibold tracking-tight text-[var(--sa-navy)]">Latar belakang</h2>
+          </div>
+          <div className="mt-6 max-w-3xl space-y-4 text-base leading-7 text-[var(--sa-muted)]">
+            <p>
+              Menuju Visi Indonesia Emas 2045, ketersediaan sumber daya manusia unggul, khususnya aparatur negara di pusat dan daerah serta legislator di DPR dan DPRD, menjadi prasyarat mutu penyelenggaraan pemerintahan. Peningkatan kompetensi melalui kualifikasi pendidikan formal merupakan keniscayaan.
+            </p>
+            <p>
+              Dalam demokrasi yang terus berkembang, masih terdapat kesenjangan antara kualitas yang diharapkan dan kapasitas nyata birokrasi serta aktor politik. Sekolah Aparatur dan Legislator hadir sebagai pendidikan tinggi jenjang magister dan doktor di bidang politik, pemerintahan, dan kebijakan publik, guna memperkuat kepemimpinan yang berpihak pada rakyat serta kebijakan yang berbasis bukti.
+            </p>
+          </div>
+          <ul className="mt-10 grid gap-8 sm:grid-cols-3">
+            {latarBelakang.map((item) => (
+              <li key={item.title} className="flex gap-4">
+                <GoldIcon icon={item.icon} size="sm" />
+                <div>
+                  <h3 className="font-semibold text-[var(--sa-navy)]">{item.title}</h3>
+                  <p className="mt-1 text-sm leading-6 text-[var(--sa-muted)]">{item.text}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section className="bg-[var(--sa-canvas)] py-12 lg:py-16">
+        <div className="mx-auto grid max-w-[1280px] gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
+          <div>
+            <GoldIcon icon={Compass} />
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-[var(--sa-navy)]">Visi</h2>
+            <p className="mt-4 text-base leading-7 text-[var(--sa-muted)]">
+              Menghasilkan lulusan yang unggul, berintegritas, dan profesional dalam bidang kebirokrasian, legislasi, politik, dan kebijakan publik; memperkuat kapasitas kepemimpinan politik nasional; serta mendorong lahirnya kebijakan yang berpihak pada rakyat melalui pendidikan tinggi yang adaptif, berbasis riset, dan responsif terhadap tantangan zaman.
+            </p>
+          </div>
+          <div>
+            <GoldIcon icon={GraduationCap} />
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-[var(--sa-navy)]">Misi</h2>
+            <ul className="mt-6 flex flex-col gap-5">
+              {misi.map((item) => (
+                <li key={item.text} className="flex gap-3">
+                  <GoldIcon icon={item.icon} size="sm" />
+                  <p className="text-sm leading-6 text-[var(--sa-muted)]">{item.text}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-12 lg:py-16">
+        <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
+          <PartnersSection />
+          <div className="mt-12">
             <Link
               href={ROUTES.sekolahAparatur}
               className="inline-flex cursor-pointer border-b-2 border-[var(--sa-gold)] pb-1 text-sm font-semibold text-[var(--sa-navy)]"
@@ -71,7 +149,7 @@ export default function ProfilPage() {
             </Link>
           </div>
         </div>
-      </div>
+      </section>
     </>
   )
 }

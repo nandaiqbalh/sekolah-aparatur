@@ -42,11 +42,36 @@ function blockHtml(block: ProgramBlock): string {
 
 /** HTML rincian program. Nanti diganti keluaran HTML editor (boleh pakai .program-section). */
 export function programBodyHtml(program: Program): string {
+  const pengantar = program.sections.find((block) => block.title === "Pengantar")
+  const rest = program.sections.filter((block) => block.title !== "Pengantar")
   const parts = [
-    section("Peserta", `<p>${escapeHtml(program.audience)}</p>`),
-    section("Kalender akademik", `<p>${escapeHtml(program.scheduleNote)}</p>`),
-    section("Pembiayaan", `<p>${escapeHtml(program.feeNote)}</p>`),
-    ...program.sections.map(blockHtml),
+    section(
+      "Program studi yang ditawarkan",
+      `<ul>${program.studies
+        .map((study) => {
+          const label = study.level === study.name ? study.level : `${study.level} — ${study.name}`
+          return `<li><strong>${escapeHtml(label)}.</strong> ${escapeHtml(study.detail)}</li>`
+        })
+        .join("")}</ul>`,
+    ),
+    ...(pengantar ? [blockHtml(pengantar)] : []),
+    section(
+      "Keunggulan program",
+      `<ul>${program.highlights
+        .map((item) => `<li><strong>${escapeHtml(item.title)}.</strong> ${escapeHtml(item.description)}</li>`)
+        .join("")}</ul>`,
+    ),
+    ...rest.map(blockHtml),
+    section(
+      "Masa pendaftaran dan pemberkasan",
+      `<ul>${program.registrationPeriods
+        .map((period) => `<li><strong>${escapeHtml(period.term)}.</strong> ${escapeHtml(period.detail)}</li>`)
+        .join("")}</ul>`,
+    ),
+    section(
+      "Kampus penyelenggara",
+      `<p><strong>${escapeHtml(program.campus.name)}.</strong> ${escapeHtml(program.campus.description)}</p><p>${escapeHtml(program.campus.address)}</p>`,
+    ),
   ]
 
   if (program.requirements.length > 0) {

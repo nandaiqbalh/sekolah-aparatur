@@ -9,5 +9,11 @@ export function SekolahClassPage({ slug }: { slug: string }) {
   const program = item ? getProgram(item.programSlug) : undefined
   if (!item || !program) notFound()
 
-  return <ProgramDetail program={{ ...program, slug: item.slug, title: item.title, summary: item.summary }} />
+  return (
+    <ProgramDetail
+      program={{ ...program, slug: item.slug, title: item.title, summary: item.summary }}
+      image={item.image}
+      imageAlt={item.imageAlt}
+    />
+  )
 }

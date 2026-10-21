@@ -11,6 +11,29 @@ export type ProgramBlock =
   | { kind: "table"; title: string; headers: string[]; rows: string[][] }
   | { kind: "steps"; title: string; steps: { title: string; body: string }[] }
 
+export type ProgramHighlight = {
+  title: string
+  description: string
+}
+
+export type StudyProgram = {
+  level: string
+  name: string
+  detail: string
+}
+
+export type RegistrationPeriod = {
+  term: string
+  detail: string
+}
+
+export type ProgramCampus = {
+  name: string
+  logo: string
+  description: string
+  address: string
+}
+
 export type Program = {
   slug: string
   title: string
@@ -20,8 +43,27 @@ export type Program = {
   feeNote: string
   requirements: string[]
   documents: ProgramDocument[]
+  /** Singkatan mitra fasilitator, sesuai `homeContent.facilitators`. */
+  mitra: string[]
+  highlights: ProgramHighlight[]
+  studies: StudyProgram[]
+  registrationPeriods: RegistrationPeriod[]
+  campus: ProgramCampus
   sections: ProgramBlock[]
 }
+
+const registrationPeriods: RegistrationPeriod[] = [
+  {
+    term: "Semester ganjil",
+    detail:
+      "Sosialisasi pada Maret. Pendaftaran pada April–Juni. Seleksi Rekognisi Pembelajaran Lampau pada Juli, pengumuman pada Agustus, dan perkuliahan dimulai pada September.",
+  },
+  {
+    term: "Semester genap",
+    detail:
+      "Sosialisasi pada Desember–Januari. Pemberkasan pada Januari–Februari. Seleksi pada Februari, serta pengumuman dan perkuliahan pada Maret.",
+  },
+]
 
 const daerahDocuments: ProgramDocument[] = [
   {
@@ -80,6 +122,45 @@ export const programs: Program[] = [
       "Dokumen atau sertifikat pendukung lainnya. Seluruh berkas digabung dalam satu berkas PDF.",
     ],
     documents: daerahDocuments,
+    mitra: ["PPDI", "APDESI"],
+    highlights: [
+      {
+        title: "Sistem perkuliahan yang fleksibel",
+        description:
+          "Perkuliahan daring berlangsung secara sinkron dan asinkron. Pertemuan virtual dijadwalkan bersama dosen, sementara materi dapat diakses melalui Learning Management System (LMS) selama 24 jam.",
+      },
+      {
+        title: "Durasi studi yang singkat",
+        description:
+          "Sarjana (S1) ditempuh 1,5–2 tahun. Magister (S2) jalur Rekognisi Pembelajaran Lampau ditempuh 1–1,5 tahun.",
+      },
+      {
+        title: "Biaya yang terjangkau",
+        description:
+          "Biaya dirancang seefisien mungkin dan dibayarkan melalui Uang Kuliah Tunggal (UKT). Program dapat didukung skema pendanaan Dana Desa sesuai ketentuan yang berlaku.",
+      },
+    ],
+    studies: [
+      {
+        level: "Sarjana (S1)",
+        name: "Administrasi Publik",
+        detail:
+          "Ditempuh 1,5–2 tahun melalui jalur Rekognisi Pembelajaran Lampau. Diselenggarakan oleh Universitas Muhammadiyah Tapanuli Selatan.",
+      },
+      {
+        level: "Magister (S2)",
+        name: "Magister (S2)",
+        detail: "Ditempuh 1–1,5 tahun melalui jalur Rekognisi Pembelajaran Lampau.",
+      },
+    ],
+    registrationPeriods,
+    campus: {
+      name: "Universitas Muhammadiyah Tapanuli Selatan",
+      logo: "/brand/um-tapsel.jpeg",
+      description:
+        "Program diselenggarakan oleh Universitas Muhammadiyah Tapanuli Selatan (UM-Tapsel), perguruan tinggi swasta di bawah naungan Persyarikatan Muhammadiyah yang didirikan pada tahun 1983. Akreditasi Program Studi Administrasi Publik (S1): Unggul.",
+      address: "Jl. Sutan Mohd. Arief No. 32, Batang Ayumi Julu, Padangsidimpuan Utara, Kota Padangsidimpuan, Sumatera Utara 22733.",
+    },
     sections: [
       {
         kind: "paragraphs",
@@ -98,51 +179,6 @@ export const programs: Program[] = [
         ],
       },
       { kind: "list", title: "Dasar hukum", items: legalBasis },
-      {
-        kind: "paragraphs",
-        title: "Kampus penyelenggara",
-        paragraphs: [
-          "Program Sarjana diselenggarakan oleh Universitas Muhammadiyah Tapanuli Selatan (UM-Tapsel), perguruan tinggi swasta di bawah naungan Persyarikatan Muhammadiyah yang didirikan pada tahun 1983, dengan misi mengintegrasikan nilai-nilai keislaman untuk menghasilkan lulusan yang berkarakter Islami, kompeten, dan inovatif.",
-          "Akreditasi Program Studi Administrasi Publik (S-1): Unggul. Alamat: Jl. Sutan Mohd. Arief No. 32, Batang Ayumi Julu, Padangsidimpuan Utara, Kota Padangsidimpuan, Sumatera Utara 22733.",
-        ],
-      },
-      {
-        kind: "list",
-        title: "Keunggulan",
-        items: [
-          "Jenjang Strata Satu (S-1) dapat diselesaikan dalam waktu maksimal 2 tahun; Strata Dua (S-2) maksimal 1,5 tahun.",
-          "Kurikulum dirancang secara spesifik untuk memenuhi kebutuhan manajemen pemerintahan desa.",
-          "Biaya studi bersifat ekonomis dan menggunakan sistem Uang Kuliah Tunggal (UKT).",
-          "Diselenggarakan oleh perguruan tinggi yang telah terakreditasi.",
-          "Didukung beasiswa penuh dari pemerintah melalui skema pendanaan Dana Desa.",
-        ],
-      },
-      {
-        kind: "list",
-        title: "Fasilitas",
-        items: [
-          "Modul (PDF dan dokumen), presentasi, serta rekaman video pembelajaran.",
-          "Simulasi, konferensi video, dan laboratorium virtual.",
-          "Kuis, tugas, dan ujian daring.",
-          "Enam belas minggu sesi pertemuan, ujian tengah semester dan ujian akhir semester, serta empat belas sesi interaksi daring.",
-          "Forum percakapan dosen dan mahasiswa serta interaksi melalui konferensi video.",
-        ],
-      },
-      {
-        kind: "paragraphs",
-        title: "Sistem perkuliahan",
-        paragraphs: [
-          "Perkuliahan diselenggarakan secara daring dengan metode sinkron dan asinkron. Metode sinkron dilaksanakan melalui pertemuan tatap muka virtual pada waktu yang dijadwalkan bersama dosen pengampu. Metode asinkron memungkinkan mahasiswa mengakses materi melalui Learning Management System (LMS) selama 24 jam.",
-          "Seluruh mata kuliah diasuh oleh dosen berkualifikasi minimal Magister (S-2) dan Doktor (S-3), dengan latar belakang akademik yang kuat serta pengalaman praktis di bidangnya.",
-        ],
-      },
-      {
-        kind: "paragraphs",
-        title: "Durasi studi",
-        paragraphs: [
-          "Program Strata Satu (S-1) dapat ditempuh dalam 1,5–2 tahun (3–4 semester). Program Strata Dua (S-2) melalui jalur RPL dapat ditempuh dalam 1–1,5 tahun.",
-        ],
-      },
     ],
   },
   {
@@ -161,53 +197,52 @@ export const programs: Program[] = [
       "Jalur RPL mensyaratkan asesmen atas capaian pembelajaran dari pendidikan formal, nonformal, informal, dan/atau pengalaman kerja.",
     ],
     documents: [],
+    mitra: [],
+    highlights: [
+      {
+        title: "Sistem perkuliahan yang fleksibel",
+        description:
+          "Pembelajaran campuran daring dan tatap muka. Magister berlangsung berbasis mata kuliah selama dua semester, kemudian penyusunan tesis. Doktor berfokus pada penelitian setelah studi terstruktur.",
+      },
+      {
+        title: "Durasi studi yang singkat",
+        description:
+          "Magister Ilmu Politik jalur Rekognisi Pembelajaran Lampau ditempuh 1 tahun. Jalur reguler ditempuh 1,5–2 tahun. Doktor Administrasi Publik ditempuh 3 tahun.",
+      },
+      {
+        title: "Biaya yang terjangkau",
+        description:
+          "Magister (S2) Ilmu Politik Rp17.500.000 per semester, total Rp35.000.000 untuk dua semester, di luar biaya tugas akhir. Doktor (S3) Administrasi Publik Rp17.500.000 per semester, total Rp105.000.000 untuk enam semester, di luar biaya tugas akhir. Pembayaran melalui UKT dan dapat diangsur.",
+      },
+    ],
+    studies: [
+      {
+        level: "Magister (S2)",
+        name: "Ilmu Politik",
+        detail:
+          "Konsentrasi Politik dan Kebijakan Publik, gelar M.Sos. Jalur Rekognisi Pembelajaran Lampau ditempuh 1 tahun. Jalur reguler ditempuh 1,5–2 tahun.",
+      },
+      {
+        level: "Doktor (S3)",
+        name: "Ilmu Administrasi Publik",
+        detail: "Konsentrasi Teknologi Kebijakan dan Pelayanan Publik, gelar Dr. Ditempuh 3 tahun.",
+      },
+    ],
+    registrationPeriods,
+    campus: {
+      name: "Universitas Nasional",
+      logo: "/brand/universitas-nasional.png",
+      description:
+        "Universitas Nasional didirikan pada 15 Oktober 1949 di Jakarta dengan motto “Pionir Perubahan”. Akreditasi institusi: Unggul.",
+      address: "Jl. Sawo Manila No. 61, RT 14/RW 7, Pejaten Barat, Pasar Minggu, Kota Jakarta Selatan, Daerah Khusus Jakarta 12520.",
+    },
     sections: [
       {
         kind: "paragraphs",
         title: "Pengantar",
         paragraphs: [
           "Memasuki era transformasi menuju Visi Indonesia Emas 2045, ketersediaan sumber daya manusia unggul, khususnya aparatur negara di pusat dan daerah serta legislator, menjadi prasyarat utama. Peningkatan kompetensi melalui kualifikasi pendidikan formal merupakan keniscayaan.",
-          "Sekolah Aparatur dan Legislator merupakan platform pendidikan tinggi yang mencakup program Magister (S-2) dan Doktor (S-3) di bidang politik, pemerintahan, dan kebijakan publik, dengan kurikulum interdisipliner, berbasis riset, dan praktik lapangan.",
-        ],
-      },
-      {
-        kind: "paragraphs",
-        title: "Visi",
-        paragraphs: [
-          "Menghasilkan lulusan yang unggul, berintegritas, dan profesional dalam bidang kebirokrasian, legislasi, politik, dan kebijakan publik; memperkuat kapasitas kepemimpinan politik nasional; serta mendorong lahirnya kebijakan yang berpihak pada rakyat melalui pendidikan tinggi yang adaptif, berbasis riset, dan responsif terhadap tantangan zaman.",
-        ],
-      },
-      {
-        kind: "paragraphs",
-        title: "Misi",
-        paragraphs: [
-          "Menyelenggarakan pendidikan tinggi yang unggul, inklusif, dan relevan pada jenjang magister dan doktor di bidang politik, pemerintahan, dan kebijakan publik. Program dirancang melalui pendekatan pembelajaran adaptif dan hybrid learning, daring serta tatap muka.",
-          "Mendorong riset kebijakan berbasis data dan kepentingan publik, serta membangun ekosistem kolaboratif antara akademisi, praktisi, dan masyarakat sipil.",
-        ],
-      },
-      {
-        kind: "list",
-        title: "Program yang ditawarkan",
-        items: [
-          "Magister (S-2) Ilmu Politik, konsentrasi Politik dan Kebijakan Publik, gelar M.Sos. Perkuliahan dua semester dengan ujian tesis pada semester ketiga. Durasi jalur RPL 1 tahun; jalur reguler 1,5–2 tahun.",
-          "Doktor (S-3) Ilmu Administrasi Publik, konsentrasi Teknologi Kebijakan dan Pelayanan Publik, gelar Dr. Dua semester studi terstruktur dilanjutkan penelitian. Durasi studi 3 tahun.",
-        ],
-      },
-      {
-        kind: "paragraphs",
-        title: "Sistem perkuliahan",
-        paragraphs: [
-          "Program Magister diselenggarakan secara tatap muka berbasis mata kuliah selama dua semester, dilanjutkan penyusunan tesis, dengan metode campuran daring dan tatap muka.",
-          "Program Doktor berfokus pada penelitian setelah studi terstruktur selama dua semester. Lulusan diharapkan kompeten dalam kebijakan dan politik pemerintahan serta keilmuan sektor publik.",
-        ],
-      },
-      {
-        kind: "table",
-        title: "Pembiayaan",
-        headers: ["Program", "Per semester", "Total", "Keterangan"],
-        rows: [
-          ["S-2 Ilmu Politik / Kebijakan Publik", "Rp17.500.000", "Rp35.000.000", "Dua semester, di luar tugas akhir"],
-          ["S-3 Administrasi Publik", "Rp17.500.000", "Rp105.000.000", "Enam semester, di luar tugas akhir"],
+          "Sekolah Aparatur dan Legislator merupakan platform pendidikan tinggi yang mencakup program Magister (S2) dan Doktor (S3) di bidang politik, pemerintahan, dan kebijakan publik, dengan kurikulum interdisipliner, berbasis riset, dan praktik lapangan.",
         ],
       },
       {
@@ -218,72 +253,6 @@ export const programs: Program[] = [
         ],
       },
       { kind: "list", title: "Dasar hukum", items: legalBasis },
-      {
-        kind: "list",
-        title: "Keunggulan",
-        items: [
-          "Kurikulum menggabungkan ilmu politik, pemerintahan, dan kebijakan publik.",
-          "Pembelajaran hybrid: tatap muka intensif dan kelas daring.",
-          "Pengajar terdiri atas akademisi serta praktisi politik dan pemerintahan.",
-          "Materi memadukan teori dan praktik.",
-          "Kemitraan dengan lembaga legislatif serta organisasi politik dan kemasyarakatan.",
-        ],
-      },
-      {
-        kind: "list",
-        title: "Fasilitas",
-        items: [
-          "Modul, presentasi, dan rekaman video pembelajaran.",
-          "Simulasi, konferensi video, dan laboratorium virtual.",
-          "Kuis, tugas, dan ujian daring.",
-          "Enam belas minggu sesi pertemuan, ujian tengah semester dan ujian akhir semester, serta interaksi daring.",
-        ],
-      },
-      {
-        kind: "paragraphs",
-        title: "Kampus penyelenggara",
-        paragraphs: [
-          "Universitas Nasional didirikan pada 15 Oktober 1949 di Jakarta dengan motto “Pionir Perubahan”. Akreditasi institusi: Unggul.",
-          "Alamat: Jl. Sawo Manila No. 61, RT 14/RW 7, Pejaten Barat, Pasar Minggu, Kota Jakarta Selatan, Daerah Khusus Jakarta 12520.",
-        ],
-      },
-      {
-        kind: "table",
-        title: "Kurikulum S3 Administrasi Publik",
-        headers: ["Semester", "Mata kuliah", "SKS"],
-        rows: [
-          ["1", "Filsafat/teori administrasi kontemporer; Kebijakan publik; Perencanaan pembangunan", "9"],
-          ["2", "Digitalisasi pelayanan publik; Tata kelola teknologi informasi; Metode riset administrasi publik; Pra-proposal disertasi", "12"],
-          ["3", "Publikasi karya ilmiah; Proposal disertasi", "8"],
-          ["4", "Seminar hasil penelitian disertasi", "4"],
-          ["5", "Sidang disertasi tertutup", "5"],
-          ["6", "Sidang terbuka / promosi doktor", "4"],
-        ],
-      },
-      {
-        kind: "table",
-        title: "Kurikulum S2 Ilmu Politik",
-        headers: ["Semester", "Mata kuliah", "SKS"],
-        rows: [
-          ["1", "Pemikiran politik", "3"],
-          ["1", "Pemilu dan perwakilan politik", "3"],
-          ["1", "Ekonomi politik", "3"],
-          ["1", "Pembangunan politik", "3"],
-          ["1", "Metode penelitian", "3"],
-          ["2", "Teori politik / pemerintahan", "3"],
-          ["2", "Budaya dan pemikiran politik Indonesia", "3"],
-          ["2", "Kekuatan-kekuatan politik", "3"],
-          ["2", "Media digital dan demokrasi", "3"],
-          ["2", "Penulisan dan seminar proposal", "3"],
-          ["3", "Kebijakan publik", "3"],
-          ["3", "Kebijakan perencanaan pembangunan", "3"],
-          ["3", "Politik lokal dan otonomi daerah", "3"],
-          ["3", "Manajemen strategik pemerintahan daerah", "3"],
-          ["3", "Seminar hasil penelitian", "5"],
-          ["4", "Publikasi karya ilmiah", "4"],
-          ["4", "Tesis", "6"],
-        ],
-      },
     ],
   },
 ]

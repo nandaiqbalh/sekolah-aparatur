@@ -1,22 +1,210 @@
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, BadgeCheck, BookOpen, CalendarDays, Clock3, Download, FileCheck, GraduationCap, Handshake, Landmark, Laptop, Scale, Wallet, type LucideIcon } from "lucide-react"
+import Image from "next/image"
 import Link from "next/link"
 
 import { PageHero } from "@/components/public/page-hero"
 import { WhatsappButton } from "@/components/public/whatsapp-button"
+import { homeContent } from "@/data/home"
 import type { Program } from "@/data/programs"
-import { programBodyHtml } from "@/lib/program-html"
 import { registrationPath } from "@/lib/routes"
 
-export function ProgramDetail({ program }: { program: Program }) {
+const highlightIcons: Record<string, LucideIcon> = {
+  "Sistem perkuliahan yang fleksibel": Laptop,
+  "Durasi studi yang singkat": Clock3,
+  "Biaya yang terjangkau": Wallet,
+}
+
+function GoldIcon({ icon: Icon }: { icon: LucideIcon }) {
+  return (
+    <span className="inline-flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--sa-gold)] text-[var(--sa-navy)] shadow-[0_8px_20px_rgba(255,190,89,0.45)]">
+      <Icon className="size-6" aria-hidden />
+    </span>
+  )
+}
+
+function SectionHeading({ icon, title }: { icon: LucideIcon; title: string }) {
+  return (
+    <div className="flex items-center gap-4">
+      <GoldIcon icon={icon} />
+      <h2 className="text-2xl font-semibold tracking-tight text-[var(--sa-navy)] sm:text-3xl">{title}</h2>
+    </div>
+  )
+}
+
+function Paragraphs({ items }: { items: string[] }) {
+  return (
+    <div className="mt-5 space-y-4 text-sm leading-7 text-[var(--sa-muted)] sm:text-base">
+      {items.map((paragraph) => (
+        <p key={paragraph}>{paragraph}</p>
+      ))}
+    </div>
+  )
+}
+
+function BulletList({ items }: { items: string[] }) {
+  return (
+    <ul className="mt-5 flex flex-col gap-3">
+      {items.map((item) => (
+        <li key={item} className="flex gap-3 text-sm leading-6 text-[var(--sa-muted)] sm:text-base sm:leading-7">
+          <span className="mt-2.5 size-1.5 shrink-0 rounded-full bg-[var(--sa-gold)]" />
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+function paragraphsOf(program: Program, title: string): string[] {
+  const block = program.sections.find((item) => item.title === title)
+  return block?.kind === "paragraphs" ? block.paragraphs : []
+}
+
+function listOf(program: Program, title: string): string[] {
+  const block = program.sections.find((item) => item.title === title)
+  return block?.kind === "list" ? block.items : []
+}
+
+export function ProgramDetail({
+  program,
+  image,
+  imageAlt,
+}: {
+  program: Program
+  image: string
+  imageAlt: string
+}) {
+  const pengantar = paragraphsOf(program, "Pengantar")
+  const rpl = paragraphsOf(program, "Rekognisi Pembelajaran Lampau (RPL)")
+  const dasarHukum = listOf(program, "Dasar hukum")
+  const mitra = program.mitra
+    .map((name) => homeContent.facilitators.find((item) => item.name === name))
+    .filter((item) => item !== undefined)
+
   return (
     <>
       <PageHero eyebrow="Program" title={program.title} description={program.summary} />
 
-      <div className="bg-white py-12 lg:py-16">
-        <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
-          <article className="program-content" dangerouslySetInnerHTML={{ __html: programBodyHtml(program) }} />
+      <section className="bg-[var(--sa-canvas)] py-12 lg:py-16">
+        <div className="mx-auto grid max-w-[1280px] items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
+          <div className="relative h-64 overflow-hidden rounded-3xl sm:h-80">
+            <Image src={image} alt={imageAlt} fill className="object-cover" sizes="(min-width: 1024px) 36rem, 100vw" priority />
+          </div>
+          <div>
+            <SectionHeading icon={GraduationCap} title="Program studi yang ditawarkan" />
+            <ul className="mt-6 flex flex-col gap-4">
+              {program.studies.map((study) => (
+                <li key={study.level} className="rounded-2xl bg-white px-5 py-4">
+                  {study.level !== study.name ? (
+                    <p className="text-xs font-semibold tracking-wide text-[var(--sa-navy)] uppercase">{study.level}</p>
+                  ) : null}
+                  <h3 className="text-lg font-semibold text-[var(--sa-navy)]">{study.name}</h3>
+                  <p className="mt-1 text-sm leading-6 text-[var(--sa-muted)]">{study.detail}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-      </div>
+      </section>
+
+      <section className="bg-white py-12 lg:py-16">
+        <div className="mx-auto flex max-w-[1280px] flex-col gap-12 px-4 sm:px-6 lg:px-8">
+          <div>
+            <SectionHeading icon={BookOpen} title="Pengantar" />
+            <Paragraphs items={pengantar} />
+          </div>
+          <div>
+          <SectionHeading icon={Laptop} title="Keunggulan program" />
+          <ul className="mt-8 grid gap-4 lg:grid-cols-3">
+            {program.highlights.map((item) => {
+              const Icon = highlightIcons[item.title] ?? Laptop
+              return (
+                <li key={item.title} className="rounded-[28px] bg-[var(--sa-canvas)] p-6 sm:p-7">
+                  <GoldIcon icon={Icon} />
+                  <h3 className="mt-4 text-lg font-semibold text-[var(--sa-navy)]">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-[var(--sa-muted)]">{item.description}</p>
+                </li>
+              )
+            })}
+          </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[var(--sa-canvas)] py-12 lg:py-16">
+        <div className="mx-auto grid max-w-[1280px] gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
+          <div>
+            <SectionHeading icon={BadgeCheck} title="Rekognisi Pembelajaran Lampau" />
+            <Paragraphs items={rpl} />
+          </div>
+          <div>
+            <SectionHeading icon={Scale} title="Dasar hukum" />
+            <BulletList items={dasarHukum} />
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-12 lg:py-16">
+        <div className="mx-auto flex max-w-[1280px] flex-col gap-12 px-4 sm:px-6 lg:px-8">
+          <div>
+            <SectionHeading icon={CalendarDays} title="Masa pendaftaran dan pemberkasan" />
+            <ul className="mt-6 grid gap-4 lg:grid-cols-2">
+              {program.registrationPeriods.map((period) => (
+                <li key={period.term} className="rounded-[28px] bg-[var(--sa-canvas)] p-6">
+                  <h3 className="text-lg font-semibold text-[var(--sa-navy)]">{period.term}</h3>
+                  <p className="mt-2 text-sm leading-6 text-[var(--sa-muted)]">{period.detail}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <SectionHeading icon={Landmark} title="Kampus penyelenggara" />
+            <div className="mt-6 flex items-start gap-4">
+              <Image
+                src={program.campus.logo}
+                alt=""
+                width={64}
+                height={64}
+                className="h-14 w-14 shrink-0 object-contain"
+              />
+              <div>
+                <h3 className="text-lg font-semibold text-[var(--sa-navy)]">{program.campus.name}</h3>
+                <p className="mt-2 text-sm leading-6 text-[var(--sa-muted)]">{program.campus.description}</p>
+                <p className="mt-2 text-sm leading-6 text-[var(--sa-muted)]">{program.campus.address}</p>
+              </div>
+            </div>
+          </div>
+          {program.requirements.length > 0 ? (
+            <div>
+              <SectionHeading icon={FileCheck} title="Dokumen persyaratan" />
+              <BulletList items={program.requirements} />
+            </div>
+          ) : null}
+          {program.documents.length > 0 ? (
+            <div>
+              <SectionHeading icon={Download} title="Unduhan" />
+              <BulletList
+                items={program.documents.map(
+                  (document) => `${document.name} (${document.format}). ${document.description}`,
+                )}
+              />
+            </div>
+          ) : null}
+          {mitra.length > 0 ? (
+            <div>
+              <SectionHeading icon={Handshake} title="Mitra" />
+              <ul className="mx-auto mt-8 grid max-w-3xl gap-8 sm:grid-cols-2">
+                {mitra.map((item) => (
+                  <li key={item.name} className="flex min-w-0 flex-col items-center text-center">
+                    <Image src={item.logo} alt={item.fullName} width={96} height={96} className="h-16 w-full object-contain" />
+                    <p className="mt-3 text-sm font-semibold leading-snug text-[var(--sa-navy)]">{item.fullName}</p>
+                    <p className="mt-1 text-sm font-semibold text-[var(--sa-muted)]">{item.name}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+        </div>
+      </section>
 
       <section className="bg-[var(--sa-canvas)] py-16 lg:py-20">
         <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
