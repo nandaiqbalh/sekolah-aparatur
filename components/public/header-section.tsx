@@ -8,26 +8,33 @@ import { homeContent } from "@/data/home"
 import { ROUTES, registrationPath } from "@/lib/routes"
 
 const heroSlides = [
-  { src: "/profile/hero-001.jpg", alt: "Kegiatan Sekolah Aparatur" },
-  { src: "/profile/hero-002.jpg", alt: "Kegiatan Sekolah Aparatur" },
+  { src: "/profile/hero-1.jpeg", alt: "Ilustrasi aparatur dan legislator dalam Program Sarjana dan Pascasarjana Aparatur" },
+  { src: "/profile/hero-2.jpeg", alt: "Ilustrasi peserta program di depan peta Indonesia" },
 ]
 
 export function HeaderSection() {
   return (
     <section className="bg-[var(--sa-navy)]">
-      <div className="relative min-h-[640px] lg:min-h-[760px]">
+      <div className="relative min-h-[100svh]">
         <div className="absolute inset-0 overflow-hidden">
           {heroSlides.map((slide, index) => (
             <div key={slide.src} className="hero-slide absolute inset-0" style={{ animationDelay: `${index * -5}s` }}>
-              <Image src={slide.src} alt={slide.alt} fill priority={index === 0} className="object-cover" sizes="100vw" />
+              <Image
+                src={slide.src}
+                alt={slide.alt}
+                fill
+                priority={index === 0}
+                className="object-cover object-center"
+                sizes="100vw"
+              />
             </div>
           ))}
         </div>
-        <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-black/25" />
-        <Reveal className="relative mx-auto flex min-h-[640px] max-w-[1280px] items-start px-4 pt-48 pb-16 sm:px-6 lg:min-h-[760px] lg:px-8 lg:pt-56">
-          <div className="w-full text-white">
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-black/20" />
+        <Reveal className="absolute inset-x-0 bottom-8 mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:bottom-10 lg:px-8">
+          <div className="w-full rounded-3xl border border-white/15 bg-black/40 px-5 py-5 text-white shadow-[0_12px_40px_rgba(0,0,0,0.35)] backdrop-blur-md sm:px-7 sm:py-6">
             <HeroMessages messages={homeContent.heroMessages} />
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-6 flex flex-wrap gap-3">
               <Link
                 href={registrationPath("daerah-dan-desa")}
                 className="inline-flex h-12 cursor-pointer items-center gap-2 rounded-full bg-[var(--sa-gold)] px-6 text-sm font-semibold text-[var(--sa-navy)]"

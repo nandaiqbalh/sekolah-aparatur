@@ -31,7 +31,7 @@ export function HeroMessages({ messages }: { messages: HeroMessage[] }) {
             <p className="inline-flex rounded-full border border-transparent px-3 py-1 text-xs font-semibold">
               {message.eyebrow}
             </p>
-            <p className="mt-5 font-heading text-[clamp(2.8rem,5.4vw,4.6rem)] leading-[1.02] font-semibold tracking-tight">
+            <p className="mt-4 font-heading text-[clamp(2.15rem,3.8vw,3.35rem)] leading-[1.08] font-semibold tracking-tight">
               {message.title}
             </p>
           </div>
@@ -46,10 +46,10 @@ export function HeroMessages({ messages }: { messages: HeroMessage[] }) {
           exit={reducedMotion ? undefined : { opacity: 0 }}
           transition={{ duration: 0.55, ease: "easeInOut" }}
         >
-          <p className="inline-flex rounded-full border border-white/40 px-3 py-1 text-xs font-semibold text-white">
+          <p className="inline-flex rounded-full border border-white/40 px-3 py-1 text-xs font-semibold text-white [text-shadow:0_1px_2px_rgba(0,0,0,0.45)]">
             {active.eyebrow}
           </p>
-          <h1 className="mt-5 max-w-none font-heading text-[clamp(2.8rem,5.4vw,4.6rem)] leading-[1.02] font-semibold tracking-tight">
+          <h1 className="mt-4 max-w-none font-heading text-[clamp(2.15rem,3.8vw,3.35rem)] leading-[1.08] font-semibold tracking-tight [text-shadow:0_1px_2px_rgba(0,0,0,0.55),0_8px_24px_rgba(0,0,0,0.45)]">
             {active.title}
           </h1>
         </motion.div>
