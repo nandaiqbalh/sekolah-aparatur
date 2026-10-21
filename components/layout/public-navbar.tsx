@@ -6,10 +6,8 @@ import { usePathname } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import { ChevronDown, Menu, X } from "lucide-react"
 
-import { WhatsappButton } from "@/components/public/whatsapp-button"
 import { sekolahClasses } from "@/data/sekolah-classes"
 import { ROUTES } from "@/lib/routes"
-import { whatsappHref } from "@/lib/site-contact"
 import { cn } from "@/lib/utils"
 
 const links = [
@@ -44,9 +42,6 @@ export function PublicNavbar() {
   const [hidden, setHidden] = useState(false)
   const lastY = useRef(0)
   const downDistance = useRef(0)
-  const whatsapp = whatsappHref(
-    "Yth. Panitia LPSDM Aparatur, saya ingin menanyakan informasi program Sekolah Aparatur.",
-  )
   const programActive = pathname.startsWith(ROUTES.sekolahAparatur)
 
   if (menuPath !== pathname) {
@@ -183,9 +178,6 @@ export function PublicNavbar() {
           </nav>
 
           <div className="ml-auto flex items-center gap-3">
-            {whatsapp ? (
-              <WhatsappButton label="Konsultasi" className="hidden sm:inline-flex" />
-            ) : null}
             <button
               type="button"
               className="inline-flex size-9 cursor-pointer items-center justify-center rounded-full hover:bg-[var(--sa-canvas)] lg:hidden"
@@ -271,9 +263,6 @@ export function PublicNavbar() {
               {link.label}
             </Link>
           ))}
-          {whatsapp ? (
-            <WhatsappButton label="Konsultasi" className="mt-6" onClick={() => setOpen(false)} />
-          ) : null}
         </nav>
       </div>
     </>

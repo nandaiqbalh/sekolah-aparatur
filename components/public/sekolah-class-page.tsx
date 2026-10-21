@@ -14,6 +14,7 @@ export function SekolahClassPage({ slug }: { slug: string }) {
       program={{ ...program, slug: item.slug, title: item.title, summary: item.summary }}
       image={item.image}
       imageAlt={item.imageAlt}
+      requirementGroups={item.requirementGroups}
     />
   )
 }

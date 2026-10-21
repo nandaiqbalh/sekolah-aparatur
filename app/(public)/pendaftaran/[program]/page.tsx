@@ -48,12 +48,12 @@ export default async function RegistrationPage({ params }: PageProps) {
         title={kelas?.title ?? "Pendaftaran peserta"}
         description="Pilih program pada formulir. Data yang diisi akan disimpan dan tim Sekolah Aparatur akan menghubungi Anda."
       />
-      <div className="bg-white py-12 lg:py-16">
+      <div className="bg-white py-8 lg:py-10">
         <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
-          <div className="rounded-[28px] bg-[var(--sa-canvas)] px-6 py-8 sm:px-8">
+          <div className="rounded-[28px] bg-[var(--sa-canvas)] px-5 py-6 sm:px-6">
             <RegistrationForm programSlug={kelas?.slug ?? slug} />
           </div>
-          <div className="mt-14">
+          <div className="mt-8">
             <PartnersSection />
           </div>
         </div>

@@ -36,7 +36,7 @@ export function GalleryBrowser() {
           </button>
         ))}
       </div>
-      <ul className="mt-10 grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="mt-5 grid items-stretch gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((item) => (
           <li key={item.slug} className="h-full">
             <Link href={galleryPath(item.slug)} className="flex h-full cursor-pointer flex-col">

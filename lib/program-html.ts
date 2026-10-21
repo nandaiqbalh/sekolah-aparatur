@@ -50,7 +50,7 @@ export function programBodyHtml(program: Program): string {
       `<ul>${program.studies
         .map((study) => {
           const label = study.level === study.name ? study.level : `${study.level} — ${study.name}`
-          return `<li><strong>${escapeHtml(label)}.</strong> ${escapeHtml(study.detail)}</li>`
+          return `<li><strong>${escapeHtml(label)}.</strong> ${escapeHtml(study.track)}. ${escapeHtml(study.detail)}</li>`
         })
         .join("")}</ul>`,
     ),
@@ -73,15 +73,6 @@ export function programBodyHtml(program: Program): string {
       `<p><strong>${escapeHtml(program.campus.name)}.</strong> ${escapeHtml(program.campus.description)}</p><p>${escapeHtml(program.campus.address)}</p>`,
     ),
   ]
-
-  if (program.requirements.length > 0) {
-    parts.push(
-      section(
-        "Dokumen persyaratan",
-        `<ul>${program.requirements.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`,
-      ),
-    )
-  }
 
   if (program.documents.length > 0) {
     parts.push(

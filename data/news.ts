@@ -12,6 +12,64 @@ export type NewsArticle = {
 
 export const newsArticles: NewsArticle[] = [
   {
+    slug: "penerimaan-sarjana-aparatur-2026",
+    title: "Penerimaan mahasiswa baru sarjana aparatur desa dan daerah",
+    category: "Penerimaan",
+    publishedAt: "2026-09-01",
+    summary:
+      "Penerimaan mahasiswa baru program sarjana jalur RPL bagi aparatur desa dan aparatur daerah, semester ganjil tahun ajaran 2026/2027, diselenggarakan oleh Universitas Muhammadiyah Tapanuli Selatan.",
+    thumbnail: "/informasi/pendaftaran-sarjana.jpeg",
+    gallery: [],
+    bodyHtml: `
+<p>Penerimaan mahasiswa baru Program Sarjana untuk aparatur desa dan aparatur daerah jalur Rekognisi Pembelajaran Lampau (RPL) dibuka pada semester ganjil tahun ajaran 2026/2027.</p>
+<p>Program diselenggarakan oleh Universitas Muhammadiyah Tapanuli Selatan pada Program Studi Administrasi Publik, Fakultas Ilmu Sosial dan Ilmu Politik, dengan gelar S.A.P. Pendaftaran dan pemberkasan gelombang terakhir berlangsung pada 1 September sampai 6 Oktober 2026.</p>
+<img src="/informasi/pendaftaran-sarjana.jpeg" alt="Poster penerimaan mahasiswa baru program sarjana aparatur desa dan aparatur daerah" />
+`.trim(),
+  },
+  {
+    slug: "penerimaan-pascasarjana-sekolah-aparatur-2026",
+    title: "Penerimaan mahasiswa baru pascasarjana Sekolah Aparatur",
+    category: "Penerimaan",
+    publishedAt: "2026-09-01",
+    summary:
+      "Penerimaan mahasiswa baru Program Pascasarjana Sekolah Aparatur angkatan ke-3, semester ganjil tahun akademik 2026/2027, diselenggarakan oleh Universitas Nasional.",
+    thumbnail: "/informasi/pendaftaran-pascasarjana.jpeg",
+    gallery: [],
+    bodyHtml: `
+<p>Penerimaan mahasiswa baru Program Pascasarjana Sekolah Aparatur dibuka untuk angkatan ke-3 pada semester ganjil tahun akademik 2026/2027. Program diselenggarakan oleh Universitas Nasional bagi aparatur pemerintah daerah dan anggota legislatif daerah.</p>
+<p>Program yang ditawarkan meliputi Magister (S2) Ilmu Politik, konsentrasi Politik dan Kebijakan Publik, gelar M.Sos., jalur RPL dengan lama studi 1 tahun, serta Doktor (S3) Administrasi Publik, konsentrasi Teknologi Kebijakan dan Pelayanan Publik, gelar Dr., dengan lama studi 3 tahun. Pendaftaran dan pemberkasan berlangsung pada 1 September sampai 10 Oktober 2026.</p>
+<img src="/informasi/pendaftaran-pascasarjana.jpeg" alt="Poster penerimaan mahasiswa baru program pascasarjana Sekolah Aparatur" />
+`.trim(),
+  },
+  {
+    slug: "penandatanganan-kerjasama-unas-adeksi",
+    title: "Penandatanganan kerja sama Universitas Nasional, ADEKSI, dan LPSDM Aparatur",
+    category: "Kerja sama",
+    publishedAt: "2026-02-09",
+    summary:
+      "Penandatanganan kerja sama Universitas Nasional, Asosiasi DPRD Kota Seluruh Indonesia (ADEKSI), dan LPSDM Aparatur di Batam, 9 Februari 2026.",
+    thumbnail: "/informasi/kerjasama-adeksi-2.jpeg",
+    gallery: ["/informasi/kerjasama-adeksi-1.jpeg", "/informasi/kerjasama-adeksi-2.jpeg"],
+    bodyHtml: `
+<p>Universitas Nasional, Asosiasi DPRD Kota Seluruh Indonesia (ADEKSI), dan LPSDM Aparatur menandatangani kerja sama di Batam pada 9 Februari 2026.</p>
+<p>Kerja sama ini menjadi bagian dari penguatan penyelenggaraan pendidikan tinggi bagi legislator melalui Sekolah Aparatur.</p>
+`.trim(),
+  },
+  {
+    slug: "penandatanganan-kerjasama-unas-adkasi",
+    title: "Penandatanganan kerja sama Universitas Nasional, ADKASI, dan LPSDM Aparatur",
+    category: "Kerja sama",
+    publishedAt: "2025-07-15",
+    summary:
+      "Penandatanganan kerja sama Universitas Nasional, Asosiasi DPRD Kabupaten Seluruh Indonesia (ADKASI), dan LPSDM Aparatur di Jakarta, 15 Juli 2025.",
+    thumbnail: "/informasi/kerjasama-adkasi-1.jpeg",
+    gallery: ["/informasi/kerjasama-adkasi-1.jpeg", "/informasi/kerjasama-adkasi-2.jpeg"],
+    bodyHtml: `
+<p>Universitas Nasional, Asosiasi DPRD Kabupaten Seluruh Indonesia (ADKASI), dan LPSDM Aparatur menandatangani kerja sama di Jakarta pada 15 Juli 2025.</p>
+<p>Kerja sama ini menjadi bagian dari penguatan penyelenggaraan pendidikan tinggi bagi legislator melalui Sekolah Aparatur.</p>
+`.trim(),
+  },
+  {
     slug: "kesepahaman-ucsi-unas-lpsdm",
     title: "Perbincangan kesepahaman UCSI, UNAS, dan LPSDM",
     category: "Kerja sama",

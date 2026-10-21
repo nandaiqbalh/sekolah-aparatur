@@ -1,10 +1,11 @@
-import { BookOpen, Compass, GraduationCap, Handshake, Landmark, Laptop, LineChart, Scale, type LucideIcon } from "lucide-react"
+import { BadgeCheck, BookOpen, Compass, GraduationCap, Handshake, Landmark, Laptop, LineChart, Scale, type LucideIcon } from "lucide-react"
 import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 
 import { PageHero } from "@/components/public/page-hero"
 import { PartnersSection } from "@/components/public/partners-section"
+import { legalBasis } from "@/data/programs"
 import { getLocale } from "@/lib/i18n/get-locale"
 import { ROUTES } from "@/lib/routes"
 import { buildPageMetadata } from "@/lib/seo"
@@ -64,8 +65,8 @@ export default function ProfilPage() {
         description="Lembaga pengelola program Sekolah Aparatur bagi aparatur daerah, perangkat desa, dan legislator."
       />
 
-      <section className="bg-[var(--sa-canvas)] py-12 lg:py-16">
-        <div className="mx-auto grid max-w-[1280px] items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
+      <section className="bg-[var(--sa-canvas)] py-8 lg:py-10">
+        <div className="mx-auto grid max-w-[1280px] items-center gap-6 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
           <div className="relative h-64 overflow-hidden rounded-3xl sm:h-80">
             <Image
               src="/profile/image-profile.webp"
@@ -85,7 +86,7 @@ export default function ProfilPage() {
         </div>
       </section>
 
-      <section className="bg-white py-12 lg:py-16">
+      <section className="bg-white py-8 lg:py-10">
         <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4">
             <GoldIcon icon={BookOpen} />
@@ -99,7 +100,7 @@ export default function ProfilPage() {
               Dalam demokrasi yang terus berkembang, masih terdapat kesenjangan antara kualitas yang diharapkan dan kapasitas nyata birokrasi serta aktor politik. Sekolah Aparatur dan Legislator hadir sebagai pendidikan tinggi jenjang magister dan doktor di bidang politik, pemerintahan, dan kebijakan publik, guna memperkuat kepemimpinan yang berpihak pada rakyat serta kebijakan yang berbasis bukti.
             </p>
           </div>
-          <ul className="mt-10 grid gap-8 sm:grid-cols-3">
+          <ul className="mt-6 grid gap-5 sm:grid-cols-3">
             {latarBelakang.map((item) => (
               <li key={item.title} className="flex gap-4">
                 <GoldIcon icon={item.icon} size="sm" />
@@ -113,8 +114,8 @@ export default function ProfilPage() {
         </div>
       </section>
 
-      <section className="bg-[var(--sa-canvas)] py-12 lg:py-16">
-        <div className="mx-auto grid max-w-[1280px] gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
+      <section className="bg-[var(--sa-canvas)] py-8 lg:py-10">
+        <div className="mx-auto grid max-w-[1280px] gap-8 px-4 sm:px-6 lg:grid-cols-2 lg:gap-10 lg:px-8">
           <div>
             <GoldIcon icon={Compass} />
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-[var(--sa-navy)]">Visi</h2>
@@ -137,10 +138,40 @@ export default function ProfilPage() {
         </div>
       </section>
 
-      <section className="bg-white py-12 lg:py-16">
+      <section className="bg-white py-8 lg:py-10">
+        <div className="mx-auto grid max-w-[1280px] gap-8 px-4 sm:px-6 lg:grid-cols-2 lg:gap-10 lg:px-8">
+          <div>
+            <GoldIcon icon={BadgeCheck} />
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-[var(--sa-navy)]">Rekognisi Pembelajaran Lampau</h2>
+            <div className="mt-4 space-y-4 text-base leading-7 text-[var(--sa-muted)]">
+              <p>
+                Rekognisi Pembelajaran Lampau (RPL) memberikan pengakuan atas capaian pembelajaran yang diperoleh dari pendidikan formal, nonformal, informal, dan/atau pengalaman kerja untuk diakui dalam pendidikan formal.
+              </p>
+              <p>
+                Capaian pembelajaran dari perguruan tinggi sebelumnya dapat diakui melalui asesmen untuk keperluan transfer kredit. Capaian dari pengalaman kerja, pelatihan, dan pembelajaran mandiri diakui melalui asesmen dan rekognisi untuk memperoleh satuan kredit semester (SKS).
+              </p>
+              <p>Sarjana (S1) dan Magister (S2) diselenggarakan melalui jalur RPL. Doktor (S3) diselenggarakan melalui jalur reguler.</p>
+            </div>
+          </div>
+          <div>
+            <GoldIcon icon={Scale} />
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-[var(--sa-navy)]">Dasar hukum</h2>
+            <ul className="mt-4 flex flex-col gap-3">
+              {legalBasis.map((item) => (
+                <li key={item} className="flex gap-3 text-sm leading-6 text-[var(--sa-muted)]">
+                  <span className="mt-2.5 size-1.5 shrink-0 rounded-full bg-[var(--sa-gold)]" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[var(--sa-canvas)] py-8 lg:py-10">
         <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
           <PartnersSection />
-          <div className="mt-12">
+          <div className="mt-6">
             <Link
               href={ROUTES.sekolahAparatur}
               className="inline-flex cursor-pointer border-b-2 border-[var(--sa-gold)] pb-1 text-sm font-semibold text-[var(--sa-navy)]"

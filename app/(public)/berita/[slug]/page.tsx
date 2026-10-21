@@ -42,18 +42,18 @@ export default async function NewsDetailPage({ params }: PageProps) {
         title={article.title}
         description={article.summary}
       />
-      <div className="bg-white py-12 lg:py-16">
+      <div className="bg-white py-8 lg:py-10">
         <article className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
           <div
             className="program-content max-w-3xl"
             dangerouslySetInnerHTML={{ __html: article.bodyHtml }}
           />
-          <div className="mt-12">
+          <div className="mt-6">
             <NewsGallery images={article.gallery} title={article.title} />
           </div>
           <Link
             href={ROUTES.berita}
-            className="mt-12 inline-flex cursor-pointer border-b-2 border-[var(--sa-gold)] pb-1 text-sm font-semibold text-[var(--sa-navy)]"
+            className="mt-6 inline-flex cursor-pointer border-b-2 border-[var(--sa-gold)] pb-1 text-sm font-semibold text-[var(--sa-navy)]"
           >
             Kembali ke daftar informasi
           </Link>

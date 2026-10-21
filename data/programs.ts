@@ -19,6 +19,8 @@ export type ProgramHighlight = {
 export type StudyProgram = {
   level: string
   name: string
+  /** Program RPL untuk sarjana dan magister. Program reguler untuk doktor. */
+  track: string
   detail: string
 }
 
@@ -41,7 +43,6 @@ export type Program = {
   audience: string
   scheduleNote: string
   feeNote: string
-  requirements: string[]
   documents: ProgramDocument[]
   /** Singkatan mitra fasilitator, sesuai `homeContent.facilitators`. */
   mitra: string[]
@@ -86,7 +87,7 @@ const daerahDocuments: ProgramDocument[] = [
   },
 ]
 
-const legalBasis = [
+export const legalBasis = [
   "UU Sisdiknas No. 20 Tahun 2003",
   "Peraturan Presiden Nomor 8 Tahun 2012 tentang Kerangka Kualifikasi Nasional Indonesia (KKNI)",
   "Peraturan Mendikbudristek Nomor 41 Tahun 2021 tentang Rekognisi Pembelajaran Lampau",
@@ -106,21 +107,6 @@ export const programs: Program[] = [
       "Semester ganjil: sosialisasi pada Maret, pendaftaran pada April–Juni, seleksi RPL pada Juli, pengumuman pada Agustus, dan perkuliahan dimulai pada September. Semester genap: sosialisasi pada Desember–Januari, pemberkasan pada Januari–Februari, seleksi pada Februari, serta pengumuman dan perkuliahan pada Maret.",
     feeNote:
       "Biaya pendidikan disesuaikan dengan kebijakan universitas penyelenggara, dirancang seefisien mungkin, dan dibayarkan melalui sistem Uang Kuliah Tunggal (UKT). Program dapat didukung skema pendanaan Dana Desa sesuai ketentuan yang berlaku.",
-    requirements: [
-      "Daftar riwayat hidup (DRH) / curriculum vitae.",
-      "Ijazah terakhir.",
-      "Surat keputusan pengangkatan.",
-      "Pindaian kartu tanda penduduk.",
-      "Surat izin atasan.",
-      "Sasaran kinerja perangkat; bagi kepala desa menyesuaikan tugas pokok dan fungsi.",
-      "Foto formal dan kartu keluarga.",
-      "Surat rekomendasi APDESI atau PPDI bagi pendaftar melalui jalur asosiasi. Berkas nomor 1 sampai 8 bersifat wajib.",
-      "Seluruh surat keputusan selama masa tugas.",
-      "Seluruh sertifikat yang diperoleh.",
-      "Foto kegiatan beserta keterangan.",
-      "Buku harian pekerjaan.",
-      "Dokumen atau sertifikat pendukung lainnya. Seluruh berkas digabung dalam satu berkas PDF.",
-    ],
     documents: daerahDocuments,
     mitra: ["PPDI", "APDESI"],
     highlights: [
@@ -132,7 +118,7 @@ export const programs: Program[] = [
       {
         title: "Durasi studi yang singkat",
         description:
-          "Sarjana (S1) ditempuh 1,5–2 tahun. Magister (S2) jalur Rekognisi Pembelajaran Lampau ditempuh 1–1,5 tahun.",
+          "Sarjana (S1) jalur RPL ditempuh 1,5–2 tahun. Magister (S2) jalur RPL ditempuh 1–1,5 tahun.",
       },
       {
         title: "Biaya yang terjangkau",
@@ -144,13 +130,14 @@ export const programs: Program[] = [
       {
         level: "Sarjana (S1)",
         name: "Administrasi Publik",
-        detail:
-          "Ditempuh 1,5–2 tahun melalui jalur Rekognisi Pembelajaran Lampau. Diselenggarakan oleh Universitas Muhammadiyah Tapanuli Selatan.",
+        track: "Jalur RPL",
+        detail: "Ditempuh 1,5–2 tahun. Diselenggarakan oleh Universitas Muhammadiyah Tapanuli Selatan.",
       },
       {
         level: "Magister (S2)",
         name: "Magister (S2)",
-        detail: "Ditempuh 1–1,5 tahun melalui jalur Rekognisi Pembelajaran Lampau.",
+        track: "Jalur RPL",
+        detail: "Ditempuh 1–1,5 tahun.",
       },
     ],
     registrationPeriods,
@@ -167,18 +154,9 @@ export const programs: Program[] = [
         title: "Pengantar",
         paragraphs: [
           "Sejak diterapkannya kebijakan otonomi daerah, pembangunan di tingkat daerah mengalami kemajuan yang signifikan. Namun demikian, peningkatan tersebut belum sepenuhnya ditopang oleh ketersediaan sumber daya manusia yang memadai.",
-          "Data tahun 2022 menunjukkan bahwa hanya 4,39 persen penduduk Indonesia berpendidikan Strata Satu (S-1) dan 1,28 persen berpendidikan Diploma Tiga (D-3). Program ini memberikan jalur bagi aparatur daerah dan desa untuk meraih gelar sarjana dan magister dalam waktu singkat melalui Rekognisi Pembelajaran Lampau.",
+          "Data tahun 2022 menunjukkan bahwa hanya 4,39 persen penduduk Indonesia berpendidikan Strata Satu (S-1) dan 1,28 persen berpendidikan Diploma Tiga (D-3). Program ini memberikan jalur bagi aparatur daerah dan desa untuk meraih gelar sarjana dan magister dalam waktu singkat.",
         ],
       },
-      {
-        kind: "paragraphs",
-        title: "Rekognisi Pembelajaran Lampau (RPL)",
-        paragraphs: [
-          "Rekognisi Pembelajaran Lampau (RPL) memberikan pengakuan atas capaian pembelajaran yang diperoleh dari pendidikan formal, nonformal, informal, dan/atau pengalaman kerja untuk diakui dalam pendidikan formal pada jenjang Sarjana (S-1).",
-          "Capaian pembelajaran dari perguruan tinggi sebelumnya dapat diakui melalui asesmen untuk keperluan transfer kredit. Capaian dari pengalaman kerja, pelatihan, dan pembelajaran mandiri diakui melalui asesmen dan rekognisi untuk memperoleh satuan kredit semester (SKS).",
-        ],
-      },
-      { kind: "list", title: "Dasar hukum", items: legalBasis },
     ],
   },
   {
@@ -192,10 +170,6 @@ export const programs: Program[] = [
       "Semester ganjil: sosialisasi pada Maret, pendaftaran pada April–Juni, seleksi RPL pada Juli, pengumuman pada Agustus, dan perkuliahan dimulai pada September. Semester genap: sosialisasi pada Desember–Januari, pemberkasan pada Januari–Februari, seleksi pada Februari, serta pengumuman dan perkuliahan pada Maret.",
     feeNote:
       "Magister (S-2) Ilmu Politik: Rp17.500.000 per semester, total Rp35.000.000 untuk dua semester, di luar biaya tugas akhir. Doktor (S-3) Administrasi Publik: Rp17.500.000 per semester, total Rp105.000.000 untuk enam semester, di luar biaya tugas akhir. Pembayaran melalui sistem UKT dan dapat diangsur.",
-    requirements: [
-      "Ijazah terakhir dan dokumen administrasi sesuai ketentuan universitas penyelenggara pada saat pendaftaran.",
-      "Jalur RPL mensyaratkan asesmen atas capaian pembelajaran dari pendidikan formal, nonformal, informal, dan/atau pengalaman kerja.",
-    ],
     documents: [],
     mitra: [],
     highlights: [
@@ -207,7 +181,7 @@ export const programs: Program[] = [
       {
         title: "Durasi studi yang singkat",
         description:
-          "Magister Ilmu Politik jalur Rekognisi Pembelajaran Lampau ditempuh 1 tahun. Jalur reguler ditempuh 1,5–2 tahun. Doktor Administrasi Publik ditempuh 3 tahun.",
+          "Magister Ilmu Politik jalur RPL ditempuh 1 tahun. Doktor Administrasi Publik jalur reguler ditempuh 3 tahun.",
       },
       {
         title: "Biaya yang terjangkau",
@@ -219,12 +193,13 @@ export const programs: Program[] = [
       {
         level: "Magister (S2)",
         name: "Ilmu Politik",
-        detail:
-          "Konsentrasi Politik dan Kebijakan Publik, gelar M.Sos. Jalur Rekognisi Pembelajaran Lampau ditempuh 1 tahun. Jalur reguler ditempuh 1,5–2 tahun.",
+        track: "Jalur RPL",
+        detail: "Konsentrasi Politik dan Kebijakan Publik, gelar M.Sos. Ditempuh 1 tahun.",
       },
       {
         level: "Doktor (S3)",
         name: "Ilmu Administrasi Publik",
+        track: "Jalur reguler",
         detail: "Konsentrasi Teknologi Kebijakan dan Pelayanan Publik, gelar Dr. Ditempuh 3 tahun.",
       },
     ],
@@ -245,14 +220,6 @@ export const programs: Program[] = [
           "Sekolah Aparatur dan Legislator merupakan platform pendidikan tinggi yang mencakup program Magister (S2) dan Doktor (S3) di bidang politik, pemerintahan, dan kebijakan publik, dengan kurikulum interdisipliner, berbasis riset, dan praktik lapangan.",
         ],
       },
-      {
-        kind: "paragraphs",
-        title: "Rekognisi Pembelajaran Lampau (RPL)",
-        paragraphs: [
-          "Rekognisi Pembelajaran Lampau (RPL) mengakui capaian pembelajaran dari pendidikan formal, nonformal, informal, dan/atau pengalaman kerja. Transfer kredit dan pengakuan satuan kredit semester dilakukan setelah asesmen.",
-        ],
-      },
-      { kind: "list", title: "Dasar hukum", items: legalBasis },
     ],
   },
 ]

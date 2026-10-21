@@ -2,10 +2,12 @@
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 
+import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { sekolahClasses } from "@/data/sekolah-classes"
 import {
@@ -17,6 +19,7 @@ export function RegistrationForm({ programSlug }: { programSlug: string }) {
   const [sent, setSent] = useState(false)
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<RegistrationInput>({
@@ -49,18 +52,35 @@ export function RegistrationForm({ programSlug }: { programSlug: string }) {
   return (
     <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)} noValidate>
       <Field label="Program" error={errors.program?.message}>
-        <select
-          className="h-11 w-full cursor-pointer rounded-lg border border-input bg-white px-3 text-sm"
-          aria-invalid={Boolean(errors.program)}
-          {...register("program")}
-        >
-          <option value="">Pilih program</option>
-          {sekolahClasses.map((item) => (
-            <option key={item.slug} value={item.slug}>
-              {item.title}
-            </option>
-          ))}
-        </select>
+        <Controller
+          name="program"
+          control={control}
+          render={({ field }) => (
+            <Select
+              value={field.value || null}
+              onValueChange={(value) => field.onChange(value ?? "")}
+            >
+              <SelectTrigger
+                className="h-11 w-full bg-white"
+                aria-invalid={Boolean(errors.program)}
+                onBlur={field.onBlur}
+              >
+                <SelectValue placeholder="Pilih program">
+                  {(value: string | null) =>
+                    sekolahClasses.find((item) => item.slug === value)?.title ?? "Pilih program"
+                  }
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                {sekolahClasses.map((item) => (
+                  <SelectItem key={item.slug} value={item.slug}>
+                    {item.title}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+        />
       </Field>
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Nama lengkap" error={errors.name?.message}>
@@ -82,10 +102,25 @@ export function RegistrationForm({ programSlug }: { programSlug: string }) {
       <Field label="Alamat" error={errors.address?.message}>
         <Textarea className="bg-white" rows={3} placeholder="Alamat lengkap" aria-invalid={Boolean(errors.address)} {...register("address")} />
       </Field>
-      <label className="flex items-start gap-2 text-sm leading-6">
-        <input type="checkbox" className="mt-1 cursor-pointer" {...register("consent")} />
-        <span>Saya memahami bahwa data yang saya isi akan disimpan dan saya akan dihubungi oleh tim Sekolah Aparatur.</span>
-      </label>
+      <Controller
+        name="consent"
+        control={control}
+        render={({ field }) => (
+          <div className="flex items-start gap-2">
+            <Checkbox
+              id="registration-consent"
+              className="mt-1"
+              checked={field.value}
+              onCheckedChange={(checked) => field.onChange(checked)}
+              onBlur={field.onBlur}
+              aria-invalid={Boolean(errors.consent)}
+            />
+            <Label htmlFor="registration-consent" className="cursor-pointer items-start font-normal leading-6">
+              Saya memahami bahwa data yang saya isi akan disimpan dan saya akan dihubungi oleh tim Sekolah Aparatur.
+            </Label>
+          </div>
+        )}
+      />
       {errors.consent ? <p className="text-sm text-red-700">{errors.consent.message}</p> : null}
       <button
         type="submit"

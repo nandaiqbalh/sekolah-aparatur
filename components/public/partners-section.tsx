@@ -1,48 +1,82 @@
 import Image from "next/image"
+import type { ReactNode } from "react"
 
 import { SectionHeader } from "@/components/public/section-header"
 import { homeContent } from "@/data/home"
 
+function repeat<T>(items: T[], times: number) {
+  return Array.from({ length: times }, () => items).flat()
+}
+
+function LogoTrack<T extends { name: string }>({
+  label,
+  direction,
+  items,
+  render,
+  labelOf,
+}: {
+  label: string
+  direction: "left" | "right"
+  items: T[]
+  render: (item: T) => ReactNode
+  labelOf?: (item: T) => string
+}) {
+  const loop = repeat(items, 4)
+
+  return (
+    <div
+      className="overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]"
+      role="region"
+      aria-label={label}
+    >
+      <div
+        className={
+          direction === "left"
+            ? "flex w-max animate-marquee motion-reduce:hidden"
+            : "flex w-max animate-marquee-reverse motion-reduce:hidden"
+        }
+      >
+        {[0, 1].map((copy) => (
+          <div key={copy} className="flex shrink-0 items-start gap-16 pr-16" aria-hidden>
+            {loop.map((item, index) => (
+              <div key={`${item.name}-${index}`}>{render(item)}</div>
+            ))}
+          </div>
+        ))}
+      </div>
+      <ul className="sr-only">
+        {items.map((item) => (
+          <li key={item.name}>{labelOf ? labelOf(item) : item.name}</li>
+        ))}
+      </ul>
+      <ul className="hidden list-none motion-reduce:flex motion-reduce:flex-wrap motion-reduce:justify-center motion-reduce:gap-8">
+        {items.map((item) => (
+          <li key={item.name}>{render(item)}</li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
 export function PartnersSection() {
   return (
-    <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
-      <div>
-        <SectionHeader title={homeContent.partnersTitle} />
-        <ul className="mt-8 flex flex-col gap-6">
-          {homeContent.partners.map((partner) => (
-            <li key={partner.name} className="flex min-w-0 items-center gap-4">
-              <Image
-                src={partner.logo}
-                alt=""
-                width={64}
-                height={64}
-                className="h-14 w-14 shrink-0 object-contain"
-              />
-              <div className="min-w-0">
-                <p className="text-base font-semibold tracking-tight text-[var(--sa-navy)]">{partner.name}</p>
-                <p className="mt-1 text-sm leading-6 text-[var(--sa-muted)]">{partner.program}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div>
-        <SectionHeader title={homeContent.facilitatorsTitle} />
-        <ul className="mt-8 grid grid-cols-2 gap-6">
-          {homeContent.facilitators.map((item) => (
-            <li key={item.name} className="flex min-w-0 flex-col items-center text-center">
-              <Image
-                src={item.logo}
-                alt={item.fullName}
-                width={96}
-                height={96}
-                className="h-16 w-full object-contain"
-              />
+    <div>
+      <SectionHeader title={homeContent.mitraTitle} />
+      <div className="mt-5 flex flex-col gap-6">
+          <LogoTrack label={homeContent.partnersTitle} direction="left" items={homeContent.partners} labelOf={(partner) => `${partner.name}. ${partner.program}`} render={(partner) => (
+            <div className="flex w-56 shrink-0 flex-col items-center text-center">
+              <Image src={partner.logo} alt="" width={72} height={72} className="h-14 w-14 object-contain" />
+              <p className="mt-3 text-sm font-semibold tracking-tight text-[var(--sa-navy)]">{partner.name}</p>
+              <p className="mt-1 text-sm leading-6 text-[var(--sa-muted)]">{partner.program}</p>
+            </div>
+          )} />
+        <LogoTrack label={homeContent.facilitatorsTitle} direction="right" items={homeContent.facilitators} labelOf={(item) => `${item.fullName}, ${item.name}`} render={(item) => (
+            <div className="flex w-52 shrink-0 flex-col items-center text-center">
+              <Image src={item.logo} alt="" width={96} height={96} className="h-16 w-full object-contain" />
               <p className="mt-3 text-sm font-semibold leading-snug tracking-tight text-[var(--sa-navy)]">{item.fullName}</p>
               <p className="mt-1 text-sm font-semibold tracking-tight text-[var(--sa-muted)]">{item.name}</p>
-            </li>
-          ))}
-        </ul>
+            </div>
+          )} />
       </div>
     </div>
   )

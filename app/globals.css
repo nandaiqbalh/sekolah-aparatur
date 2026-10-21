@@ -222,6 +222,13 @@ html:has(.admin-shell) body {
   color-scheme: light;
 }
 
+/* Dialogs, selects, and toasts render on body, outside .public-font. */
+html:has(.public-font) body {
+  --font-sans: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-sans);
+}
+
 /* Dialogs, selects, and toasts render on body, outside .admin-font. */
 html:has(.admin-font) body {
   --font-sans: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
@@ -272,6 +279,30 @@ html:has(.admin-font) .font-sans {
 
   .hero-slide:first-child {
     opacity: 1;
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 42s linear infinite;
+}
+
+.animate-marquee-reverse {
+  animation: marquee 42s linear infinite reverse;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-marquee-reverse {
+    animation: none;
   }
 }
 

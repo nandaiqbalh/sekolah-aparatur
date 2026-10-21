@@ -25,7 +25,7 @@ export default function ProgramIndexPage() {
         title="Program Sarjana dan Pascasarjana Aparatur"
         description="Kelas Aparatur Pemerintah Daerah, Kelas Aparatur Desa, dan Kelas Legislator, diselenggarakan bersama universitas penyelenggara melalui jalur Rekognisi Pembelajaran Lampau (RPL)."
       />
-      <div className="bg-white py-12 lg:py-16">
+      <div className="bg-white py-8 lg:py-10">
         <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
           <ProgramSpotlight />
         </div>

@@ -33,11 +33,11 @@ export default function ContactPage() {
         description="Nomor telepon, surel, dan formulir untuk menghubungi panitia LPSDM Aparatur."
       />
       <div className="bg-[var(--sa-canvas)]">
-      <div className="mx-auto grid max-w-[1280px] gap-6 px-4 py-16 sm:px-6 lg:grid-cols-[0.7fr_1fr] lg:px-8">
+      <div className="mx-auto grid max-w-[1280px] gap-5 px-4 py-8 sm:px-6 lg:grid-cols-[0.7fr_1fr] lg:px-8 lg:py-10">
         <Reveal>
-        <section className="rounded-[28px] bg-white p-6 sm:p-8">
+        <section className="rounded-[28px] bg-white p-5 sm:p-6">
           <h2 className="font-heading text-2xl font-semibold">Kontak resmi</h2>
-          <dl className="mt-8 divide-y divide-[var(--sa-line)] border-t border-[var(--sa-line)]">
+          <dl className="mt-5 divide-y divide-[var(--sa-line)] border-t border-[var(--sa-line)]">
             {rows.map((row) => (
               <div key={row.label} className="grid gap-1 py-4 sm:grid-cols-[7rem_1fr]">
                 <dt className="text-sm font-semibold">{row.label}</dt>
@@ -59,7 +59,7 @@ export default function ContactPage() {
         </section>
         </Reveal>
         <Reveal delay={0.12} y={80}>
-        <section className="rounded-[28px] bg-white p-6 sm:p-8">
+        <section className="rounded-[28px] bg-white p-5 sm:p-6">
           <h2 className="font-heading text-2xl font-semibold">Kirim pesan</h2>
           <div className="mt-8 max-w-xl">
             <ContactForm />

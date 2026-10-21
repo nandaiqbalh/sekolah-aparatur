@@ -25,8 +25,8 @@ export default function NewsPage() {
         title="Informasi dan kegiatan"
         description="Berita dan dokumentasi kegiatan LPSDM Aparatur serta program Sekolah Aparatur."
       />
-      <div className="bg-[var(--sa-canvas)] py-16 lg:py-20">
-        <ul className="mx-auto flex max-w-[1280px] flex-col gap-4 px-4 sm:px-6 lg:px-8">
+      <div className="bg-[var(--sa-canvas)] py-8 lg:py-10">
+        <ul className="mx-auto grid max-w-[1280px] grid-cols-2 gap-3 px-4 sm:grid-cols-3 sm:px-6 lg:grid-cols-4 lg:px-8">
           {newsArticles.map((article) => (
             <li key={article.slug}>
               <NewsCard article={article} />

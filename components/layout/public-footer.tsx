@@ -56,14 +56,14 @@ export function PublicFooter() {
         <div className="min-w-0">
           <Link
             href={ROUTES.home}
-            className="relative block size-28 shrink-0 cursor-pointer overflow-hidden rounded-full bg-white"
+            className="relative block size-20 shrink-0 cursor-pointer"
           >
             <Image
               src="/brand/logo-lpsdm.png"
               alt="LPSDM Aparatur"
               fill
-              sizes="112px"
-              className="object-contain p-2"
+              sizes="80px"
+              className="object-contain"
             />
           </Link>
           <p className="mt-4 text-sm leading-6 text-white/70">

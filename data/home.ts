@@ -12,6 +12,7 @@ export const homeContent = {
   introTitle: "Pendidikan tinggi bagi aparatur dan legislator",
   introDescription:
     "Kelas Aparatur Pemerintah Daerah, Kelas Aparatur Desa, dan Kelas Legislator diselenggarakan bersama universitas penyelenggara melalui jalur Rekognisi Pembelajaran Lampau (RPL).",
+  mitraTitle: "Mitra Sekolah Aparatur",
   partnersTitle: "Universitas Penyelenggara",
   partners: [
     {

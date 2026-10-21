@@ -8,8 +8,8 @@ import { homeContent } from "@/data/home"
 import { ROUTES, registrationPath } from "@/lib/routes"
 
 const heroSlides = [
-  { src: "/profile/hero-1.jpeg", alt: "Ilustrasi aparatur dan legislator dalam Program Sarjana dan Pascasarjana Aparatur" },
-  { src: "/profile/hero-2.jpeg", alt: "Ilustrasi peserta program di depan peta Indonesia" },
+  { src: "/profile/hero-001.jpg", alt: "Kegiatan Sekolah Aparatur" },
+  { src: "/profile/hero-002.jpg", alt: "Kegiatan Sekolah Aparatur" },
 ]
 
 export function HeaderSection() {
