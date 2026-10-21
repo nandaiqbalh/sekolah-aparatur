@@ -51,21 +51,25 @@ export const homeContent = {
   strengthsTitle: "Keunggulan program",
   strengths: [
     {
+      icon: "badge",
       title: "Rekognisi Pembelajaran Lampau (RPL)",
       description:
         "Capaian pembelajaran dari pendidikan formal, nonformal, informal, dan/atau pengalaman kerja diakui melalui asesmen untuk memperoleh satuan kredit semester (SKS) pada jenjang Sarjana (S1) dan Magister (S2).",
     },
     {
+      icon: "clock",
       title: "Durasi studi yang efisien",
       description:
         "Sarjana (S1) ditempuh 1,5–2 tahun. Magister (S2) ditempuh 1–1,5 tahun. Magister Ilmu Politik jalur RPL ditempuh 1 tahun.",
     },
     {
+      icon: "laptop",
       title: "Pembelajaran yang adaptif",
       description:
         "Program daerah dan desa menggunakan perkuliahan daring sinkron dan asinkron. Program pascasarjana menerapkan hybrid learning, daring dan tatap muka.",
     },
     {
+      icon: "wallet",
       title: "Pembiayaan melalui UKT",
       description:
         "Biaya perkuliahan mengikuti kebijakan universitas penyelenggara dan dibayarkan dengan sistem Uang Kuliah Tunggal (UKT). Program daerah dan desa dapat didukung skema Dana Desa sesuai ketentuan yang berlaku.",
@@ -73,24 +77,24 @@ export const homeContent = {
   ],
   faqs: [
     {
-      question: "Siapa yang menyelenggarakan program secara akademik?",
+      question: "Kelas apa yang ditawarkan?",
       answer:
-        "LPSDM Aparatur merancang program secara akademik. Perkuliahan diselenggarakan oleh universitas penyelenggara sesuai jenjang dan program yang dipilih.",
+        "Program Sarjana dan Pascasarjana Aparatur terdiri atas Kelas Aparatur Pemerintah Daerah, Kelas Aparatur Desa, serta Kelas Legislator.",
     },
     {
-      question: "Apakah formulir pada situs ini telah terhubung ke sistem pendaftaran?",
+      question: "Siapa yang dapat mengikuti program ini?",
       answer:
-        "Belum. Formulir saat ini hanya memeriksa kelengkapan isian di peramban. Penyimpanan data pendaftar akan diaktifkan setelah tahap peninjauan tampilan selesai.",
+        "Kelas Aparatur Pemerintah Daerah diperuntukkan bagi aparatur pemerintah dan pemerintah daerah. Kelas Aparatur Desa diperuntukkan bagi perangkat desa. Kelas Legislator diperuntukkan bagi aparatur negara dan legislator, termasuk anggota DPR dan DPRD.",
+    },
+    {
+      question: "Berapa lama durasi studi?",
+      answer:
+        "Pada Kelas Aparatur Pemerintah Daerah dan Kelas Aparatur Desa, Sarjana (S1) ditempuh 1,5–2 tahun dan Magister (S2) ditempuh 1–1,5 tahun melalui jalur Rekognisi Pembelajaran Lampau (RPL). Pada Kelas Legislator, Magister Ilmu Politik jalur RPL ditempuh 1 tahun, sedangkan Doktor Administrasi Publik ditempuh 3 tahun.",
     },
     {
       question: "Berapa biaya perkuliahan?",
       answer:
-        "Untuk program pascasarjana, biaya Magister (S-2) sebesar Rp17.500.000 per semester (total Rp35.000.000 untuk dua semester) dan Doktor (S-3) sebesar Rp17.500.000 per semester (total Rp105.000.000 untuk enam semester), di luar biaya tugas akhir. Untuk program daerah dan desa, pembiayaan melalui sistem UKT dan dapat didukung skema Dana Desa sesuai ketentuan yang berlaku.",
-    },
-    {
-      question: "Bagaimana cara menghubungi panitia penerimaan mahasiswa baru?",
-      answer:
-        "Hubungi panitia melalui WhatsApp atau telepon: +62 822-4962-1229, atau melalui surel lpsdm.aparatur@gmail.com.",
+        "Kelas Aparatur Pemerintah Daerah dan Kelas Aparatur Desa menggunakan sistem Uang Kuliah Tunggal (UKT) sesuai kebijakan universitas penyelenggara, dan dapat didukung skema Dana Desa sesuai ketentuan yang berlaku. Pada Kelas Legislator, biaya Magister (S2) sebesar Rp17.500.000 per semester (total Rp35.000.000 untuk dua semester) dan Doktor (S3) sebesar Rp17.500.000 per semester (total Rp105.000.000 untuk enam semester), di luar biaya tugas akhir.",
     },
   ],
 }

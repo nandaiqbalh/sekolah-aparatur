@@ -43,14 +43,17 @@ export default function ProgramIndexPage() {
                   </h2>
                   <p className="mt-3 max-w-2xl text-sm leading-7 text-[var(--sa-muted)] sm:text-base">{item.summary}</p>
                 </div>
-                <div className="flex flex-wrap gap-5 text-sm font-semibold">
+                <div className="flex w-full flex-col gap-3 sm:w-auto sm:min-w-56">
                   <Link
                     href={classHref[item.slug]}
-                    className="cursor-pointer text-[var(--sa-navy)] underline decoration-[var(--sa-gold)] decoration-2 underline-offset-4"
+                    className="inline-flex h-11 w-full cursor-pointer items-center justify-center rounded-full bg-[var(--sa-navy)] px-5 text-sm font-semibold text-white transition duration-300 ease-out hover:-translate-y-0.5 hover:shadow-lg"
                   >
                     Rincian program
                   </Link>
-                  <Link href={registrationPath(item.slug)} className="cursor-pointer text-[var(--sa-ink)]">
+                  <Link
+                    href={registrationPath(item.slug)}
+                    className="inline-flex h-11 w-full cursor-pointer items-center justify-center rounded-full border border-[var(--sa-navy)] bg-white px-5 text-sm font-semibold text-[var(--sa-navy)] transition duration-300 ease-out hover:-translate-y-0.5 hover:bg-[var(--sa-navy)] hover:text-white hover:shadow-lg"
+                  >
                     Formulir pendaftaran
                   </Link>
                 </div>

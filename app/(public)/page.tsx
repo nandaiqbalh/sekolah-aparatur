@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, BadgeCheck, Clock3, Laptop, Wallet, type LucideIcon } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -6,6 +6,7 @@ import { Reveal } from "@/components/motion/reveal"
 import { HeaderSection } from "@/components/public/header-section"
 import { NewsCard } from "@/components/public/news-card"
 import { PartnersSection } from "@/components/public/partners-section"
+import { SectionHeader } from "@/components/public/section-header"
 import { ProgramSpotlight } from "@/components/public/program-spotlight"
 import { WhatsappButton } from "@/components/public/whatsapp-button"
 import {
@@ -21,6 +22,13 @@ import { getLocale } from "@/lib/i18n/get-locale"
 import { ROUTES } from "@/lib/routes"
 import { jsonLdScript } from "@/lib/seo"
 import { SITE_NAME, absoluteUrl } from "@/lib/site"
+
+const strengthIcons: Record<string, LucideIcon> = {
+  badge: BadgeCheck,
+  clock: Clock3,
+  laptop: Laptop,
+  wallet: Wallet,
+}
 
 export default async function Home() {
   const locale = await getLocale()
@@ -39,7 +47,7 @@ export default async function Home() {
 
       <HeaderSection />
 
-      <section className="bg-white py-16 lg:py-24">
+      <section className="bg-[var(--sa-canvas)] py-16 lg:py-24">
         <Reveal>
           <div className="mx-auto grid max-w-[1280px] items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
             <div className="relative h-56 overflow-hidden rounded-2xl sm:h-72">
@@ -69,18 +77,34 @@ export default async function Home() {
         </Reveal>
       </section>
 
+      <section className="bg-white py-16 lg:py-20">
+        <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
+          <Reveal>
+            <SectionHeader title="Program Sarjana dan Pascasarjana Aparatur" />
+          </Reveal>
+          <div className="mt-12">
+            <ProgramSpotlight />
+          </div>
+        </div>
+      </section>
+
       <section className="bg-[var(--sa-canvas)] py-16 lg:py-20">
         <Reveal>
           <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
-            <h2 className="max-w-xl text-3xl font-semibold tracking-tight sm:text-4xl">{homeContent.strengthsTitle}</h2>
+            <SectionHeader title={homeContent.strengthsTitle} />
             <ul className="mt-8 grid gap-px overflow-hidden rounded-2xl bg-[var(--sa-line)] sm:grid-cols-2">
-              {homeContent.strengths.map((item, index) => (
+              {homeContent.strengths.map((item) => {
+                const Icon = strengthIcons[item.icon]
+                return (
                 <li key={item.title} className="bg-white p-7">
-                  <p className="text-sm font-semibold text-[var(--sa-blue)]">0{index + 1}</p>
-                  <h3 className="mt-3 text-lg font-semibold">{item.title}</h3>
+                  <span className="inline-flex size-12 items-center justify-center rounded-2xl bg-[var(--sa-gold)] text-[var(--sa-navy)] shadow-[0_8px_20px_rgba(255,190,89,0.45)]">
+                    <Icon className="size-6" aria-hidden />
+                  </span>
+                  <h3 className="mt-4 text-lg font-semibold">{item.title}</h3>
                   <p className="mt-2 text-sm leading-6 text-[var(--sa-muted)]">{item.description}</p>
                 </li>
-              ))}
+                )
+              })}
             </ul>
           </div>
         </Reveal>
@@ -89,23 +113,7 @@ export default async function Home() {
       <section className="bg-white py-16 lg:py-20">
         <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
           <Reveal>
-            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-              Program Sarjana dan Pascasarjana Aparatur
-            </h2>
-          </Reveal>
-          <div className="mt-12">
-            <ProgramSpotlight />
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-[var(--sa-canvas)] py-16">
-        <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
-          <Reveal className="flex items-end justify-between gap-6">
-            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Informasi dan kegiatan</h2>
-            <Link href={ROUTES.berita} className="cursor-pointer text-sm font-semibold">
-              Seluruh informasi
-            </Link>
+            <SectionHeader title="Informasi dan kegiatan" href={ROUTES.berita} action="Seluruh informasi" />
           </Reveal>
           <ul className="mt-8 flex flex-col gap-4">
             {newsArticles.slice(0, 3).map((article) => (
@@ -117,10 +125,10 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="bg-white pt-16 pb-6 lg:pt-20 lg:pb-8">
+      <section className="bg-[var(--sa-canvas)] py-16 lg:py-20">
         <Reveal>
           <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Pertanyaan yang sering diajukan</h2>
+            <SectionHeader title="Pertanyaan yang sering diajukan" />
             <Accordion className="mt-8 border-t border-[var(--sa-line)]">
               {homeContent.faqs.map((faq) => (
                 <AccordionItem key={faq.question} value={faq.question} className="border-b border-black/8 last:border-b-0">
@@ -135,7 +143,7 @@ export default async function Home() {
         </Reveal>
       </section>
 
-      <section className="bg-white pt-4 pb-10 lg:pt-6 lg:pb-12">
+      <section className="bg-white py-16 lg:py-20">
         <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
           <PartnersSection />
         </div>
@@ -145,7 +153,7 @@ export default async function Home() {
         <Reveal>
           <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
             <div className="max-w-2xl">
-              <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Hubungi panitia penerimaan</h2>
+              <SectionHeader title="Hubungi panitia penerimaan" />
               <p className="mt-4 text-sm leading-7 text-[var(--sa-muted)] sm:text-base">
                 Informasi mengenai penerimaan mahasiswa baru dapat disampaikan kepada LPSDM Aparatur melalui WhatsApp
                 atau halaman kontak.
