@@ -58,7 +58,7 @@ export default function ContactPage() {
           </div>
         </section>
         </Reveal>
-        <Reveal delay={0.12} y={80}>
+        <Reveal delay={0.12}>
         <section className="rounded-[28px] bg-white p-5 sm:p-6">
           <h2 className="font-heading text-2xl font-semibold">Kirim pesan</h2>
           <div className="mt-8 max-w-xl">

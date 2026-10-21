@@ -1,5 +1,6 @@
 import { Mail } from "lucide-react"
 
+import { Reveal } from "@/components/motion/reveal"
 import { WhatsAppIcon } from "@/components/public/whatsapp-button"
 import Image from "next/image"
 import Link from "next/link"
@@ -51,6 +52,7 @@ export function PublicFooter() {
   ]
 
   return (
+    <Reveal>
     <footer className="bg-[var(--sa-navy)] text-white">
       <div className="mx-auto grid w-full max-w-[1280px] grid-cols-1 items-start gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,0.7fr)_minmax(0,0.55fr)] lg:gap-x-10 lg:px-8">
         <div className="min-w-0">
@@ -108,5 +110,6 @@ export function PublicFooter() {
         © {year} LPSDM Aparatur. All rights reserved.
       </p>
     </footer>
+    </Reveal>
   )
 }

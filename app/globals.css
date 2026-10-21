@@ -306,6 +306,27 @@ html:has(.admin-font) .font-sans {
   }
 }
 
+@keyframes nav-progress {
+  0% {
+    transform: translate3d(-120%, 0, 0);
+  }
+  100% {
+    transform: translate3d(320%, 0, 0);
+  }
+}
+
+.animate-nav-progress {
+  animation: nav-progress 1.15s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-nav-progress {
+    animation: none;
+    transform: none;
+    width: 100%;
+  }
+}
+
 .public-font {
   --font-sans: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;

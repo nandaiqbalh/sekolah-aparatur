@@ -82,9 +82,9 @@ export default async function Home() {
           <Reveal>
             <SectionHeader title="Program Sarjana dan Pascasarjana Aparatur" />
           </Reveal>
-          <div className="mt-6">
+          <Reveal className="mt-6">
             <ProgramSpotlight />
-          </div>
+          </Reveal>
         </div>
       </section>
 
@@ -115,7 +115,9 @@ export default async function Home() {
           <Reveal>
             <SectionHeader title="Informasi dan kegiatan" href={ROUTES.berita} action="Seluruh informasi" />
           </Reveal>
-          <NewsScrollRow articles={newsArticles.slice(0, 8)} />
+          <Reveal>
+            <NewsScrollRow articles={newsArticles.slice(0, 8)} />
+          </Reveal>
         </div>
       </section>
 
@@ -147,9 +149,11 @@ export default async function Home() {
       </section>
 
       <section className="bg-white py-8 lg:py-10">
-        <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
-          <PartnersSection />
-        </div>
+        <Reveal>
+          <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
+            <PartnersSection />
+          </div>
+        </Reveal>
       </section>
 
       <section className="bg-[var(--sa-canvas)] py-8 lg:py-10">
