@@ -319,11 +319,30 @@ html:has(.admin-font) .font-sans {
   animation: nav-progress 1.15s ease-in-out infinite;
 }
 
+.page-enter {
+  animation: page-enter 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    filter: blur(12px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-nav-progress {
     animation: none;
     transform: none;
     width: 100%;
+  }
+
+  .page-enter {
+    animation: none;
   }
 }
 
