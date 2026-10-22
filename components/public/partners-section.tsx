@@ -1,5 +1,5 @@
 import Image from "next/image"
-import type { ReactNode } from "react"
+import type { CSSProperties, ReactNode } from "react"
 
 import { SectionHeader } from "@/components/public/section-header"
 import { homeContent } from "@/data/home"
@@ -23,6 +23,9 @@ function LogoTrack<T extends { name: string }>({
   labelOf?: (item: T) => string
 }) {
   const loop = repeat(items, 4)
+  // Putaran lebih lama daripada jumlah logo, supaya laju pita tetap sama
+  // meski jumlah universitas dan mitra berbeda.
+  const duration = `${Math.max(items.length, 1) * 30}s`
 
   return (
     <div
@@ -31,6 +34,7 @@ function LogoTrack<T extends { name: string }>({
       aria-label={label}
     >
       <div
+        style={{ "--marquee-duration": duration } as CSSProperties}
         className={
           direction === "left"
             ? "flex w-max animate-marquee motion-reduce:hidden"

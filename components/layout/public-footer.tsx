@@ -121,7 +121,7 @@ export async function PublicFooter() {
             className="relative block size-20 shrink-0 cursor-pointer"
           >
             <Image
-              src="/brand/logo-lpsdm.png"
+              src="/brand/logo-lpsdm.webp"
               alt="LPSDM Aparatur"
               fill
               sizes="80px"

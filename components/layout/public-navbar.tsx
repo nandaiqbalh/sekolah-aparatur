@@ -98,7 +98,7 @@ export function PublicNavbar({
         <div className="mx-auto flex h-16 max-w-[1280px] items-center gap-3 rounded-full bg-white px-2 text-[var(--sa-navy)] shadow-[0_10px_30px_rgba(31,44,114,0.14)] sm:px-3">
           <Link href={ROUTES.home} className="inline-flex cursor-pointer items-center pl-1">
             <Image
-              src="/brand/logo-lpsdm.png"
+              src="/brand/logo-lpsdm.webp"
               alt="LPSDM Aparatur"
               width={36}
               height={48}

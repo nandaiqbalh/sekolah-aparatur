@@ -40,6 +40,7 @@ export default async function ProfilPage() {
   const profile = await institutionProfileService.get()
   if (!profile) notFound()
   const lembagaBody = profile.lembagaBody.trim()
+  const lembagaImage = profile.lembagaImage.trim()
 
   return (
     <>
@@ -49,36 +50,30 @@ export default async function ProfilPage() {
         description={profile.heroDescription}
       />
 
-      {lembagaBody ? (
-        <section className="bg-[var(--sa-canvas)] py-8 lg:py-10">
-          <div className="mx-auto grid max-w-[1280px] items-center gap-6 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
-            <div className="relative h-64 overflow-hidden rounded-3xl sm:h-80">
-              <Image
-                src={profile.lembagaImage}
-                alt="Ilustrasi aparatur peserta program"
-                fill
-                className="object-cover"
-                sizes="(min-width: 1024px) 36rem, 100vw"
-              />
-            </div>
-            <div>
-              <GoldIcon icon={Landmark} />
-              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-[var(--sa-navy)]">Lembaga</h2>
-              <p className="mt-4 text-base leading-7 text-[var(--sa-muted)]">{lembagaBody}</p>
-            </div>
-          </div>
-        </section>
-      ) : null}
-
       <section className="bg-white py-8 lg:py-10">
         <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-semibold tracking-tight text-[var(--sa-navy)]">Latar belakang</h2>
-          <div className="mt-6 max-w-3xl space-y-4 text-base leading-7 text-[var(--sa-muted)]">
-            {profile.latarBelakangParagraphs.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
+          <div className="grid items-stretch gap-6 lg:grid-cols-2">
+            {lembagaImage ? (
+              <div className="relative min-h-64 overflow-hidden rounded-3xl sm:min-h-80">
+                <Image
+                  src={lembagaImage}
+                  alt="Ilustrasi aparatur peserta program"
+                  fill
+                  className="object-cover"
+                  sizes="(min-width: 1024px) 36rem, 100vw"
+                />
+              </div>
+            ) : null}
+            <div>
+              <h2 className="text-3xl font-semibold tracking-tight text-[var(--sa-navy)]">Latar belakang</h2>
+              <div className="mt-4 space-y-4 text-base leading-7 text-[var(--sa-muted)]">
+                {profile.latarBelakangParagraphs.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+              </div>
+            </div>
           </div>
-          <ul className="mt-6 grid gap-5 sm:grid-cols-3">
+          <ul className="mt-8 grid gap-5 sm:grid-cols-3">
             {profile.latarBelakangPoints.map((item, index) => (
               <li key={item.title} className="flex gap-4">
                 <GoldIcon icon={LATAR_ICONS[index % LATAR_ICONS.length]} size="sm" />
@@ -89,6 +84,13 @@ export default async function ProfilPage() {
               </li>
             ))}
           </ul>
+          {lembagaBody ? (
+            <div className="mt-8">
+              <GoldIcon icon={Landmark} />
+              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-[var(--sa-navy)]">Lembaga</h2>
+              <p className="mt-4 text-base leading-7 text-[var(--sa-muted)]">{lembagaBody}</p>
+            </div>
+          ) : null}
         </div>
       </section>
 

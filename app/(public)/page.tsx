@@ -113,7 +113,7 @@ export default async function Home() {
                 href={ROUTES.profil}
                 className="mt-5 inline-flex h-12 cursor-pointer items-center gap-2 border-b-2 border-[var(--sa-gold)] text-sm font-semibold text-[var(--sa-navy)]"
               >
-                Profil program
+                Profil Program
                 <ArrowRight className="size-4" />
               </Link>
             </div>
