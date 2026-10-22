@@ -4,6 +4,7 @@ import type { Metadata } from "next"
 
 import { AdminPermissionsProvider } from "@/components/admin/admin-permissions-provider"
 import { AdminSidebar } from "@/components/admin/admin-sidebar"
+import { messageService } from "@/features/pesan/services/message-service"
 import { registrationService } from "@/features/registration/services/registration-service"
 import { extractAuthFromSession, getSession } from "@/lib/auth/get-session"
 import { hasPermission } from "@/lib/auth/permissions"
@@ -38,9 +39,10 @@ export default async function AdminProtectedLayout({
   const authUser = extractAuthFromSession(session)
   const locale = await getLocale()
   const dict = await getDictionary(locale)
-  const incomingRegistrations = hasPermission(authUser, "pendaftaran.view")
-    ? await registrationService.count("submitted")
-    : 0
+  const [incomingRegistrations, incomingMessages] = await Promise.all([
+    hasPermission(authUser, "pendaftaran.view") ? registrationService.count("submitted") : Promise.resolve(0),
+    hasPermission(authUser, "pesan.view") ? messageService.count("submitted") : Promise.resolve(0),
+  ])
 
   return (
     <Providers dictionary={dict}>
@@ -54,6 +56,7 @@ export default async function AdminProtectedLayout({
             userName={authUser.name}
             locale={locale}
             incomingRegistrations={incomingRegistrations}
+            incomingMessages={incomingMessages}
           />
           <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto bg-background p-6 pt-[4.5rem] md:pt-6">
             {children}

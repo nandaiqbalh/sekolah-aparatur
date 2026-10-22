@@ -27,6 +27,7 @@ export const ADMIN_ROUTES = {
   mitra: "/admin/mitra",
   mitraNew: "/admin/mitra/baru",
   pendaftaran: "/admin/pendaftaran",
+  pesan: "/admin/pesan",
   program: "/admin/program",
   programNew: "/admin/program/baru",
   kontak: "/admin/kontak",
@@ -46,6 +47,10 @@ export function adminMitraPath(id: string): string {
 
 export function adminPendaftaranPath(id: string): string {
   return `/admin/pendaftaran/${id}`
+}
+
+export function adminPesanPath(id: string): string {
+  return `/admin/pesan/${id}`
 }
 
 export function adminProgramPath(id: string): string {

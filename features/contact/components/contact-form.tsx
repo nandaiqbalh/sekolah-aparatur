@@ -2,56 +2,84 @@
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
-import { useForm } from "react-hook-form"
+import { useForm, type FieldPath } from "react-hook-form"
 
+import { ConfirmDialog } from "@/components/ui/confirm-dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { contactSchema, type ContactInput } from "@/features/contact/schemas/contact"
+import { submitMessageAction } from "@/features/pesan/actions/message-actions"
 
 export function ContactForm() {
   const [sent, setSent] = useState(false)
+  const [submitError, setSubmitError] = useState("")
   const {
     register,
     handleSubmit,
+    reset,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<ContactInput>({
     resolver: zodResolver(contactSchema),
     defaultValues: { name: "", contact: "", message: "" },
   })
 
-  function onSubmit(values: ContactInput) {
-    void values
+  async function onSubmit(values: ContactInput) {
+    setSubmitError("")
+    const result = await submitMessageAction(values)
+    if (!result.ok) {
+      const fields = new Set<keyof ContactInput>(["name", "contact", "message"])
+      if (result.fieldErrors) {
+        for (const [key, messages] of Object.entries(result.fieldErrors)) {
+          if (messages[0] && fields.has(key as keyof ContactInput)) {
+            setError(key as FieldPath<ContactInput>, { message: messages[0] })
+          }
+        }
+      }
+      setSubmitError(result.message || "Pesan gagal dikirim.")
+      return
+    }
+    reset()
     setSent(true)
   }
 
-  if (sent) {
-    return (
-      <p className="text-sm leading-6 text-[var(--sa-muted)]" role="status">
-        Isian telah lolos pemeriksaan di peramban. Pesan belum terkirim karena formulir belum terhubung ke sistem penyimpanan.
-      </p>
-    )
-  }
-
   return (
-    <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)} noValidate>
-      <Field label="Nama lengkap" error={errors.name?.message}>
-        <Input className="h-11" placeholder="Nama lengkap" aria-invalid={Boolean(errors.name)} {...register("name")} />
-      </Field>
-      <Field label="Surel atau nomor telepon" error={errors.contact?.message}>
-        <Input className="h-11" placeholder="nama@surel.com atau 08xxxxxxxxxx" aria-invalid={Boolean(errors.contact)} {...register("contact")} />
-      </Field>
-      <Field label="Pesan" error={errors.message?.message}>
-        <Textarea rows={5} placeholder="Tuliskan pesan Anda" aria-invalid={Boolean(errors.message)} {...register("message")} />
-      </Field>
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="h-12 cursor-pointer rounded-full bg-[var(--sa-navy)] px-6 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
-      >
-        Kirim pesan
-      </button>
-    </form>
+    <>
+      <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)} noValidate>
+        <Field label="Nama lengkap" error={errors.name?.message}>
+          <Input className="h-11" placeholder="Nama lengkap" aria-invalid={Boolean(errors.name)} {...register("name")} />
+        </Field>
+        <Field label="Surel atau nomor telepon" error={errors.contact?.message}>
+          <Input
+            className="h-11"
+            placeholder="nama@surel.com atau 08xxxxxxxxxx"
+            aria-invalid={Boolean(errors.contact)}
+            {...register("contact")}
+          />
+        </Field>
+        <Field label="Pesan" error={errors.message?.message}>
+          <Textarea rows={5} placeholder="Tuliskan pesan Anda" aria-invalid={Boolean(errors.message)} {...register("message")} />
+        </Field>
+        {submitError ? <p className="text-sm text-red-700">{submitError}</p> : null}
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="h-12 cursor-pointer rounded-full bg-[var(--sa-navy)] px-6 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          Kirim pesan
+        </button>
+      </form>
+      <ConfirmDialog
+        open={sent}
+        onOpenChange={setSent}
+        type="success"
+        title="Pesan terkirim"
+        message="Pesan Anda sudah diterima. Tim LPSDM Aparatur akan menindaklanjutinya."
+        confirmLabel="OK"
+        onConfirm={() => setSent(false)}
+      />
+    </>
   )
 }
 

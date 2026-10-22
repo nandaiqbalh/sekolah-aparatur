@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import React, { useState } from "react"
-import { ChevronDown, ClipboardList, GraduationCap, Handshake, Images, Landmark, LayoutDashboard, LogOut, Menu, Newspaper, Phone, ScrollText, Shield, User, Users, X } from "lucide-react"
+import { ChevronDown, ClipboardList, GraduationCap, Handshake, Images, Landmark, LayoutDashboard, LogOut, Mail, Menu, Newspaper, Phone, ScrollText, Shield, User, Users, X } from "lucide-react"
 import { AnimatePresence, motion } from "framer-motion"
 
 import { logoutAction } from "@/features/auth/actions/auth-actions"
@@ -26,6 +26,7 @@ type NavLabelKey =
   | "profilLembaga"
   | "mitra"
   | "pendaftaran"
+  | "pesan"
   | "program"
   | "kontak"
   | "navSectionSystem"
@@ -93,6 +94,17 @@ const navSections: NavSection[] = [
             labelKey: "pendaftaran",
             icon: ClipboardList,
             permission: "pendaftaran.view",
+          },
+        ],
+      },
+      {
+        id: "pesan",
+        items: [
+          {
+            href: ADMIN_ROUTES.pesan,
+            labelKey: "pesan",
+            icon: Mail,
+            permission: "pesan.view",
           },
         ],
       },
@@ -224,6 +236,8 @@ function getLabel(dict: ReturnType<typeof useDictionary>, key: NavLabelKey): str
       return dict.admin.nav.mitra
     case "pendaftaran":
       return dict.admin.nav.pendaftaran
+    case "pesan":
+      return dict.admin.nav.pesan
     case "program":
       return dict.admin.nav.program
     case "kontak":
@@ -256,10 +270,12 @@ export function AdminSidebar({
   userName,
   locale,
   incomingRegistrations,
+  incomingMessages,
 }: {
   userName: string
   locale: Locale
   incomingRegistrations: number
+  incomingMessages: number
 }) {
   const dict = useDictionary()
   const { can } = usePermissions()
@@ -269,6 +285,22 @@ export function AdminSidebar({
   const [mobileOpen, setMobileOpen] = useState(false)
   const visibleSections = filterNavSections(navSections, can)
   const visibleGroups = visibleSections.flatMap((section) => section.groups)
+
+  function incomingBadge(labelKey: NavLabelKey) {
+    if (labelKey === "pendaftaran") {
+      return {
+        count: incomingRegistrations,
+        label: dict.admin.dashboard.incomingBadge.replace("{count}", String(incomingRegistrations)),
+      }
+    }
+    if (labelKey === "pesan") {
+      return {
+        count: incomingMessages,
+        label: dict.admin.dashboard.incomingMessagesBadge.replace("{count}", String(incomingMessages)),
+      }
+    }
+    return null
+  }
 
   const [prevPathname, setPrevPathname] = useState(pathname)
   if (pathname !== prevPathname) {
@@ -315,6 +347,7 @@ export function AdminSidebar({
     if (!isMulti) {
       const item = group.items[0]
       const Icon = item.icon
+      const badge = incomingBadge(item.labelKey)
       return (
         <Link
           key={group.id}
@@ -325,12 +358,7 @@ export function AdminSidebar({
         >
           <Icon className="size-4 shrink-0" />
           <span className="min-w-0 flex-1">{getLabel(dict, item.labelKey)}</span>
-          {item.labelKey === "pendaftaran" ? (
-            <NavCount
-              count={incomingRegistrations}
-              label={dict.admin.dashboard.incomingBadge.replace("{count}", String(incomingRegistrations))}
-            />
-          ) : null}
+          {badge ? <NavCount count={badge.count} label={badge.label} /> : null}
         </Link>
       )
     }
@@ -366,6 +394,7 @@ export function AdminSidebar({
             >
               {group.items.map((item) => {
                 const Icon = item.icon
+                const badge = incomingBadge(item.labelKey)
                 return (
                   <Link
                     key={item.href}
@@ -376,12 +405,7 @@ export function AdminSidebar({
                   >
                     <Icon className="size-4 shrink-0" />
                     <span className="min-w-0 flex-1">{getLabel(dict, item.labelKey)}</span>
-                    {item.labelKey === "pendaftaran" ? (
-                      <NavCount
-                        count={incomingRegistrations}
-                        label={dict.admin.dashboard.incomingBadge.replace("{count}", String(incomingRegistrations))}
-                      />
-                    ) : null}
+                    {badge ? <NavCount count={badge.count} label={badge.label} /> : null}
                   </Link>
                 )
               })}

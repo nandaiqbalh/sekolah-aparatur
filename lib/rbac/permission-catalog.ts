@@ -152,6 +152,16 @@ export const PERMISSION_CATALOG: PermissionDefinition[] = [
     description: "Perbarui status pendaftaran",
   },
   {
+    key: "pesan.view",
+    module: "pesan",
+    description: "Lihat pesan",
+  },
+  {
+    key: "pesan.update",
+    module: "pesan",
+    description: "Perbarui status pesan",
+  },
+  {
     key: "program.view",
     module: "program",
     description: "Lihat program",
@@ -202,6 +212,7 @@ const ADMIN_ROLE_MODULES = new Set([
   "profil",
   "mitra",
   "pendaftaran",
+  "pesan",
   "program",
   "kontak",
 ])

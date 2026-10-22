@@ -8,6 +8,7 @@ import { galleryService } from "@/features/galeri/services/gallery-service"
 import { newsService } from "@/features/informasi/services/news-service"
 import { partnerService } from "@/features/mitra/services/partner-service"
 import { programService } from "@/features/program/services/program-service"
+import { messageService } from "@/features/pesan/services/message-service"
 import { registrationService } from "@/features/registration/services/registration-service"
 import { canAccessPage } from "@/lib/auth/guard-page-permission"
 import { extractAuthFromSession, getSession } from "@/lib/auth/get-session"
@@ -28,9 +29,11 @@ export default async function AdminDashboardPage() {
   const user = session ? extractAuthFromSession(session) : null
   const can = (key: string) => (user ? hasPermission(user, key) : false)
 
-  const [incoming, registrations, programs, news, galleries, partners] = await Promise.all([
+  const [incoming, registrations, incomingMessages, messages, programs, news, galleries, partners] = await Promise.all([
     can("pendaftaran.view") ? registrationService.count("submitted") : Promise.resolve(0),
     can("pendaftaran.view") ? registrationService.count() : Promise.resolve(0),
+    can("pesan.view") ? messageService.count("submitted") : Promise.resolve(0),
+    can("pesan.view") ? messageService.count() : Promise.resolve(0),
     can("program.view") ? programService.count() : Promise.resolve(0),
     can("informasi.view") ? newsService.count() : Promise.resolve(0),
     can("galeri.view") ? galleryService.count() : Promise.resolve(0),
@@ -53,6 +56,24 @@ export default async function AdminDashboardPage() {
           value: registrations,
           hint: undefined,
           href: ADMIN_ROUTES.pendaftaran,
+          emphasis: "secondary" as const,
+        }
+      : null,
+    can("pesan.view")
+      ? {
+          label: copy.incomingMessages,
+          value: incomingMessages,
+          hint: copy.incomingHint,
+          href: `${ADMIN_ROUTES.pesan}?status=submitted`,
+          emphasis: "primary" as const,
+        }
+      : null,
+    can("pesan.view")
+      ? {
+          label: copy.totalMessages,
+          value: messages,
+          hint: undefined,
+          href: ADMIN_ROUTES.pesan,
           emphasis: "secondary" as const,
         }
       : null,
@@ -97,6 +118,7 @@ export default async function AdminDashboardPage() {
   const links = [
     can("profil.view") ? { href: ADMIN_ROUTES.profilLembaga, label: copy.viewProfile } : null,
     can("pendaftaran.view") ? { href: ADMIN_ROUTES.pendaftaran, label: copy.viewRegistrations } : null,
+    can("pesan.view") ? { href: ADMIN_ROUTES.pesan, label: copy.viewMessages } : null,
     can("program.view") ? { href: ADMIN_ROUTES.program, label: copy.viewPrograms } : null,
     can("informasi.view") ? { href: ADMIN_ROUTES.informasi, label: copy.viewNews } : null,
     can("galeri.view") ? { href: ADMIN_ROUTES.galeri, label: copy.viewGalleries } : null,
