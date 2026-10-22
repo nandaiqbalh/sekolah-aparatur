@@ -4,27 +4,38 @@ import { Reveal } from "@/components/motion/reveal"
 import { PageHero } from "@/components/public/page-hero"
 import { WhatsappButton } from "@/components/public/whatsapp-button"
 import { ContactForm } from "@/features/contact/components/contact-form"
+import { getSiteContact } from "@/features/kontak/services/site-contact-service"
+import { getDictionary } from "@/lib/i18n/get-dictionary"
 import { getLocale } from "@/lib/i18n/get-locale"
 import { ROUTES } from "@/lib/routes"
 import { buildPageMetadata } from "@/lib/seo"
-import { siteContact } from "@/lib/site-contact"
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale()
+  const dict = await getDictionary(locale)
   return buildPageMetadata({
     locale,
     path: ROUTES.kontak,
-    title: "Kontak",
-    description: "Telepon, surel, dan WhatsApp panitia LPSDM Aparatur untuk informasi program dan pendaftaran.",
+    title: dict.meta.contact.title,
+    description: dict.meta.contact.description,
+    keywords: dict.meta.keywords,
   })
 }
 
-const rows = [
-  { label: "Telepon", value: siteContact.phones.join("\n") },
-  { label: "Surel", value: siteContact.email },
-]
+export default async function ContactPage() {
+  const contact = await getSiteContact()
+  const rows = [
+    contact?.phones.length
+      ? { label: "Telepon", value: contact.phones.join("\n"), href: null as string | null, external: false }
+      : null,
+    contact?.email
+      ? { label: "Surel", value: contact.email, href: `mailto:${contact.email}`, external: false }
+      : null,
+    contact?.website
+      ? { label: "Situs", value: contact.website, href: contact.website, external: true }
+      : null,
+  ].filter((row) => row !== null)
 
-export default function ContactPage() {
   return (
     <>
       <PageHero
@@ -42,8 +53,13 @@ export default function ContactPage() {
               <div key={row.label} className="grid gap-1 py-4 sm:grid-cols-[7rem_1fr]">
                 <dt className="text-sm font-semibold">{row.label}</dt>
                 <dd className="text-sm leading-6 whitespace-pre-line text-[var(--sa-muted)]">
-                  {row.label === "Surel" ? (
-                    <a href={`mailto:${row.value}`} className="cursor-pointer underline">
+                  {row.href ? (
+                    <a
+                      href={row.href}
+                      className="cursor-pointer underline"
+                      target={row.external ? "_blank" : undefined}
+                      rel={row.external ? "noreferrer" : undefined}
+                    >
                       {row.value}
                     </a>
                   ) : (
@@ -54,7 +70,11 @@ export default function ContactPage() {
             ))}
           </dl>
           <div className="mt-6">
-            <WhatsappButton className="rounded-full" label="WhatsApp panitia" />
+            <WhatsappButton
+              number={contact?.whatsappNumber ?? ""}
+              className="rounded-full"
+              label="WhatsApp panitia"
+            />
           </div>
         </section>
         </Reveal>

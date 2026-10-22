@@ -2,21 +2,30 @@ import type { Metadata } from "next"
 
 import { GalleryBrowser } from "@/components/public/gallery-browser"
 import { PageHero } from "@/components/public/page-hero"
+import { galleryService } from "@/features/galeri/services/gallery-service"
+import { getDictionary } from "@/lib/i18n/get-dictionary"
 import { getLocale } from "@/lib/i18n/get-locale"
 import { ROUTES } from "@/lib/routes"
 import { buildPageMetadata } from "@/lib/seo"
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale()
+  const dict = await getDictionary(locale)
   return buildPageMetadata({
     locale,
     path: ROUTES.galeri,
-    title: "Galeri",
-    description: "Dokumentasi foto kegiatan LPSDM Aparatur dan program Sekolah Aparatur.",
+    title: dict.meta.gallery.title,
+    description: dict.meta.gallery.description,
+    keywords: dict.meta.keywords,
   })
 }
 
-export default function GalleryPage() {
+export default async function GalleryPage() {
+  const [albums, categories] = await Promise.all([
+    galleryService.listPublished(),
+    galleryService.listPublishedCategories(),
+  ])
+
   return (
     <>
       <PageHero
@@ -26,7 +35,7 @@ export default function GalleryPage() {
       />
       <div className="bg-[var(--sa-canvas)]">
       <div className="mx-auto max-w-[1280px] px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
-        <GalleryBrowser />
+        <GalleryBrowser albums={albums} categories={categories} />
       </div>
       </div>
     </>

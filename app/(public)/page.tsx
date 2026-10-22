@@ -16,7 +16,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { homeContent } from "@/data/home"
-import { newsArticles } from "@/data/news"
+import { getSiteContact } from "@/features/kontak/services/site-contact-service"
+import { newsService } from "@/features/informasi/services/news-service"
 import { getDictionary } from "@/lib/i18n/get-dictionary"
 import { getLocale } from "@/lib/i18n/get-locale"
 import { ROUTES } from "@/lib/routes"
@@ -31,15 +32,37 @@ const strengthIcons: Record<string, LucideIcon> = {
 }
 
 export default async function Home() {
+  const [articles, contact] = await Promise.all([newsService.listPublished(8), getSiteContact()])
   const locale = await getLocale()
   const dict = await getDictionary(locale)
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: SITE_NAME,
-    url: absoluteUrl("/"),
-    description: dict.meta.description,
-    inLanguage: "id-ID",
+    "@graph": [
+      {
+        "@type": "EducationalOccupationalProgram",
+        name: dict.meta.serviceName,
+        description: dict.meta.description,
+        url: absoluteUrl("/"),
+        provider: {
+          "@type": "EducationalOrganization",
+          name: SITE_NAME,
+          url: absoluteUrl("/"),
+        },
+      },
+      {
+        "@type": "WebSite",
+        name: dict.meta.serviceName,
+        alternateName: SITE_NAME,
+        url: absoluteUrl("/"),
+        description: dict.meta.description,
+        inLanguage: locale === "id" ? "id-ID" : "en-US",
+        publisher: {
+          "@type": "EducationalOrganization",
+          name: SITE_NAME,
+          url: absoluteUrl("/"),
+        },
+      },
+    ],
   }
   return (
     <>
@@ -116,7 +139,7 @@ export default async function Home() {
             <SectionHeader title="Informasi dan kegiatan" href={ROUTES.berita} action="Seluruh informasi" />
           </Reveal>
           <Reveal>
-            <NewsScrollRow articles={newsArticles.slice(0, 8)} />
+            <NewsScrollRow articles={articles} />
           </Reveal>
         </div>
       </section>
@@ -166,7 +189,7 @@ export default async function Home() {
                 atau halaman kontak.
               </p>
               <div className="mt-5 flex flex-wrap items-center gap-3">
-                <WhatsappButton label="WhatsApp" />
+                <WhatsappButton number={contact?.whatsappNumber ?? ""} label="WhatsApp" />
                 <Link
                   href={ROUTES.kontak}
                   className="inline-flex h-12 cursor-pointer items-center gap-2 rounded-full border border-[var(--sa-navy)] bg-white px-6 text-sm font-semibold text-[var(--sa-navy)] hover:bg-[var(--sa-navy)] hover:text-white"

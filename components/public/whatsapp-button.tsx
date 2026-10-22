@@ -9,18 +9,21 @@ export function WhatsAppIcon() {
   )
 }
 
+const WHATSAPP_MESSAGE =
+  "Yth. Panitia LPSDM Aparatur, saya ingin menanyakan informasi program Sekolah Aparatur."
+
 export function WhatsappButton({
+  number,
   className,
   label = "WhatsApp",
   onClick,
 }: {
+  number: string
   className?: string
   label?: string
   onClick?: () => void
 }) {
-  const href = whatsappHref(
-    "Yth. Panitia LPSDM Aparatur, saya ingin menanyakan informasi program Sekolah Aparatur.",
-  )
+  const href = whatsappHref(number, WHATSAPP_MESSAGE)
 
   const classNames = cn(
     "inline-flex h-12 items-center gap-2 rounded-full py-1 pr-5 pl-1.5 text-sm font-semibold transition duration-300 ease-out",

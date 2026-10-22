@@ -2,18 +2,20 @@ import type { Metadata } from "next"
 
 import { PageHero } from "@/components/public/page-hero"
 import { ProgramSpotlight } from "@/components/public/program-spotlight"
+import { getDictionary } from "@/lib/i18n/get-dictionary"
 import { getLocale } from "@/lib/i18n/get-locale"
 import { ROUTES } from "@/lib/routes"
 import { buildPageMetadata } from "@/lib/seo"
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale()
+  const dict = await getDictionary(locale)
   return buildPageMetadata({
     locale,
     path: ROUTES.sekolahAparatur,
-    title: "Program Sarjana dan Pascasarjana Aparatur",
-    description:
-      "Kelas Aparatur Pemerintah Daerah, Kelas Aparatur Desa, dan Kelas Legislator.",
+    title: dict.meta.programs.title,
+    description: dict.meta.programs.description,
+    keywords: dict.meta.keywords,
   })
 }
 

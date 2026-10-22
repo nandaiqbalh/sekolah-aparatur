@@ -3,6 +3,13 @@ import { PrismaClient } from "../generated/prisma/client"
 import { PrismaPg } from "@prisma/adapter-pg"
 import bcrypt from "bcryptjs"
 
+import { galleryAlbums } from "../data/gallery"
+import { homeContent } from "../data/home"
+import { institutionProfileSeed } from "../data/profile"
+import { newsArticles } from "../data/news"
+import { getProgram } from "../data/programs"
+import { sekolahClasses } from "../data/sekolah-classes"
+import { siteContact } from "../lib/site-contact"
 import { seedRbac } from "./seed-rbac"
 
 loadLocalEnv()
@@ -120,8 +127,168 @@ async function seedStaff(client: PrismaClient) {
   }
 }
 
+async function seedNewsArticles(client: PrismaClient) {
+  for (const article of newsArticles) {
+    const existing = await client.newsArticle.findUnique({
+      where: { slug: article.slug },
+    })
+    if (existing) continue
+
+    await client.newsArticle.create({
+      data: {
+        slug: article.slug,
+        title: article.title,
+        category: article.category,
+        publishedAt: new Date(`${article.publishedAt}T00:00:00.000Z`),
+        summary: article.summary,
+        thumbnail: article.thumbnail,
+        gallery: article.gallery,
+        bodyHtml: article.bodyHtml,
+        isPublished: true,
+      },
+    })
+    console.log(`News article seeded: ${article.slug}`)
+  }
+}
+
+async function seedGalleryAlbums(client: PrismaClient) {
+  for (const album of galleryAlbums) {
+    const existing = await client.galleryAlbum.findUnique({
+      where: { slug: album.slug },
+    })
+    if (existing) continue
+
+    await client.galleryAlbum.create({
+      data: {
+        slug: album.slug,
+        title: album.title,
+        category: album.category,
+        dateLabel: album.date,
+        summary: album.summary,
+        images: album.images,
+        isPublished: true,
+      },
+    })
+    console.log(`Gallery album seeded: ${album.slug}`)
+  }
+}
+
+async function seedInstitutionProfile(client: PrismaClient) {
+  const existing = await client.institutionProfile.findUnique({
+    where: { key: institutionProfileSeed.key },
+  })
+  if (existing) return
+
+  await client.institutionProfile.create({
+    data: institutionProfileSeed,
+  })
+  console.log(`Institution profile seeded: ${institutionProfileSeed.key}`)
+}
+
+async function seedPartners(client: PrismaClient) {
+  const rows = [
+    ...homeContent.partners.map((item, index) => ({
+      kind: "university",
+      name: item.name,
+      detail: item.program,
+      logo: item.logo,
+      sortOrder: index,
+    })),
+    ...homeContent.facilitators.map((item, index) => ({
+      kind: "facilitator",
+      name: item.name,
+      detail: item.fullName,
+      logo: item.logo,
+      sortOrder: index,
+    })),
+  ]
+
+  for (const row of rows) {
+    const existing = await client.partner.findUnique({
+      where: { kind_name: { kind: row.kind, name: row.name } },
+    })
+    if (existing) continue
+
+    await client.partner.create({
+      data: { ...row, isPublished: true },
+    })
+    console.log(`Partner seeded: ${row.kind} ${row.name}`)
+  }
+}
+
+async function seedPrograms(client: PrismaClient) {
+  const facilitators = await client.partner.findMany({ where: { kind: "facilitator" } })
+
+  for (const [index, kelas] of sekolahClasses.entries()) {
+    const existing = await client.program.findUnique({ where: { slug: kelas.slug } })
+    if (existing) continue
+
+    const program = getProgram(kelas.programSlug)
+    if (!program) continue
+
+    const intro = program.sections.find((section) => section.kind === "paragraphs" && section.title === "Pengantar")
+    const mitraIds = program.mitra
+      .map((name) => facilitators.find((item) => item.name === name)?.id)
+      .filter((id): id is string => Boolean(id))
+
+    await client.program.create({
+      data: {
+        slug: kelas.slug,
+        title: kelas.title,
+        summary: kelas.summary,
+        image: kelas.image,
+        imageAlt: kelas.imageAlt,
+        introParagraphs: intro?.kind === "paragraphs" ? intro.paragraphs : [],
+        highlights: program.highlights,
+        studies: program.studies,
+        registrationPeriods: program.registrationPeriods,
+        campus: program.campus,
+        requirementGroups: kelas.requirementGroups,
+        documents: kelas.documents.map((document) => ({
+          name: document.name,
+          format: document.format,
+          size: document.size ?? "",
+          description: document.description,
+          href: document.href ?? "",
+        })),
+        mitraIds,
+        sortOrder: index,
+        isPublished: true,
+      },
+    })
+    console.log(`Program seeded: ${kelas.slug}`)
+  }
+}
+
+async function seedSiteContact(client: PrismaClient) {
+  const existing = await client.siteContact.findUnique({ where: { key: "kontak" } })
+  if (existing) return
+
+  await client.siteContact.create({
+    data: {
+      key: "kontak",
+      address: siteContact.address,
+      phones: siteContact.phones,
+      email: siteContact.email,
+      website: siteContact.website,
+      whatsappNumber: siteContact.whatsappNumber,
+      socials: [
+        { platform: "instagram", url: siteContact.instagram },
+        { platform: "facebook", url: siteContact.facebook },
+      ],
+    },
+  })
+  console.log("Site contact seeded: kontak")
+}
+
 async function main() {
   await seedStaff(prisma)
+  await seedNewsArticles(prisma)
+  await seedGalleryAlbums(prisma)
+  await seedInstitutionProfile(prisma)
+  await seedPartners(prisma)
+  await seedPrograms(prisma)
+  await seedSiteContact(prisma)
 }
 
 main()

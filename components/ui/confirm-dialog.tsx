@@ -123,7 +123,7 @@ export function ConfirmDialog({
           ) : null}
           <div className="mt-6 flex justify-center gap-3">
             {showCancelBtn ? (
-              <Button onClick={handleCancel} disabled={pending} variant="outline">
+              <Button onClick={handleCancel} disabled={pending} variant="outline" className="cursor-pointer">
                 {finalCancelLabel}
               </Button>
             ) : null}
@@ -132,6 +132,7 @@ export function ConfirmDialog({
               disabled={pending}
               variant="default"
               className={cn(
+                "cursor-pointer",
                 type === "error" || type === "warning"
                   ? "bg-destructive text-white hover:bg-destructive/90"
                   : "border-border",

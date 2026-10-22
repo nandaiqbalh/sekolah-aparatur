@@ -14,13 +14,13 @@ export function AdminFilterActions({ pending, clearDisabled, onClear }: AdminFil
 
   return (
     <div className="col-span-full grid grid-cols-1 gap-2 sm:flex sm:w-auto sm:flex-row sm:gap-2">
-      <Button type="submit" className="w-full sm:w-auto" disabled={pending}>
+      <Button type="submit" className="w-full cursor-pointer sm:w-auto" disabled={pending}>
         {dict.admin.applyFilter}
       </Button>
       <Button
         type="button"
         variant="outline"
-        className="w-full sm:w-auto"
+        className="w-full cursor-pointer sm:w-auto"
         disabled={pending || clearDisabled}
         onClick={onClear}
       >

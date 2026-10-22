@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   output: "standalone",
   experimental: {
     serverActions: {
+      bodySizeLimit: "2mb",
       allowedOrigins: [
         ...(process.env.NEXT_PUBLIC_SITE_URL
           ? [process.env.NEXT_PUBLIC_SITE_URL.replace(/^https?:\/\//, "")]

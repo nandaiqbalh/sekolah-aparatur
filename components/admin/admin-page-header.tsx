@@ -24,7 +24,7 @@ export function AdminPageHeader({
   className,
 }: AdminPageHeaderProps) {
   const showBack = Boolean(backLabel && (onBack || backHref))
-  const backClassName = "inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
+  const backClassName = "inline-flex cursor-pointer items-center gap-1.5 text-sm text-primary hover:underline"
 
   return (
     <div className={cn("flex flex-wrap items-start justify-between gap-4", className)}>

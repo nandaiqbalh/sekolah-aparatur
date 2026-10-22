@@ -3,6 +3,7 @@ import type { ReactNode } from "react"
 
 import { SectionHeader } from "@/components/public/section-header"
 import { homeContent } from "@/data/home"
+import { partnerService } from "@/features/mitra/services/partner-service"
 
 function repeat<T>(items: T[], times: number) {
   return Array.from({ length: times }, () => items).flat()
@@ -58,25 +59,42 @@ function LogoTrack<T extends { name: string }>({
   )
 }
 
-export function PartnersSection() {
+export async function PartnersSection() {
+  const [universities, facilitators] = await Promise.all([
+    partnerService.listPublished("university"),
+    partnerService.listPublished("facilitator"),
+  ])
+
   return (
     <div>
       <SectionHeader title={homeContent.mitraTitle} />
       <div className="mt-5 flex flex-col gap-6">
-          <LogoTrack label={homeContent.partnersTitle} direction="left" items={homeContent.partners} labelOf={(partner) => `${partner.name}. ${partner.program}`} render={(partner) => (
+        <LogoTrack
+          label={homeContent.partnersTitle}
+          direction="left"
+          items={universities}
+          labelOf={(partner) => `${partner.name}. ${partner.detail}`}
+          render={(partner) => (
             <div className="flex w-56 shrink-0 flex-col items-center text-center">
               <Image src={partner.logo} alt="" width={72} height={72} className="h-14 w-14 object-contain" />
               <p className="mt-3 text-sm font-semibold tracking-tight text-[var(--sa-navy)]">{partner.name}</p>
-              <p className="mt-1 text-sm leading-6 text-[var(--sa-muted)]">{partner.program}</p>
+              <p className="mt-1 text-sm leading-6 text-[var(--sa-muted)]">{partner.detail}</p>
             </div>
-          )} />
-        <LogoTrack label={homeContent.facilitatorsTitle} direction="right" items={homeContent.facilitators} labelOf={(item) => `${item.fullName}, ${item.name}`} render={(item) => (
+          )}
+        />
+        <LogoTrack
+          label={homeContent.facilitatorsTitle}
+          direction="right"
+          items={facilitators}
+          labelOf={(item) => `${item.detail}, ${item.name}`}
+          render={(item) => (
             <div className="flex w-52 shrink-0 flex-col items-center text-center">
               <Image src={item.logo} alt="" width={96} height={96} className="h-16 w-full object-contain" />
-              <p className="mt-3 text-sm font-semibold leading-snug tracking-tight text-[var(--sa-navy)]">{item.fullName}</p>
+              <p className="mt-3 text-sm font-semibold leading-snug tracking-tight text-[var(--sa-navy)]">{item.detail}</p>
               <p className="mt-1 text-sm font-semibold tracking-tight text-[var(--sa-muted)]">{item.name}</p>
             </div>
-          )} />
+          )}
+        />
       </div>
     </div>
   )

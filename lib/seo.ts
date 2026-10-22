@@ -8,7 +8,30 @@ type BuildPageMetadataOptions = {
   path?: string
   title: string
   description: string
+  keywords?: readonly string[]
   type?: "website" | "article"
+}
+
+function includesBrand(value: string) {
+  return value.toLowerCase().includes(SITE_NAME.toLowerCase())
+}
+
+function withBrandTitle(title: string) {
+  if (includesBrand(title)) return title
+  return `${title} | ${SITE_NAME}`
+}
+
+function withBrandDescription(description: string) {
+  if (includesBrand(description)) return description
+  const trimmed = description.replace(/[.\s]+$/, "")
+  return `${trimmed}. ${SITE_NAME}.`
+}
+
+export function fillSeoTemplate(template: string, values: Record<string, string>) {
+  return Object.entries(values).reduce(
+    (text, [key, value]) => text.replaceAll(`{${key}}`, value),
+    template,
+  )
 }
 
 function normalizePath(path = ""): string {
@@ -21,21 +44,36 @@ export function buildPageMetadata({
   path = "",
   title,
   description,
+  keywords,
   type = "website",
 }: BuildPageMetadataOptions): Metadata {
   const normalizedPath = normalizePath(path)
   const canonicalPath = normalizedPath || "/"
+  const socialTitle = withBrandTitle(title)
+  const socialDescription = withBrandDescription(description)
 
   return {
     metadataBase: new URL(getSiteUrl()),
     title,
-    description,
+    description: socialDescription,
+    keywords: keywords ? [...keywords] : undefined,
     alternates: {
       canonical: canonicalPath,
     },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
+      },
+    },
     openGraph: {
-      title,
-      description,
+      title: socialTitle,
+      description: socialDescription,
       url: absoluteUrl(canonicalPath),
       siteName: SITE_NAME,
       locale: locale === "id" ? "id_ID" : "en_US",
@@ -43,8 +81,8 @@ export function buildPageMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title,
-      description,
+      title: socialTitle,
+      description: socialDescription,
     },
   }
 }

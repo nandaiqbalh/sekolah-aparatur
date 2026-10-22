@@ -19,7 +19,42 @@ export const ADMIN_ROUTES = {
   users: "/admin/system/users",
   roles: "/admin/system/roles",
   activityLogs: "/admin/system/activity-logs",
+  informasi: "/admin/informasi",
+  informasiNew: "/admin/informasi/baru",
+  galeri: "/admin/galeri",
+  galeriNew: "/admin/galeri/baru",
+  profilLembaga: "/admin/profil-lembaga",
+  mitra: "/admin/mitra",
+  mitraNew: "/admin/mitra/baru",
+  pendaftaran: "/admin/pendaftaran",
+  program: "/admin/program",
+  programNew: "/admin/program/baru",
+  kontak: "/admin/kontak",
 } as const
+
+export function adminInformasiPath(id: string): string {
+  return `/admin/informasi/${id}`
+}
+
+export function adminGaleriPath(id: string): string {
+  return `/admin/galeri/${id}`
+}
+
+export function adminMitraPath(id: string): string {
+  return `/admin/mitra/${id}`
+}
+
+export function adminPendaftaranPath(id: string): string {
+  return `/admin/pendaftaran/${id}`
+}
+
+export function adminProgramPath(id: string): string {
+  return `/admin/program/${id}`
+}
+
+export function programPath(slug: string): string {
+  return `/sekolah-aparatur/${slug}`
+}
 
 export function localizedPath(_locale: string, route: string): string {
   if (!route || route === "/") return "/"

@@ -1,19 +1,15 @@
 import Image from "next/image"
 import Link from "next/link"
 
-import { sekolahClasses } from "@/data/sekolah-classes"
-import { ROUTES, registrationPath } from "@/lib/routes"
+import { programService } from "@/features/program/services/program-service"
+import { programPath, registrationPath } from "@/lib/routes"
 
-const classHref: Record<string, string> = {
-  "aparatur-pemerintah": ROUTES.aparaturPemerintah,
-  "aparatur-desa": ROUTES.aparaturDesa,
-  legislator: ROUTES.legislator,
-}
+export async function ProgramSpotlight() {
+  const programs = await programService.listPublished()
 
-export function ProgramSpotlight() {
   return (
     <ul className="grid gap-4 lg:grid-cols-3 lg:items-stretch">
-      {sekolahClasses.map((item) => (
+      {programs.map((item) => (
         <li
           key={item.slug}
           className="flex h-full min-w-0 flex-col overflow-hidden rounded-[28px] bg-[var(--sa-canvas)]"
@@ -26,7 +22,7 @@ export function ProgramSpotlight() {
             <p className="mt-2 flex-1 text-sm leading-7 text-[var(--sa-muted)] sm:text-base">{item.summary}</p>
             <div className="mt-4 flex flex-col gap-2">
               <Link
-                href={classHref[item.slug]}
+                href={programPath(item.slug)}
                 className="inline-flex h-11 w-full cursor-pointer items-center justify-center rounded-full bg-[var(--sa-navy)] px-5 text-sm font-semibold text-white transition duration-300 ease-out hover:-translate-y-0.5 hover:shadow-lg"
               >
                 Rincian program

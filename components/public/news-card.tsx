@@ -1,7 +1,8 @@
 import Image from "next/image"
 import Link from "next/link"
 
-import { formatArticleDate, type NewsArticle } from "@/data/news"
+import { formatArticleDate } from "@/data/news"
+import type { PublicNewsArticle } from "@/features/informasi/schemas/news-article"
 import { newsPath } from "@/lib/routes"
 import { cn } from "@/lib/utils"
 
@@ -9,7 +10,7 @@ export function NewsCard({
   article,
   className,
 }: {
-  article: NewsArticle
+  article: PublicNewsArticle
   className?: string
 }) {
   return (

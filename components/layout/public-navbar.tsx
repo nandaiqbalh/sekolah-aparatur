@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import { ChevronDown, Menu, X } from "lucide-react"
 
-import { sekolahClasses } from "@/data/sekolah-classes"
 import { ROUTES } from "@/lib/routes"
 import { cn } from "@/lib/utils"
 
@@ -18,23 +17,16 @@ const links = [
   { href: ROUTES.kontak, label: "Kontak" },
 ]
 
-const classHref: Record<string, string> = {
-  "aparatur-pemerintah": ROUTES.aparaturPemerintah,
-  "aparatur-desa": ROUTES.aparaturDesa,
-  legislator: ROUTES.legislator,
-}
-
-const programLinks = sekolahClasses.map((item) => ({
-  href: classHref[item.slug],
-  label: item.title,
-}))
-
 function isCurrent(pathname: string, href: string) {
   if (href === "/") return pathname === "/"
   return pathname === href || pathname.startsWith(`${href}/`)
 }
 
-export function PublicNavbar() {
+export function PublicNavbar({
+  programs,
+}: {
+  programs: { href: string; label: string }[]
+}) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const [programsOpen, setProgramsOpen] = useState(false)
@@ -151,7 +143,7 @@ export function PublicNavbar() {
                   >
                     Sekolah Aparatur
                   </Link>
-                  {programLinks.map((link) => (
+                  {programs.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
@@ -241,7 +233,7 @@ export function PublicNavbar() {
           >
             Sekolah Aparatur
           </Link>
-          {programLinks.map((link) => (
+          {programs.map((link) => (
             <Link
               key={link.href}
               href={link.href}

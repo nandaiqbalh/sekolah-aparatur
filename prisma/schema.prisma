@@ -129,3 +129,131 @@ model AdminActivityLog {
   @@index([actorId])
   @@map("admin_activity_logs")
 }
+
+model NewsArticle {
+  id          String   @id @default(uuid()) @db.Uuid
+  slug        String   @unique
+  title       String
+  category    String
+  publishedAt DateTime @map("published_at") @db.Date
+  summary     String
+  thumbnail   String
+  gallery     String[] @default([])
+  bodyHtml    String   @map("body_html")
+  isPublished Boolean  @default(true) @map("is_published")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([publishedAt])
+  @@index([isPublished])
+  @@map("news_articles")
+}
+
+model GalleryAlbum {
+  id          String   @id @default(uuid()) @db.Uuid
+  slug        String   @unique
+  title       String
+  category    String
+  dateLabel   String   @map("date_label")
+  summary     String
+  images      String[]
+  isPublished Boolean  @default(true) @map("is_published")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([isPublished])
+  @@index([createdAt])
+  @@map("gallery_albums")
+}
+
+model InstitutionProfile {
+  key                     String   @id
+  heroEyebrow             String   @map("hero_eyebrow")
+  heroTitle               String   @map("hero_title")
+  heroDescription         String   @map("hero_description")
+  lembagaImage            String   @map("lembaga_image")
+  lembagaBody             String   @map("lembaga_body")
+  latarBelakangParagraphs String[] @map("latar_belakang_paragraphs")
+  latarBelakangPoints     Json     @map("latar_belakang_points")
+  visi                    String
+  misi                    String[]
+  rplParagraphs           String[] @map("rpl_paragraphs")
+  legalBasis              String[] @map("legal_basis")
+  updatedAt               DateTime @updatedAt @map("updated_at")
+
+  @@map("institution_profiles")
+}
+
+model Partner {
+  id          String   @id @default(uuid()) @db.Uuid
+  kind        String
+  name        String
+  detail      String
+  logo        String
+  sortOrder   Int      @default(0) @map("sort_order")
+  isPublished Boolean  @default(true) @map("is_published")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@unique([kind, name])
+  @@index([kind, sortOrder])
+  @@index([isPublished])
+  @@map("partners")
+}
+
+model Registration {
+  id           String   @id @default(uuid()) @db.Uuid
+  programSlug  String   @map("program_slug")
+  name         String
+  email        String
+  whatsapp     String
+  institution  String
+  position     String
+  address      String
+  status       String   @default("submitted")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@index([status])
+  @@index([programSlug])
+  @@index([createdAt])
+  @@map("registrations")
+}
+
+model Program {
+  id                  String   @id @default(uuid()) @db.Uuid
+  slug                String   @unique
+  title               String
+  summary             String
+  image               String
+  imageAlt            String   @map("image_alt")
+  introParagraphs     String[] @map("intro_paragraphs")
+  highlights          Json
+  studies             Json
+  registrationPeriods Json     @map("registration_periods")
+  campus              Json
+  requirementGroups   Json     @map("requirement_groups")
+  documents           Json
+  mitraIds            String[] @map("mitra_ids")
+  sortOrder           Int      @default(0) @map("sort_order")
+  isPublished         Boolean  @default(true) @map("is_published")
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  @@index([isPublished, sortOrder])
+  @@index([sortOrder])
+  @@map("programs")
+}
+
+model SiteContact {
+  key            String   @id
+  address        String
+  phones         String[]
+  email          String
+  website        String   @default("")
+  whatsappNumber String   @default("") @map("whatsapp_number")
+  socials        Json
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("site_contacts")
+}

@@ -1,31 +1,43 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 
 import { Checkbox } from "@/components/ui/checkbox"
+import { ConfirmDialog } from "@/components/ui/confirm-dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { sekolahClasses } from "@/data/sekolah-classes"
+import { submitRegistrationAction } from "@/features/registration/actions/registration-actions"
 import {
   registrationSchema,
   type RegistrationInput,
 } from "@/features/registration/schemas/registration"
+import { ROUTES } from "@/lib/routes"
 
-export function RegistrationForm({ programSlug }: { programSlug: string }) {
+export function RegistrationForm({
+  programSlug,
+  options,
+}: {
+  programSlug: string
+  options: { slug: string; title: string }[]
+}) {
+  const router = useRouter()
   const [sent, setSent] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
   const {
     register,
     control,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<RegistrationInput>({
     resolver: zodResolver(registrationSchema),
     defaultValues: {
-      program: sekolahClasses.some((item) => item.slug === programSlug) ? programSlug : "",
+      program: options.some((item) => item.slug === programSlug) ? programSlug : "",
       name: "",
       email: "",
       whatsapp: "",
@@ -36,20 +48,29 @@ export function RegistrationForm({ programSlug }: { programSlug: string }) {
     },
   })
 
-  function onSubmit(values: RegistrationInput) {
-    void values
+  async function onSubmit(values: RegistrationInput) {
+    setSubmitError(null)
+    const result = await submitRegistrationAction(values)
+    if (!result.ok) {
+      if (result.fieldErrors) {
+        for (const [key, messages] of Object.entries(result.fieldErrors)) {
+          if (messages[0] && key in values) {
+            setError(key as keyof RegistrationInput, { message: messages[0] })
+          }
+        }
+      }
+      setSubmitError(result.message || "Pendaftaran gagal disimpan.")
+      return
+    }
     setSent(true)
   }
 
-  if (sent) {
-    return (
-      <p className="text-sm leading-6 text-[var(--sa-muted)]" role="status">
-        Data pendaftaran akan disimpan. Tim Sekolah Aparatur akan menghubungi Anda.
-      </p>
-    )
+  function goHome() {
+    router.push(ROUTES.home)
   }
 
   return (
+    <>
     <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)} noValidate>
       <Field label="Program" error={errors.program?.message}>
         <Controller
@@ -67,12 +88,12 @@ export function RegistrationForm({ programSlug }: { programSlug: string }) {
               >
                 <SelectValue placeholder="Pilih program">
                   {(value: string | null) =>
-                    sekolahClasses.find((item) => item.slug === value)?.title ?? "Pilih program"
+                    options.find((item) => item.slug === value)?.title ?? "Pilih program"
                   }
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
-                {sekolahClasses.map((item) => (
+                {options.map((item) => (
                   <SelectItem key={item.slug} value={item.slug}>
                     {item.title}
                   </SelectItem>
@@ -122,6 +143,7 @@ export function RegistrationForm({ programSlug }: { programSlug: string }) {
         )}
       />
       {errors.consent ? <p className="text-sm text-red-700">{errors.consent.message}</p> : null}
+      {submitError ? <p className="text-sm text-red-700">{submitError}</p> : null}
       <button
         type="submit"
         disabled={isSubmitting}
@@ -130,6 +152,18 @@ export function RegistrationForm({ programSlug }: { programSlug: string }) {
         Kirim formulir pendaftaran
       </button>
     </form>
+    <ConfirmDialog
+      open={sent}
+      onOpenChange={(open) => {
+        if (!open) goHome()
+      }}
+      type="success"
+      title="Pendaftaran berhasil"
+      message="Data pendaftaran akan disimpan. Tim Sekolah Aparatur akan menghubungi Anda."
+      confirmLabel="OK"
+      onConfirm={goHome}
+    />
+    </>
   )
 }
 

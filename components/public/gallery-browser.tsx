@@ -4,24 +4,28 @@ import { useMemo, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 
-import { galleryAlbums, galleryCategories, galleryCover } from "@/data/gallery"
+import type { PublicGalleryAlbum } from "@/features/galeri/schemas/gallery-album"
 import { galleryPath } from "@/lib/routes"
 import { cn } from "@/lib/utils"
 
-export function GalleryBrowser() {
-  const [category, setCategory] = useState<(typeof galleryCategories)[number]>("Semua")
+export function GalleryBrowser({
+  albums,
+  categories,
+}: {
+  albums: PublicGalleryAlbum[]
+  categories: string[]
+}) {
+  const filters = ["Semua", ...categories]
+  const [category, setCategory] = useState("Semua")
   const items = useMemo(
-    () =>
-      category === "Semua"
-        ? galleryAlbums
-        : galleryAlbums.filter((item) => item.category === category),
-    [category],
+    () => (category === "Semua" ? albums : albums.filter((item) => item.category === category)),
+    [albums, category],
   )
 
   return (
     <div>
       <div className="flex flex-wrap gap-2" role="group" aria-label="Filter galeri">
-        {galleryCategories.map((item) => (
+        {filters.map((item) => (
           <button
             key={item}
             type="button"
@@ -42,7 +46,7 @@ export function GalleryBrowser() {
             <Link href={galleryPath(item.slug)} className="flex h-full cursor-pointer flex-col">
               <span className="relative block h-56 shrink-0 overflow-hidden rounded-2xl bg-white">
                 <Image
-                  src={galleryCover(item)}
+                  src={item.images[0] ?? ""}
                   alt={item.title}
                   fill
                   className="object-cover"

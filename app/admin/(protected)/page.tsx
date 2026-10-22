@@ -4,11 +4,14 @@ import { AccessDenied } from "@/components/admin/access-denied"
 import { AdminPageHeader } from "@/components/admin/admin-page-header"
 import { AdminStatCard } from "@/components/admin/admin-stat-card"
 import { buttonVariants } from "@/components/ui/button"
-import { activityLogService } from "@/features/activity-log/services/activity-log-service"
-import { roleService } from "@/features/role/services/role-service"
-import { userService } from "@/features/user/services/user-service"
+import { galleryService } from "@/features/galeri/services/gallery-service"
+import { newsService } from "@/features/informasi/services/news-service"
+import { partnerService } from "@/features/mitra/services/partner-service"
+import { programService } from "@/features/program/services/program-service"
+import { registrationService } from "@/features/registration/services/registration-service"
 import { canAccessPage } from "@/lib/auth/guard-page-permission"
 import { extractAuthFromSession, getSession } from "@/lib/auth/get-session"
+import { hasPermission } from "@/lib/auth/permissions"
 import { getDictionary } from "@/lib/i18n/get-dictionary"
 import { getLocale } from "@/lib/i18n/get-locale"
 import { ADMIN_ROUTES } from "@/lib/routes"
@@ -21,57 +24,133 @@ export default async function AdminDashboardPage() {
 
   const session = await getSession()
   const dict = await getDictionary(await getLocale())
+  const copy = dict.admin.dashboard
   const user = session ? extractAuthFromSession(session) : null
+  const can = (key: string) => (user ? hasPermission(user, key) : false)
 
-  const [users, roles, logs] = await Promise.all([
-    userService.getUsers({ page: 1, limit: 1 }),
-    roleService.getRoles({ page: 1, limit: 1 }),
-    activityLogService.list({ page: 1, limit: 1 }),
+  const [incoming, registrations, programs, news, galleries, partners] = await Promise.all([
+    can("pendaftaran.view") ? registrationService.count("submitted") : Promise.resolve(0),
+    can("pendaftaran.view") ? registrationService.count() : Promise.resolve(0),
+    can("program.view") ? programService.count() : Promise.resolve(0),
+    can("informasi.view") ? newsService.count() : Promise.resolve(0),
+    can("galeri.view") ? galleryService.count() : Promise.resolve(0),
+    can("mitra.view") ? partnerService.count() : Promise.resolve(0),
   ])
 
-  const userTotal = users.ok && users.data ? users.data.total : 0
-  const roleTotal = roles.ok && roles.data ? roles.data.total : 0
-  const logTotal = logs.total
+  const stats = [
+    can("pendaftaran.view")
+      ? {
+          label: copy.incomingRegistrations,
+          value: incoming,
+          hint: copy.incomingHint,
+          href: `${ADMIN_ROUTES.pendaftaran}?status=submitted`,
+          emphasis: "primary" as const,
+        }
+      : null,
+    can("pendaftaran.view")
+      ? {
+          label: copy.totalRegistrations,
+          value: registrations,
+          hint: undefined,
+          href: ADMIN_ROUTES.pendaftaran,
+          emphasis: "secondary" as const,
+        }
+      : null,
+    can("program.view")
+      ? {
+          label: copy.programs,
+          value: programs,
+          hint: undefined,
+          href: ADMIN_ROUTES.program,
+          emphasis: "secondary" as const,
+        }
+      : null,
+    can("informasi.view")
+      ? {
+          label: copy.news,
+          value: news,
+          hint: undefined,
+          href: ADMIN_ROUTES.informasi,
+          emphasis: "secondary" as const,
+        }
+      : null,
+    can("galeri.view")
+      ? {
+          label: copy.galleries,
+          value: galleries,
+          hint: undefined,
+          href: ADMIN_ROUTES.galeri,
+          emphasis: "secondary" as const,
+        }
+      : null,
+    can("mitra.view")
+      ? {
+          label: copy.partners,
+          value: partners,
+          hint: undefined,
+          href: ADMIN_ROUTES.mitra,
+          emphasis: "secondary" as const,
+        }
+      : null,
+  ].filter((item) => item !== null)
+
+  const links = [
+    can("profil.view") ? { href: ADMIN_ROUTES.profilLembaga, label: copy.viewProfile } : null,
+    can("pendaftaran.view") ? { href: ADMIN_ROUTES.pendaftaran, label: copy.viewRegistrations } : null,
+    can("program.view") ? { href: ADMIN_ROUTES.program, label: copy.viewPrograms } : null,
+    can("informasi.view") ? { href: ADMIN_ROUTES.informasi, label: copy.viewNews } : null,
+    can("galeri.view") ? { href: ADMIN_ROUTES.galeri, label: copy.viewGalleries } : null,
+    can("mitra.view") ? { href: ADMIN_ROUTES.mitra, label: copy.viewPartners } : null,
+    can("kontak.view") ? { href: ADMIN_ROUTES.kontak, label: copy.viewContact } : null,
+  ].filter((item) => item !== null)
 
   return (
     <div className="space-y-6">
       <AdminPageHeader
-        title={dict.admin.dashboard.title}
+        title={copy.title}
         description={
           <>
-            {dict.admin.dashboard.description}
+            {copy.description}
             {user ? (
               <span className="mt-1 block">
-                {dict.admin.dashboard.signedInAs} {user.name} ({user.email})
+                {copy.signedInAs} {user.name} ({user.email})
               </span>
             ) : null}
           </>
         }
       />
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <AdminStatCard label={dict.admin.dashboard.totalUsers} value={userTotal} />
-        <AdminStatCard label={dict.admin.dashboard.totalRoles} value={roleTotal} />
-        <AdminStatCard label={dict.admin.dashboard.recentActivity} value={logTotal} />
-      </div>
-
-      <section className="space-y-3">
-        <h2 className="text-lg font-medium">{dict.admin.dashboard.quickLinks}</h2>
-        <div className="flex flex-wrap gap-2">
-          <Link href={ADMIN_ROUTES.users} className={cn(buttonVariants())}>
-            {dict.admin.dashboard.viewUsers}
-          </Link>
-          <Link href={ADMIN_ROUTES.roles} className={cn(buttonVariants({ variant: "outline" }))}>
-            {dict.admin.dashboard.viewRoles}
-          </Link>
-          <Link
-            href={ADMIN_ROUTES.activityLogs}
-            className={cn(buttonVariants({ variant: "outline" }))}
-          >
-            {dict.admin.dashboard.viewActivityLogs}
-          </Link>
+      {stats.length > 0 ? (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {stats.map((item) => (
+            <Link key={item.label} href={item.href} className="cursor-pointer">
+              <AdminStatCard
+                label={item.label}
+                value={item.value}
+                hint={item.hint}
+                emphasis={item.emphasis}
+              />
+            </Link>
+          ))}
         </div>
-      </section>
+      ) : null}
+
+      {links.length > 0 ? (
+        <section className="space-y-3">
+          <h2 className="text-lg font-medium">{copy.quickLinks}</h2>
+          <div className="flex flex-wrap gap-2">
+            {links.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(buttonVariants({ variant: "outline" }), "cursor-pointer")}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
     </div>
   )
 }

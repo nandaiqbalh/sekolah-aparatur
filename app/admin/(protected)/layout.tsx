@@ -4,7 +4,9 @@ import type { Metadata } from "next"
 
 import { AdminPermissionsProvider } from "@/components/admin/admin-permissions-provider"
 import { AdminSidebar } from "@/components/admin/admin-sidebar"
+import { registrationService } from "@/features/registration/services/registration-service"
 import { extractAuthFromSession, getSession } from "@/lib/auth/get-session"
+import { hasPermission } from "@/lib/auth/permissions"
 import {
   ADMIN_LOGIN_PATH,
   getPathnameFromHeaders,
@@ -36,6 +38,9 @@ export default async function AdminProtectedLayout({
   const authUser = extractAuthFromSession(session)
   const locale = await getLocale()
   const dict = await getDictionary(locale)
+  const incomingRegistrations = hasPermission(authUser, "pendaftaran.view")
+    ? await registrationService.count("submitted")
+    : 0
 
   return (
     <Providers dictionary={dict}>
@@ -45,7 +50,11 @@ export default async function AdminProtectedLayout({
         isSuperAdmin={authUser.isSuperAdmin}
       >
         <div className="admin-shell fixed inset-0 flex overflow-hidden">
-          <AdminSidebar userName={authUser.name} locale={locale} />
+          <AdminSidebar
+            userName={authUser.name}
+            locale={locale}
+            incomingRegistrations={incomingRegistrations}
+          />
           <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto bg-background p-6 pt-[4.5rem] md:pt-6">
             {children}
           </main>

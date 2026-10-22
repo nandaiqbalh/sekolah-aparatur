@@ -4,10 +4,10 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useCallback, useEffect, useRef, useState } from "react"
 
 import { NewsCard } from "@/components/public/news-card"
-import type { NewsArticle } from "@/data/news"
+import type { PublicNewsArticle } from "@/features/informasi/schemas/news-article"
 import { cn } from "@/lib/utils"
 
-export function NewsScrollRow({ articles }: { articles: NewsArticle[] }) {
+export function NewsScrollRow({ articles }: { articles: PublicNewsArticle[] }) {
   const trackRef = useRef<HTMLUListElement>(null)
   const [canScrollPrev, setCanScrollPrev] = useState(false)
   const [canScrollNext, setCanScrollNext] = useState(false)

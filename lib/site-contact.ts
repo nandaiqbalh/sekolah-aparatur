@@ -14,9 +14,9 @@ export const siteContact = {
   whatsappNumber: "6282249621229",
 }
 
-export function whatsappHref(message?: string): string | null {
-  const number = siteContact.whatsappNumber?.replace(/\D/g, "")
-  if (!number) return null
+export function whatsappHref(number: string | null | undefined, message?: string): string | null {
+  const digits = number?.replace(/\D/g, "")
+  if (!digits) return null
   const text = message ? `?text=${encodeURIComponent(message)}` : ""
-  return `https://wa.me/${number}${text}`
+  return `https://wa.me/${digits}${text}`
 }

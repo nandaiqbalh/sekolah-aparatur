@@ -4,39 +4,56 @@ import { notFound } from "next/navigation"
 
 import { NewsGallery } from "@/components/public/news-gallery"
 import { PageHero } from "@/components/public/page-hero"
-import { formatArticleDate, getArticle, newsArticles } from "@/data/news"
+import { formatArticleDate } from "@/data/news"
+import { newsService } from "@/features/informasi/services/news-service"
+import { getDictionary } from "@/lib/i18n/get-dictionary"
 import { getLocale } from "@/lib/i18n/get-locale"
 import { ROUTES, newsPath } from "@/lib/routes"
-import { buildPageMetadata } from "@/lib/seo"
+import { buildPageMetadata, jsonLdScript } from "@/lib/seo"
+import { SITE_NAME, absoluteUrl } from "@/lib/site"
 
 type PageProps = {
   params: Promise<{ slug: string }>
 }
 
-export function generateStaticParams() {
-  return newsArticles.map((article) => ({ slug: article.slug }))
-}
-
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params
-  const article = getArticle(slug)
+  const article = await newsService.getPublishedBySlug(slug)
   const locale = await getLocale()
+  const dict = await getDictionary(locale)
   return buildPageMetadata({
     locale,
     path: newsPath(slug),
-    title: article?.title ?? "Informasi",
-    description: article?.summary ?? "Informasi kegiatan Sekolah Aparatur.",
+    title: article?.title ?? dict.meta.news.title,
+    description: article?.summary || dict.meta.newsFallbackDescription,
+    keywords: dict.meta.keywords,
     type: "article",
   })
 }
 
 export default async function NewsDetailPage({ params }: PageProps) {
   const { slug } = await params
-  const article = getArticle(slug)
+  const article = await newsService.getPublishedBySlug(slug)
   if (!article) notFound()
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: article.title,
+    description: article.summary,
+    datePublished: article.publishedAt,
+    image: article.thumbnail ? [absoluteUrl(article.thumbnail)] : undefined,
+    mainEntityOfPage: absoluteUrl(newsPath(slug)),
+    publisher: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: absoluteUrl("/"),
+    },
+  }
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(jsonLd) }} />
       <PageHero
         eyebrow={`${article.category} · ${formatArticleDate(article.publishedAt)}`}
         title={article.title}

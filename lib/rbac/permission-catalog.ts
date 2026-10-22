@@ -71,6 +71,116 @@ export const PERMISSION_CATALOG: PermissionDefinition[] = [
     module: "activity_logs",
     description: "Lihat log aktivitas admin",
   },
+  {
+    key: "informasi.view",
+    module: "informasi",
+    description: "Lihat informasi",
+  },
+  {
+    key: "informasi.create",
+    module: "informasi",
+    description: "Buat informasi",
+  },
+  {
+    key: "informasi.update",
+    module: "informasi",
+    description: "Perbarui informasi",
+  },
+  {
+    key: "informasi.delete",
+    module: "informasi",
+    description: "Hapus informasi",
+  },
+  {
+    key: "galeri.view",
+    module: "galeri",
+    description: "Lihat galeri",
+  },
+  {
+    key: "galeri.create",
+    module: "galeri",
+    description: "Buat galeri",
+  },
+  {
+    key: "galeri.update",
+    module: "galeri",
+    description: "Perbarui galeri",
+  },
+  {
+    key: "galeri.delete",
+    module: "galeri",
+    description: "Hapus galeri",
+  },
+  {
+    key: "profil.view",
+    module: "profil",
+    description: "Lihat profil lembaga",
+  },
+  {
+    key: "profil.update",
+    module: "profil",
+    description: "Perbarui profil lembaga",
+  },
+  {
+    key: "mitra.view",
+    module: "mitra",
+    description: "Lihat mitra",
+  },
+  {
+    key: "mitra.create",
+    module: "mitra",
+    description: "Buat mitra",
+  },
+  {
+    key: "mitra.update",
+    module: "mitra",
+    description: "Perbarui mitra",
+  },
+  {
+    key: "mitra.delete",
+    module: "mitra",
+    description: "Hapus mitra",
+  },
+  {
+    key: "pendaftaran.view",
+    module: "pendaftaran",
+    description: "Lihat pendaftaran",
+  },
+  {
+    key: "pendaftaran.update",
+    module: "pendaftaran",
+    description: "Perbarui status pendaftaran",
+  },
+  {
+    key: "program.view",
+    module: "program",
+    description: "Lihat program",
+  },
+  {
+    key: "program.create",
+    module: "program",
+    description: "Buat program",
+  },
+  {
+    key: "program.update",
+    module: "program",
+    description: "Perbarui program",
+  },
+  {
+    key: "program.delete",
+    module: "program",
+    description: "Hapus program",
+  },
+  {
+    key: "kontak.view",
+    module: "kontak",
+    description: "Lihat kontak",
+  },
+  {
+    key: "kontak.update",
+    module: "kontak",
+    description: "Perbarui kontak",
+  },
 ]
 
 export function permissionDescriptionJson(description: string): {
@@ -85,9 +195,18 @@ export function isSuperAdminOnlyPermission(key: string): boolean {
   return (SUPER_ADMIN_ONLY_MODULES as readonly string[]).includes(moduleName)
 }
 
-const ADMIN_ROLE_MODULES = new Set(["dashboard"])
+const ADMIN_ROLE_MODULES = new Set([
+  "dashboard",
+  "informasi",
+  "galeri",
+  "profil",
+  "mitra",
+  "pendaftaran",
+  "program",
+  "kontak",
+])
 
-/** Limited staff role — dashboard only (no system administration). */
+/** Staff role: dashboard and public content, without system administration. */
 export function adminRolePermissionKeys(): string[] {
   return PERMISSION_CATALOG.filter((p) => ADMIN_ROLE_MODULES.has(p.module)).map(
     (p) => p.key,

@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import React, { useState } from "react"
-import { ChevronDown, LayoutDashboard, LogOut, Menu, ScrollText, Shield, User, Users, X } from "lucide-react"
+import { ChevronDown, ClipboardList, GraduationCap, Handshake, Images, Landmark, LayoutDashboard, LogOut, Menu, Newspaper, Phone, ScrollText, Shield, User, Users, X } from "lucide-react"
 import { AnimatePresence, motion } from "framer-motion"
 
 import { logoutAction } from "@/features/auth/actions/auth-actions"
@@ -21,7 +21,15 @@ type NavLabelKey =
   | "users"
   | "roles"
   | "activityLogs"
+  | "informasi"
+  | "galeri"
+  | "profilLembaga"
+  | "mitra"
+  | "pendaftaran"
+  | "program"
+  | "kontak"
   | "navSectionSystem"
+  | "navSectionContent"
   | "navGroupAdministration"
 
 type NavItem = {
@@ -57,6 +65,89 @@ const navSections: NavSection[] = [
             icon: LayoutDashboard,
             permission: "dashboard.view",
             exact: true,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "content",
+    labelKey: "navSectionContent",
+    groups: [
+      {
+        id: "profil-lembaga",
+        items: [
+          {
+            href: ADMIN_ROUTES.profilLembaga,
+            labelKey: "profilLembaga",
+            icon: Landmark,
+            permission: "profil.view",
+          },
+        ],
+      },
+      {
+        id: "pendaftaran",
+        items: [
+          {
+            href: ADMIN_ROUTES.pendaftaran,
+            labelKey: "pendaftaran",
+            icon: ClipboardList,
+            permission: "pendaftaran.view",
+          },
+        ],
+      },
+      {
+        id: "program",
+        items: [
+          {
+            href: ADMIN_ROUTES.program,
+            labelKey: "program",
+            icon: GraduationCap,
+            permission: "program.view",
+          },
+        ],
+      },
+      {
+        id: "informasi",
+        items: [
+          {
+            href: ADMIN_ROUTES.informasi,
+            labelKey: "informasi",
+            icon: Newspaper,
+            permission: "informasi.view",
+          },
+        ],
+      },
+      {
+        id: "galeri",
+        items: [
+          {
+            href: ADMIN_ROUTES.galeri,
+            labelKey: "galeri",
+            icon: Images,
+            permission: "galeri.view",
+          },
+        ],
+      },
+      {
+        id: "mitra",
+        items: [
+          {
+            href: ADMIN_ROUTES.mitra,
+            labelKey: "mitra",
+            icon: Handshake,
+            permission: "mitra.view",
+          },
+        ],
+      },
+      {
+        id: "kontak",
+        items: [
+          {
+            href: ADMIN_ROUTES.kontak,
+            labelKey: "kontak",
+            icon: Phone,
+            permission: "kontak.view",
           },
         ],
       },
@@ -123,8 +214,24 @@ function getLabel(dict: ReturnType<typeof useDictionary>, key: NavLabelKey): str
       return dict.admin.nav.roles
     case "activityLogs":
       return dict.admin.nav.activityLogs
+    case "informasi":
+      return dict.admin.nav.informasi
+    case "galeri":
+      return dict.admin.nav.galeri
+    case "profilLembaga":
+      return dict.admin.nav.profilLembaga
+    case "mitra":
+      return dict.admin.nav.mitra
+    case "pendaftaran":
+      return dict.admin.nav.pendaftaran
+    case "program":
+      return dict.admin.nav.program
+    case "kontak":
+      return dict.admin.nav.kontak
     case "navSectionSystem":
       return dict.admin.navSectionSystem
+    case "navSectionContent":
+      return dict.admin.navSectionContent
     case "navGroupAdministration":
       return dict.admin.navGroupAdministration
     default:
@@ -132,12 +239,27 @@ function getLabel(dict: ReturnType<typeof useDictionary>, key: NavLabelKey): str
   }
 }
 
+function NavCount({ count, label }: { count: number; label: string }) {
+  if (count <= 0) return null
+  const text = count > 99 ? "99+" : String(count)
+  return (
+    <span
+      className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[11px] font-semibold leading-none text-primary-foreground"
+      aria-label={label}
+    >
+      {text}
+    </span>
+  )
+}
+
 export function AdminSidebar({
   userName,
   locale,
+  incomingRegistrations,
 }: {
   userName: string
   locale: Locale
+  incomingRegistrations: number
 }) {
   const dict = useDictionary()
   const { can } = usePermissions()
@@ -178,7 +300,7 @@ export function AdminSidebar({
   function linkClass(href: string, exact?: boolean, indented = false) {
     const isActive = isNavItemActive(pathname, href, exact)
     return cn(
-      "flex items-center gap-2 rounded-lg py-2 text-sm font-medium transition-colors",
+      "flex cursor-pointer items-center gap-2 rounded-lg py-2 text-sm font-medium transition-colors",
       indented ? "px-6" : "px-3",
       isActive
         ? "bg-primary/10 text-primary"
@@ -203,6 +325,12 @@ export function AdminSidebar({
         >
           <Icon className="size-4 shrink-0" />
           <span className="min-w-0 flex-1">{getLabel(dict, item.labelKey)}</span>
+          {item.labelKey === "pendaftaran" ? (
+            <NavCount
+              count={incomingRegistrations}
+              label={dict.admin.dashboard.incomingBadge.replace("{count}", String(incomingRegistrations))}
+            />
+          ) : null}
         </Link>
       )
     }
@@ -248,6 +376,12 @@ export function AdminSidebar({
                   >
                     <Icon className="size-4 shrink-0" />
                     <span className="min-w-0 flex-1">{getLabel(dict, item.labelKey)}</span>
+                    {item.labelKey === "pendaftaran" ? (
+                      <NavCount
+                        count={incomingRegistrations}
+                        label={dict.admin.dashboard.incomingBadge.replace("{count}", String(incomingRegistrations))}
+                      />
+                    ) : null}
                   </Link>
                 )
               })}
