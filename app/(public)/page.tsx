@@ -179,7 +179,7 @@ export default async function Home() {
                     <AccordionTrigger className="cursor-pointer py-3 text-base font-semibold hover:no-underline">
                       {faq.question}
                     </AccordionTrigger>
-                    <AccordionContent className="text-[var(--sa-muted)]">{faq.answer}</AccordionContent>
+                    <AccordionContent className="text-[var(--sa-muted)]">{renderMarkedText(faq.answer)}</AccordionContent>
                   </AccordionItem>
                 ))}
               </Accordion>

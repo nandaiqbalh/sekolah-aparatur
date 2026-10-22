@@ -170,9 +170,9 @@ model InstitutionProfile {
   key                     String   @id
   heroEyebrow             String   @map("hero_eyebrow")
   heroTitle               String   @map("hero_title")
-  heroDescription         String   @map("hero_description")
+  heroDescription         String?  @map("hero_description")
   lembagaImage            String   @map("lembaga_image")
-  lembagaBody             String   @map("lembaga_body")
+  lembagaBody             String?  @map("lembaga_body")
   latarBelakangParagraphs String[] @map("latar_belakang_paragraphs")
   latarBelakangPoints     Json     @map("latar_belakang_points")
   visi                    String

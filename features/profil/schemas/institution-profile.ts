@@ -12,9 +12,9 @@ export const latarBelakangPointSchema = z.object({
 export const institutionProfileFormSchema = z.object({
   heroEyebrow: z.string().trim().min(2, "Teks kecil wajib diisi."),
   heroTitle: z.string().trim().min(2, "Judul wajib diisi."),
-  heroDescription: z.string().trim().min(10, "Ringkasan wajib diisi."),
+  heroDescription: z.string().trim(),
   lembagaImage: z.string().trim().min(1, "Foto lembaga wajib diisi."),
-  lembagaBody: z.string().trim().min(10, "Teks lembaga wajib diisi."),
+  lembagaBody: z.string().trim(),
   latarBelakangParagraphs: z.array(textItem).min(1, "Minimal satu paragraf."),
   latarBelakangPoints: z.array(latarBelakangPointSchema).min(1, "Minimal satu poin."),
   visi: z.string().trim().min(10, "Visi wajib diisi."),

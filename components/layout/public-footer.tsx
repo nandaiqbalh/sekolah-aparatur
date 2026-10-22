@@ -129,7 +129,7 @@ export async function PublicFooter() {
             />
           </Link>
           <p className="mt-4 text-sm leading-6 text-white/70">
-            LPSDM Aparatur menyelenggarakan Program Sekolah Aparatur.
+            LPSDM sebagai fasilitator Program Sekolah Aparatur.
           </p>
           {contact?.address ? <p className="mt-2 text-sm leading-6 text-white/70">{contact.address}</p> : null}
         </div>

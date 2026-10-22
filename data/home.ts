@@ -94,14 +94,14 @@ export const homeContent = {
         "Kelas Aparatur Pemerintah Daerah diperuntukkan bagi aparatur pemerintah dan pemerintah daerah. Kelas Aparatur Desa diperuntukkan bagi perangkat desa. Kelas Legislator diperuntukkan bagi aparatur negara dan legislator, termasuk anggota DPR dan DPRD.",
     },
     {
-      question: "Berapa lama durasi studi?",
+      question: "Berapa Lama Masa Studi?",
       answer:
-        "Pada Kelas Aparatur Pemerintah Daerah dan Kelas Aparatur Desa, Sarjana (S1) ditempuh 1,5–2 tahun dan Magister (S2) ditempuh 1–1,5 tahun melalui jalur Rekognisi Pembelajaran Lampau (RPL). Pada Kelas Legislator, Magister Ilmu Politik jalur RPL ditempuh 1 tahun, sedangkan Doktor Administrasi Publik ditempuh 3 tahun.",
+        "Program Sekolah Aparatur menyediakan jenjang **Sarjana (S1) dan Magister (S2)** melalui jalur Rekognisi Pembelajaran Lampau (RPL), dengan masa studi **1,5 tahun untuk Sarjana** dan **1 tahun untuk Magister**. Sementara itu, jenjang **Doktor (S3)** diselenggarakan melalui jalur reguler dengan masa studi **3 tahun**.",
     },
     {
       question: "Berapa biaya perkuliahan?",
       answer:
-        "Kelas Aparatur Pemerintah Daerah dan Kelas Aparatur Desa menggunakan sistem Uang Kuliah Tunggal (UKT) sesuai kebijakan universitas penyelenggara, dan dapat didukung skema Dana Desa sesuai ketentuan yang berlaku. Pada Kelas Legislator, biaya Magister (S2) sebesar Rp17.500.000 per semester (total Rp35.000.000 untuk dua semester) dan Doktor (S3) sebesar Rp17.500.000 per semester (total Rp105.000.000 untuk enam semester), di luar biaya tugas akhir.",
+        "Seluruh program Sekolah Aparatur menawarkan biaya pendidikan yang relatif terjangkau dengan sistem pembayaran yang fleksibel dan dapat diangsur secara bertahap. Besaran biaya kuliah disesuaikan dengan jenjang pendidikan, program studi, dan kebijakan perguruan tinggi penyelenggara.",
     },
   ],
 }

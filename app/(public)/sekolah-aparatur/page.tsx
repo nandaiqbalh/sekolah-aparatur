@@ -24,8 +24,8 @@ export default function ProgramIndexPage() {
     <>
       <PageHero
         eyebrow="Program"
-        title="Program Sekolah Aparatur"
-        description="Kelas Aparatur Pemerintah Daerah, Kelas Aparatur Desa, dan Kelas Legislator, diselenggarakan bersama universitas penyelenggara melalui jalur Rekognisi Pembelajaran Lampau (RPL)."
+        title="Kelas Sarjana dan Pascasarja Sekolah Aparatur"
+        description=""
       />
       <div className="bg-white py-8 lg:py-10">
         <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">

@@ -5,7 +5,7 @@ export const INSTITUTION_PROFILE_KEY = "lembaga"
 export const institutionProfileSeed = {
   key: INSTITUTION_PROFILE_KEY,
   heroEyebrow: "Profil program",
-  heroTitle: "LPSDM Aparatur",
+  heroTitle: "Program Sekolah Aparatur",
   heroDescription:
     "Lembaga pengelola program Sekolah Aparatur bagi aparatur daerah, perangkat desa, dan legislator.",
   lembagaImage: "/profile/image-profile.webp",
