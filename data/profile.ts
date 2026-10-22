@@ -38,7 +38,7 @@ export const institutionProfileSeed = {
   ],
   rplParagraphs: [
     "Rekognisi Pembelajaran Lampau (RPL) memberikan pengakuan atas capaian pembelajaran yang diperoleh dari pendidikan formal, nonformal, informal, dan/atau pengalaman kerja untuk diakui dalam pendidikan formal.",
-    "Capaian pembelajaran dari perguruan tinggi sebelumnya dapat diakui melalui asesmen untuk keperluan transfer kredit. Capaian dari pengalaman kerja, pelatihan, dan pembelajaran mandiri diakui melalui asesmen dan rekognisi untuk memperoleh satuan kredit semester (SKS).",
+    "Capaian pembelajaran yang diperoleh dari perguruan tinggi sebelumnya dapat diakui melalui asesmen untuk keperluan transfer kredit. Capaian dari pengalaman kerja, pelatihan, dan pembelajaran mandiri diakui melalui asesmen dan rekognisi untuk memperoleh Satuan Kredit Semester (SKS).",
     "Sarjana (S1) dan Magister (S2) diselenggarakan melalui jalur RPL. Doktor (S3) diselenggarakan melalui jalur reguler.",
   ],
   legalBasis: [...legalBasis],

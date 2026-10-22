@@ -17,7 +17,7 @@ export default async function AdminProgramFormPage({ params }: PageProps) {
   const facilitators = (await partnerService.listPublished("facilitator")).map((item) => ({
     id: item.id,
     name: item.name,
-    detail: item.detail,
+    detail: item.detail ?? "",
   }))
 
   if (id === "baru") {

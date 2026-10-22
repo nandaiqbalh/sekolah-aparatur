@@ -188,7 +188,7 @@ model Partner {
   id          String   @id @default(uuid()) @db.Uuid
   kind        String
   name        String
-  detail      String
+  detail      String?
   logo        String
   sortOrder   Int      @default(0) @map("sort_order")
   isPublished Boolean  @default(true) @map("is_published")

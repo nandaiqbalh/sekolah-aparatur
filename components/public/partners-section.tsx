@@ -73,12 +73,14 @@ export async function PartnersSection() {
           label={homeContent.partnersTitle}
           direction="left"
           items={universities}
-          labelOf={(partner) => `${partner.name}. ${partner.detail}`}
+          labelOf={(partner) => (partner.detail ? `${partner.name}. ${partner.detail}` : partner.name)}
           render={(partner) => (
             <div className="flex w-56 shrink-0 flex-col items-center text-center">
               <Image src={partner.logo} alt="" width={72} height={72} className="h-14 w-14 object-contain" />
               <p className="mt-3 text-sm font-semibold tracking-tight text-[var(--sa-navy)]">{partner.name}</p>
-              <p className="mt-1 text-sm leading-6 text-[var(--sa-muted)]">{partner.detail}</p>
+              {partner.detail ? (
+                <p className="mt-1 text-sm leading-6 text-[var(--sa-muted)]">{partner.detail}</p>
+              ) : null}
             </div>
           )}
         />
@@ -86,7 +88,7 @@ export async function PartnersSection() {
           label={homeContent.facilitatorsTitle}
           direction="right"
           items={facilitators}
-          labelOf={(item) => `${item.detail}, ${item.name}`}
+          labelOf={(item) => (item.detail ? `${item.detail}, ${item.name}` : item.name)}
           render={(item) => (
             <div className="flex w-52 shrink-0 flex-col items-center text-center">
               <Image src={item.logo} alt="" width={96} height={96} className="h-16 w-full object-contain" />

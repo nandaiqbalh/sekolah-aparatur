@@ -16,6 +16,10 @@ import { actionFailure, actionSuccess, type ActionResult } from "@/lib/action-re
 
 type PartnerRow = NonNullable<Awaited<ReturnType<typeof partnerRepository.findById>>>
 
+function storedDetail(detail: string) {
+  return detail.length > 0 ? detail : null
+}
+
 function toPublic(row: PartnerRow): PublicPartner {
   return {
     id: row.id,
@@ -98,7 +102,7 @@ export const partnerService = {
     const row = await partnerRepository.create({
       kind: values.kind,
       name: values.name,
-      detail: values.detail,
+      detail: storedDetail(values.detail),
       logo: values.logo,
       sortOrder,
       isPublished: values.isPublished,
@@ -113,6 +117,12 @@ export const partnerService = {
     const current = await partnerRepository.findById(id)
     if (!current) return actionFailure("NOT_FOUND", "Data tidak ditemukan.")
 
+    if (current.kind === "facilitator" && values.detail.length < 2) {
+      return actionFailure("VALIDATION_ERROR", "Nama lengkap wajib diisi.", {
+        detail: ["Nama lengkap wajib diisi."],
+      })
+    }
+
     const existing = await partnerRepository.findByKindAndName(current.kind as PartnerKind, values.name)
     if (existing && existing.id !== id) {
       return actionFailure("CONFLICT", "Nama sudah dipakai.", {
@@ -122,7 +132,7 @@ export const partnerService = {
 
     const row = await partnerRepository.update(id, {
       name: values.name,
-      detail: values.detail,
+      detail: storedDetail(values.detail),
       logo: values.logo,
       isPublished: values.isPublished,
     })

@@ -288,7 +288,7 @@ export function PartnersManager({ initialData }: { initialData: PartnerListResul
                   </AdminTableCell>
                   <AdminTableCell className="font-medium">{partner.name}</AdminTableCell>
                   <AdminTableCell className="max-w-sm text-muted-foreground">
-                    <span className="line-clamp-2">{partner.detail}</span>
+                    {partner.detail ? <span className="line-clamp-2">{partner.detail}</span> : null}
                   </AdminTableCell>
                   <AdminTableCell>
                     <AdminStatusBadge

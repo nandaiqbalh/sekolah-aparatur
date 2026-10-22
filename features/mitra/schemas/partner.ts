@@ -7,13 +7,23 @@ export type PartnerKind = (typeof partnerKinds)[number]
 
 const partnerKindSchema = z.enum(partnerKinds)
 
-export const partnerFormSchema = z.object({
-  kind: partnerKindSchema,
-  name: z.string().trim().min(2, "Nama wajib diisi."),
-  detail: z.string().trim().min(2, "Keterangan wajib diisi."),
-  logo: z.string().trim().min(1, "Logo wajib diisi."),
-  isPublished: z.boolean(),
-})
+export const partnerFormSchema = z
+  .object({
+    kind: partnerKindSchema,
+    name: z.string().trim().min(2, "Nama wajib diisi."),
+    detail: z.string().trim(),
+    logo: z.string().trim().min(1, "Logo wajib diisi."),
+    isPublished: z.boolean(),
+  })
+  .superRefine((value, ctx) => {
+    if (value.kind === "facilitator" && value.detail.length < 2) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Nama lengkap wajib diisi.",
+        path: ["detail"],
+      })
+    }
+  })
 
 export const createPartnerSchema = partnerFormSchema
 
@@ -60,7 +70,7 @@ export type PublicPartner = {
   id: string
   kind: PartnerKind
   name: string
-  detail: string
+  detail: string | null
   logo: string
 }
 

@@ -227,8 +227,10 @@ export async function ProgramDetail({ program }: { program: PublicProgram }) {
                 <ul className="mt-6 flex flex-col gap-6 sm:flex-row sm:gap-12">
                   {mitra.map((item) => (
                     <li key={item.id} className="flex min-w-0 flex-col items-start text-left">
-                      <Image src={item.logo} alt={item.detail} width={96} height={96} className="h-16 w-auto object-contain object-left" />
-                      <p className="mt-3 text-sm font-semibold leading-snug text-[var(--sa-navy)]">{item.detail}</p>
+                      <Image src={item.logo} alt={item.detail ?? item.name} width={96} height={96} className="h-16 w-auto object-contain object-left" />
+                      {item.detail ? (
+                        <p className="mt-3 text-sm font-semibold leading-snug text-[var(--sa-navy)]">{item.detail}</p>
+                      ) : null}
                       <p className="mt-1 text-sm font-semibold text-[var(--sa-muted)]">{item.name}</p>
                     </li>
                   ))}

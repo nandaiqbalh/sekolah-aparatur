@@ -1,4 +1,4 @@
-import { ArrowRight, BadgeCheck, Clock3, Laptop, Wallet, type LucideIcon } from "lucide-react"
+import { ArrowRight, BadgeCheck, Clock3, Handshake, Laptop, Wallet, type LucideIcon } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -29,6 +29,27 @@ const strengthIcons: Record<string, LucideIcon> = {
   clock: Clock3,
   laptop: Laptop,
   wallet: Wallet,
+  handshake: Handshake,
+}
+
+function renderMarkedText(text: string) {
+  return text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g).map((part, index) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return (
+        <strong key={index} className="font-bold">
+          {part.slice(2, -2)}
+        </strong>
+      )
+    }
+    if (part.startsWith("*") && part.endsWith("*")) {
+      return (
+        <em key={index} className="italic">
+          {part.slice(1, -1)}
+        </em>
+      )
+    }
+    return part
+  })
 }
 
 export default async function Home() {
@@ -116,15 +137,18 @@ export default async function Home() {
           <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
             <SectionHeader title={homeContent.strengthsTitle} />
             <ul className="mt-5 grid gap-px overflow-hidden rounded-2xl bg-[var(--sa-line)] sm:grid-cols-2">
-              {homeContent.strengths.map((item) => {
+              {homeContent.strengths.map((item, index) => {
                 const Icon = strengthIcons[item.icon]
+                const spansRow = index === homeContent.strengths.length - 1 && homeContent.strengths.length % 2 === 1
                 return (
-                <li key={item.title} className="bg-white p-5">
-                  <span className="inline-flex size-12 items-center justify-center rounded-2xl bg-[var(--sa-gold)] text-[var(--sa-navy)] shadow-[0_8px_20px_rgba(255,190,89,0.45)]">
-                    <Icon className="size-6" aria-hidden />
-                  </span>
-                  <h3 className="mt-3 text-lg font-semibold">{item.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-[var(--sa-muted)]">{item.description}</p>
+                <li key={item.title} className={spansRow ? "bg-white p-5 sm:col-span-2" : "bg-white p-5"}>
+                  <h3 className="flex items-center gap-2.5 text-lg font-semibold">
+                    <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-[var(--sa-gold)] text-[var(--sa-navy)]">
+                      <Icon className="size-4" aria-hidden />
+                    </span>
+                    {item.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-6 text-[var(--sa-muted)]">{renderMarkedText(item.description)}</p>
                 </li>
                 )
               })}

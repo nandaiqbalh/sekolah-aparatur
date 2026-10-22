@@ -55,25 +55,31 @@ export const homeContent = {
       icon: "badge",
       title: "Rekognisi Pembelajaran Lampau (RPL)",
       description:
-        "Capaian pembelajaran dari pendidikan formal, nonformal, informal, dan/atau pengalaman kerja diakui melalui asesmen untuk memperoleh satuan kredit semester (SKS) pada jenjang Sarjana (S1) dan Magister (S2).",
+        "Capaian pembelajaran yang diperoleh melalui pendidikan formal, nonformal, informal, maupun pengalaman kerja dapat diakui sebagai Satuan Kredit Semester (SKS) melalui proses asesmen pada jenjang Sarjana (S1) dan Magister (S2), sesuai dengan ketentuan yang berlaku.",
     },
     {
       icon: "clock",
       title: "Durasi studi yang efisien",
       description:
-        "Sarjana (S1) ditempuh 1,5–2 tahun. Magister (S2) ditempuh 1–1,5 tahun. Magister Ilmu Politik jalur RPL ditempuh 1 tahun.",
+        "Melalui jalur Rekognisi Pembelajaran Lampau (RPL), jenjang Sarjana (S1) dapat ditempuh dalam waktu **1,5–2 tahun**, sedangkan jenjang Magister (S2) dalam waktu **1–1,5 tahun**. Sementara itu, jenjang Doktor (S3) diselenggarakan melalui jalur reguler dengan masa studi **3 tahun**, sesuai dengan ketentuan akademik perguruan tinggi penyelenggara.",
     },
     {
       icon: "laptop",
       title: "Pembelajaran yang adaptif",
       description:
-        "Program daerah dan desa menggunakan perkuliahan daring sinkron dan asinkron. Program pascasarjana menerapkan hybrid learning, daring dan tatap muka.",
+        "Seluruh program Sekolah Aparatur menerapkan sistem *blended learning* yang memadukan pembelajaran daring (*online*) dan tatap muka (*onsite*), serta memungkinkan pelaksanaan perkuliahan secara *hybrid* sesuai dengan kebutuhan program dan ketentuan akademik.",
     },
     {
       icon: "wallet",
       title: "Pembiayaan melalui UKT",
       description:
-        "Biaya perkuliahan mengikuti kebijakan universitas penyelenggara dan dibayarkan dengan sistem Uang Kuliah Tunggal (UKT). Program daerah dan desa dapat didukung skema Dana Desa sesuai ketentuan yang berlaku.",
+        "Biaya pendidikan menggunakan sistem Sumbangan Pembinaan Pendidikan (SPP) yang relatif terjangkau, dengan kemudahan pembayaran secara bertahap atau angsuran.",
+    },
+    {
+      icon: "handshake",
+      title: "Pendampingan Selama Masa Studi",
+      description:
+        "Peserta Sekolah Aparatur mendapatkan layanan pendampingan dari LPSDM sepanjang masa studi, mulai dari proses pendaftaran, administrasi akademik, hingga penyelesaian pendidikan. Pendampingan ini bertujuan membantu kelancaran studi peserta sesuai dengan ketentuan perguruan tinggi penyelenggara.",
     },
   ],
   faqs: [
