@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import React, { useState } from "react"
-import { ChevronDown, ClipboardList, GraduationCap, Handshake, Images, Landmark, LayoutDashboard, LogOut, Mail, Menu, Newspaper, Phone, ScrollText, Shield, User, Users, X } from "lucide-react"
+import { ChevronDown, ClipboardList, GraduationCap, Handshake, Image as ImageIcon, Images, Landmark, LayoutDashboard, LogOut, Mail, Menu, Newspaper, Phone, ScrollText, Shield, User, Users, X } from "lucide-react"
 import { AnimatePresence, motion } from "framer-motion"
 
 import { logoutAction } from "@/features/auth/actions/auth-actions"
@@ -24,6 +24,7 @@ type NavLabelKey =
   | "informasi"
   | "galeri"
   | "profilLembaga"
+  | "hero"
   | "mitra"
   | "pendaftaran"
   | "pesan"
@@ -83,6 +84,17 @@ const navSections: NavSection[] = [
             labelKey: "profilLembaga",
             icon: Landmark,
             permission: "profil.view",
+          },
+        ],
+      },
+      {
+        id: "hero",
+        items: [
+          {
+            href: ADMIN_ROUTES.hero,
+            labelKey: "hero",
+            icon: ImageIcon,
+            permission: "hero.view",
           },
         ],
       },
@@ -232,6 +244,8 @@ function getLabel(dict: ReturnType<typeof useDictionary>, key: NavLabelKey): str
       return dict.admin.nav.galeri
     case "profilLembaga":
       return dict.admin.nav.profilLembaga
+    case "hero":
+      return dict.admin.nav.hero
     case "mitra":
       return dict.admin.nav.mitra
     case "pendaftaran":

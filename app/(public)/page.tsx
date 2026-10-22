@@ -16,6 +16,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { homeContent } from "@/data/home"
+import { heroSlideService } from "@/features/hero/services/hero-slide-service"
 import { getSiteContact } from "@/features/kontak/services/site-contact-service"
 import { newsService } from "@/features/informasi/services/news-service"
 import { getDictionary } from "@/lib/i18n/get-dictionary"
@@ -53,7 +54,11 @@ function renderMarkedText(text: string) {
 }
 
 export default async function Home() {
-  const [articles, contact] = await Promise.all([newsService.listPublished(8), getSiteContact()])
+  const [articles, contact, heroSlides] = await Promise.all([
+    newsService.listPublished(8),
+    getSiteContact(),
+    heroSlideService.listPublished(),
+  ])
   const locale = await getLocale()
   const dict = await getDictionary(locale)
   const jsonLd = {
@@ -89,7 +94,7 @@ export default async function Home() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(jsonLd) }} />
 
-      <HeaderSection />
+      <HeaderSection slides={heroSlides} />
 
       <section className="bg-[var(--sa-canvas)] py-10 lg:py-12">
         <Reveal>

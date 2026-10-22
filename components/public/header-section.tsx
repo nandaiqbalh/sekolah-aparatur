@@ -5,22 +5,24 @@ import Link from "next/link"
 import { Reveal } from "@/components/motion/reveal"
 import { HeroMessages } from "@/components/public/hero-messages"
 import { homeContent } from "@/data/home"
+import type { PublicHeroSlide } from "@/features/hero/schemas/hero-slide"
 import { ROUTES, registrationPath } from "@/lib/routes"
 
-const heroSlides = [
-  { src: "/profile/hero-001.jpg", alt: "Kegiatan Sekolah Aparatur" },
-  { src: "/profile/hero-002.jpg", alt: "Kegiatan Sekolah Aparatur" },
-]
+export function HeaderSection({ slides }: { slides: PublicHeroSlide[] }) {
+  const rotates = slides.length > 1
 
-export function HeaderSection() {
   return (
     <section className="bg-[var(--sa-navy)]">
       <div className="relative min-h-[100svh]">
         <div className="absolute inset-0 overflow-hidden">
-          {heroSlides.map((slide, index) => (
-            <div key={slide.src} className="hero-slide absolute inset-0" style={{ animationDelay: `${index * -5}s` }}>
+          {slides.map((slide, index) => (
+            <div
+              key={slide.id}
+              className={rotates ? "hero-slide absolute inset-0" : "absolute inset-0"}
+              style={rotates ? { animationDelay: `${(index * -10) / slides.length}s` } : undefined}
+            >
               <Image
-                src={slide.src}
+                src={slide.image}
                 alt={slide.alt}
                 fill
                 priority={index === 0}

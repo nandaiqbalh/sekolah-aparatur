@@ -166,6 +166,20 @@ model GalleryAlbum {
   @@map("gallery_albums")
 }
 
+model HeroSlide {
+  id          String   @id @default(uuid()) @db.Uuid
+  image       String
+  alt         String
+  sortOrder   Int      @default(0) @map("sort_order")
+  isPublished Boolean  @default(true) @map("is_published")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([isPublished, sortOrder])
+  @@index([sortOrder])
+  @@map("hero_slides")
+}
+
 model InstitutionProfile {
   key                     String   @id
   heroEyebrow             String   @map("hero_eyebrow")

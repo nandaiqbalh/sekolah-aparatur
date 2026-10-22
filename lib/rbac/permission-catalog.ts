@@ -122,6 +122,26 @@ export const PERMISSION_CATALOG: PermissionDefinition[] = [
     description: "Perbarui profil program",
   },
   {
+    key: "hero.view",
+    module: "hero",
+    description: "Lihat gambar hero beranda",
+  },
+  {
+    key: "hero.create",
+    module: "hero",
+    description: "Tambah gambar hero beranda",
+  },
+  {
+    key: "hero.update",
+    module: "hero",
+    description: "Perbarui gambar hero beranda",
+  },
+  {
+    key: "hero.delete",
+    module: "hero",
+    description: "Hapus gambar hero beranda",
+  },
+  {
     key: "mitra.view",
     module: "mitra",
     description: "Lihat mitra",
@@ -210,6 +230,7 @@ const ADMIN_ROLE_MODULES = new Set([
   "informasi",
   "galeri",
   "profil",
+  "hero",
   "mitra",
   "pendaftaran",
   "pesan",

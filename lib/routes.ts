@@ -24,6 +24,8 @@ export const ADMIN_ROUTES = {
   galeri: "/admin/galeri",
   galeriNew: "/admin/galeri/baru",
   profilLembaga: "/admin/profil-lembaga",
+  hero: "/admin/hero",
+  heroNew: "/admin/hero/baru",
   mitra: "/admin/mitra",
   mitraNew: "/admin/mitra/baru",
   pendaftaran: "/admin/pendaftaran",
@@ -43,6 +45,10 @@ export function adminGaleriPath(id: string): string {
 
 export function adminMitraPath(id: string): string {
   return `/admin/mitra/${id}`
+}
+
+export function adminHeroPath(id: string): string {
+  return `/admin/hero/${id}`
 }
 
 export function adminPendaftaranPath(id: string): string {
