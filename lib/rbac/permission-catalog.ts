@@ -114,12 +114,12 @@ export const PERMISSION_CATALOG: PermissionDefinition[] = [
   {
     key: "profil.view",
     module: "profil",
-    description: "Lihat profil lembaga",
+    description: "Lihat profil program",
   },
   {
     key: "profil.update",
     module: "profil",
-    description: "Perbarui profil lembaga",
+    description: "Perbarui profil program",
   },
   {
     key: "mitra.view",

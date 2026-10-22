@@ -60,7 +60,7 @@ export const institutionProfileService = {
       rplParagraphs: values.rplParagraphs,
       legalBasis: values.legalBasis,
     })
-    return actionSuccess(toDto(row), "Profil lembaga diperbarui.")
+    return actionSuccess(toDto(row), "Profil program diperbarui.")
   },
 
   async saveImage(file: { type: string; bytes: Buffer }): Promise<ActionResult<{ path: string }>> {

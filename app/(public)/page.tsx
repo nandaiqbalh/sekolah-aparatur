@@ -83,7 +83,7 @@ export default async function Home() {
               />
             </div>
             <div>
-              <p className="text-sm font-semibold text-[var(--sa-blue)]">Program Sarjana dan Pascasarjana Aparatur</p>
+              <p className="text-sm font-semibold text-[var(--sa-blue)]">Program Sekolah Aparatur</p>
               <h2 className="mt-2 max-w-xl text-4xl font-semibold tracking-tight text-[var(--sa-navy)] sm:text-5xl sm:leading-[1.1]">
                 {homeContent.introTitle}
               </h2>
@@ -92,7 +92,7 @@ export default async function Home() {
                 href={ROUTES.profil}
                 className="mt-5 inline-flex h-12 cursor-pointer items-center gap-2 border-b-2 border-[var(--sa-gold)] text-sm font-semibold text-[var(--sa-navy)]"
               >
-                Profil lembaga
+                Profil program
                 <ArrowRight className="size-4" />
               </Link>
             </div>
@@ -103,7 +103,7 @@ export default async function Home() {
       <section className="bg-white py-8 lg:py-10">
         <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
           <Reveal>
-            <SectionHeader title="Program Sarjana dan Pascasarjana Aparatur" />
+            <SectionHeader title="Program Sekolah Aparatur" />
           </Reveal>
           <Reveal className="mt-6">
             <ProgramSpotlight />

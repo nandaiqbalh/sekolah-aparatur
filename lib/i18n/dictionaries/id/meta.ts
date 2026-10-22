@@ -1,6 +1,6 @@
 const meta = {
-  serviceName: "Program Sarjana dan Pascasarjana Aparatur",
-  title: "Program Sarjana dan Pascasarjana Aparatur | Sekolah Aparatur",
+  serviceName: "Program Sekolah Aparatur",
+  title: "Program Sekolah Aparatur | Sekolah Aparatur",
   description:
     "Program sarjana dan pascasarjana bagi aparatur daerah, perangkat desa, dan legislator melalui jalur Rekognisi Pembelajaran Lampau (RPL) dari Sekolah Aparatur.",
   keywords: [
@@ -13,7 +13,7 @@ const meta = {
     "Sekolah Aparatur",
   ],
   programs: {
-    title: "Program Sarjana dan Pascasarjana Aparatur",
+    title: "Program Sekolah Aparatur",
     description:
       "Kelas Aparatur Pemerintah Daerah, Kelas Aparatur Desa, dan Kelas Legislator melalui jalur RPL bersama universitas penyelenggara. Sekolah Aparatur.",
   },
@@ -35,7 +35,7 @@ const meta = {
   contact: {
     title: "Kontak pendaftaran program pendidikan aparatur",
     description:
-      "Telepon, surel, dan WhatsApp untuk informasi program sarjana dan pascasarjana aparatur serta pendaftarannya. Sekolah Aparatur.",
+      "Telepon, surel, dan WhatsApp untuk informasi program Sekolah Aparatur serta pendaftarannya. Sekolah Aparatur.",
   },
   registrationTitle: "Pendaftaran {title}",
   registrationDescription:

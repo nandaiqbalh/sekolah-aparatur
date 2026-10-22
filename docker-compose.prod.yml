@@ -40,6 +40,8 @@ services:
       SEED_SUPER_ADMIN_PASSWORD: "${SEED_SUPER_ADMIN_PASSWORD:-}"
       SEED_SUPER_ADMIN_NAME: "${SEED_SUPER_ADMIN_NAME:-Super Admin}"
       SEED_SUPER_ADMIN_USERNAME: "${SEED_SUPER_ADMIN_USERNAME:-superadmin}"
+    volumes:
+      - uploads:/app/public/uploads
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:3000/"]
       interval: 5s
@@ -51,6 +53,7 @@ services:
 
 volumes:
   pgdata:
+  uploads:
 
 networks:
   sekolah-aparatur-network:

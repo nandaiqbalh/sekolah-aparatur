@@ -80,7 +80,7 @@ export const homeContent = {
     {
       question: "Kelas apa yang ditawarkan?",
       answer:
-        "Program Sarjana dan Pascasarjana Aparatur terdiri atas Kelas Aparatur Pemerintah Daerah, Kelas Aparatur Desa, serta Kelas Legislator.",
+        "Program Sekolah Aparatur terdiri atas Kelas Aparatur Pemerintah Daerah, Kelas Aparatur Desa, serta Kelas Legislator.",
     },
     {
       question: "Siapa yang dapat mengikuti program ini?",

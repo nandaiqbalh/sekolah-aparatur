@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og"
 
-export const alt = "Program Sarjana dan Pascasarjana Aparatur — Sekolah Aparatur"
+export const alt = "Program Sekolah Aparatur — Sekolah Aparatur"
 export const size = {
   width: 1200,
   height: 630,
@@ -33,7 +33,7 @@ export default function TwitterImage() {
             letterSpacing: -1,
           }}
         >
-          Program Sarjana dan Pascasarjana Aparatur
+          Program Sekolah Aparatur
         </div>
         <div
           style={{
