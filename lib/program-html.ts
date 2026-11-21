@@ -47,15 +47,6 @@ export function programBodyHtml(program: Program): string {
   const parts = [
     ...(pengantar ? [blockHtml(pengantar)] : []),
     section(
-      "Program studi yang ditawarkan",
-      `<ul>${program.studies
-        .map((study) => {
-          const label = study.level === study.name ? study.level : `${study.level} — ${study.name}`
-          return `<li><strong>${escapeHtml(label)}.</strong> ${escapeHtml(study.track)}. ${escapeHtml(study.detail)}</li>`
-        })
-        .join("")}</ul>`,
-    ),
-    section(
       "Keunggulan program",
       `<ul>${program.highlights
         .map((item) => `<li><strong>${escapeHtml(item.title)}.</strong> ${escapeHtml(item.description)}</li>`)

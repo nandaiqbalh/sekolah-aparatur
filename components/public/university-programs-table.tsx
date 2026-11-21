@@ -1,5 +1,8 @@
+import { Check } from "lucide-react"
+
 import { universityProgramsTitle } from "@/data/university-programs"
-import { programService, type PublicUniversityProgramRow } from "@/features/program/services/program-service"
+import { universityProgramService } from "@/features/prodi/services/university-program-service"
+import type { PublicUniversityProgram } from "@/features/prodi/schemas/university-program"
 
 function buildSpans(values: string[]) {
   const spans = values.map(() => 0)
@@ -15,7 +18,7 @@ function buildSpans(values: string[]) {
   return spans
 }
 
-function withUniversityNumbers(rows: PublicUniversityProgramRow[]) {
+function withUniversityNumbers(rows: PublicUniversityProgram[]) {
   const numbers = new Map<string, number>()
   let next = 1
   return rows.map((row) => {
@@ -29,8 +32,19 @@ function withUniversityNumbers(rows: PublicUniversityProgramRow[]) {
   })
 }
 
+function Mark({ on, label }: { on: boolean; label: string }) {
+  if (!on) {
+    return <span className="text-[var(--sa-muted)]">—</span>
+  }
+  return (
+    <span className="inline-flex items-center justify-center text-[var(--sa-navy)]" title={label}>
+      <Check className="size-4" aria-label={label} />
+    </span>
+  )
+}
+
 export async function UniversityProgramsTable() {
-  const rows = withUniversityNumbers(await programService.listPublishedStudies())
+  const rows = withUniversityNumbers(await universityProgramService.listPublished())
   if (rows.length === 0) return null
 
   const universityKeys = rows.map((row) => `${row.no}:${row.university}`)
@@ -44,7 +58,7 @@ export async function UniversityProgramsTable() {
         {universityProgramsTitle}
       </h2>
       <div className="mt-6 overflow-x-auto rounded-3xl border border-[var(--sa-line)] bg-white">
-        <table className="w-full min-w-[40rem] border-collapse text-left text-sm">
+        <table className="w-full min-w-[52rem] border-collapse text-left text-sm">
           <thead>
             <tr className="bg-[var(--sa-navy)] text-white">
               <th className="px-4 py-3 font-semibold">No</th>
@@ -52,6 +66,9 @@ export async function UniversityProgramsTable() {
               <th className="px-4 py-3 font-semibold">Program studi</th>
               <th className="px-4 py-3 font-semibold">Strata</th>
               <th className="px-4 py-3 font-semibold">Konsentrasi</th>
+              <th className="px-3 py-3 text-center font-semibold">Kelas aparatur desa</th>
+              <th className="px-3 py-3 text-center font-semibold">Kelas aparatur pemerintah</th>
+              <th className="px-3 py-3 text-center font-semibold">Kelas legislator</th>
             </tr>
           </thead>
           <tbody>
@@ -61,7 +78,7 @@ export async function UniversityProgramsTable() {
               const zebra = index % 2 === 0 ? "bg-white" : "bg-[var(--sa-canvas)]"
 
               return (
-                <tr key={`${row.no}-${row.study}-${row.strata}-${row.concentration ?? "none"}-${index}`} className={zebra}>
+                <tr key={row.id} className={zebra}>
                   {showUniversity ? (
                     <td
                       rowSpan={universitySpans[index]}
@@ -85,6 +102,15 @@ export async function UniversityProgramsTable() {
                   ) : null}
                   <td className="px-4 py-3 font-semibold text-[var(--sa-navy)]">{row.strata}</td>
                   <td className="px-4 py-3 text-[var(--sa-muted)]">{row.concentration ?? "—"}</td>
+                  <td className="px-3 py-3 text-center">
+                    <Mark on={row.forAparaturDesa} label="Kelas aparatur desa" />
+                  </td>
+                  <td className="px-3 py-3 text-center">
+                    <Mark on={row.forAparaturPemerintah} label="Kelas aparatur pemerintah" />
+                  </td>
+                  <td className="px-3 py-3 text-center">
+                    <Mark on={row.forLegislator} label="Kelas legislator" />
+                  </td>
                 </tr>
               )
             })}

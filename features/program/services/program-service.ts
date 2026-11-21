@@ -11,17 +11,12 @@ import {
   programHighlightSchema,
   programPeriodSchema,
   programRequirementGroupSchema,
-  programStrata,
   type ProgramDto,
   type ProgramFormValues,
   type ProgramListResult,
-  type ProgramStrata,
-  type ProgramStudy,
-  type ProgramStudyView,
   type PublicProgram,
   type PublicProgramCard,
 } from "@/features/program/schemas/program"
-import { partnerRepository } from "@/features/mitra/repositories/partner-repository"
 import { actionFailure, actionSuccess, type ActionResult } from "@/lib/action-result"
 import {
   documentExtensionFor,
@@ -47,22 +42,6 @@ function readJson<T>(schema: z.ZodType<T>, value: unknown, fallback: T): T {
   return parsed.success ? parsed.data : fallback
 }
 
-function storedConcentration(value: string) {
-  return value.length > 0 ? value : null
-}
-
-function toStudy(row: ProgramRow["studies"][number]): ProgramStudyView {
-  const strata = programStrata.includes(row.strata as ProgramStrata) ? (row.strata as ProgramStrata) : "S1"
-  return {
-    partnerId: row.partnerId,
-    university: row.partner.name,
-    logo: row.partner.logo,
-    study: row.study,
-    strata,
-    concentration: row.concentration ?? "",
-  }
-}
-
 function toPublic(row: ProgramRow): PublicProgram {
   return {
     slug: row.slug,
@@ -72,7 +51,6 @@ function toPublic(row: ProgramRow): PublicProgram {
     imageAlt: row.imageAlt,
     introParagraphs: row.introParagraphs,
     highlights: readJson(z.array(programHighlightSchema), row.highlights, []),
-    studies: row.studies.map(toStudy),
     registrationPeriods: readJson(z.array(programPeriodSchema), row.registrationPeriods, []),
     campus: readJson(programCampusSchema, row.campus, { name: "", logo: "", description: "", address: "" }),
     requirementGroups: readJson(z.array(programRequirementGroupSchema), row.requirementGroups, []),
@@ -106,7 +84,7 @@ function toJson(value: unknown): Prisma.InputJsonValue {
   return value as Prisma.InputJsonValue
 }
 
-function contentData(values: Omit<ProgramFormValues, "studies">) {
+function contentData(values: ProgramFormValues) {
   return {
     title: values.title,
     summary: values.summary,
@@ -123,30 +101,6 @@ function contentData(values: Omit<ProgramFormValues, "studies">) {
   }
 }
 
-function studyRows(studies: ProgramStudy[]) {
-  return studies.map((item, index) => ({
-    partnerId: item.partnerId,
-    study: item.study,
-    strata: item.strata,
-    concentration: storedConcentration(item.concentration),
-    sortOrder: index,
-  }))
-}
-
-async function assertUniversityPartners(
-  partnerIds: string[],
-): Promise<Extract<ActionResult<never>, { ok: false }> | null> {
-  const uniqueIds = [...new Set(partnerIds)]
-  if (uniqueIds.length === 0) return null
-
-  const rows = await partnerRepository.findMany({ kind: "university" })
-  const known = new Set(rows.map((row) => row.id))
-  if (uniqueIds.some((id) => !known.has(id))) {
-    return actionFailure("VALIDATION_ERROR", "Kampus harus dipilih dari mitra universitas.")
-  }
-  return null
-}
-
 async function uniqueSlug(title: string): Promise<string> {
   const base = slugifyTitle(title) || "program"
   let candidate = base
@@ -158,13 +112,6 @@ async function uniqueSlug(title: string): Promise<string> {
     candidate = `${base}-${suffix}`
     suffix += 1
   }
-}
-
-export type PublicUniversityProgramRow = {
-  university: string
-  study: string
-  strata: ProgramStrata
-  concentration: string | null
 }
 
 export const programService = {
@@ -184,17 +131,6 @@ export const programService = {
     await connection()
     const row = await programRepository.findPublishedBySlug(slug)
     return row ? toPublic(row) : null
-  },
-
-  async listPublishedStudies(): Promise<PublicUniversityProgramRow[]> {
-    await connection()
-    const rows = await programRepository.listPublishedStudies()
-    return rows.map((row) => ({
-      university: row.partner.name,
-      study: row.study,
-      strata: programStrata.includes(row.strata as ProgramStrata) ? (row.strata as ProgramStrata) : "S1",
-      concentration: row.concentration,
-    }))
   },
 
   count() {
@@ -238,34 +174,20 @@ export const programService = {
   },
 
   async create(values: ProgramFormValues): Promise<ActionResult<ProgramDto>> {
-    const { studies, ...rest } = values
-    const partnerError = await assertUniversityPartners(studies.map((item) => item.partnerId))
-    if (partnerError) return partnerError
-
     const slug = await uniqueSlug(values.title)
     const sortOrder = await programRepository.count({})
     const row = await programRepository.create({
       slug,
       sortOrder,
-      ...contentData(rest),
+      ...contentData(values),
     })
-    await programRepository.replaceStudies(row.id, studyRows(studies))
-    const refreshed = await programRepository.findById(row.id)
-    if (!refreshed) return actionFailure("NOT_FOUND", "Program tidak ditemukan.")
-    return actionSuccess(toDto(refreshed), "Program disimpan.")
+    return actionSuccess(toDto(row), "Program disimpan.")
   },
 
   async update(id: string, values: ProgramFormValues): Promise<ActionResult<ProgramDto>> {
     const current = await programRepository.findById(id)
     if (!current) return actionFailure("NOT_FOUND", "Program tidak ditemukan.")
-    const { studies, ...rest } = values
-    const partnerError = await assertUniversityPartners(studies.map((item) => item.partnerId))
-    if (partnerError) return partnerError
-
-    await programRepository.update(id, contentData(rest))
-    await programRepository.replaceStudies(id, studyRows(studies))
-    const row = await programRepository.findById(id)
-    if (!row) return actionFailure("NOT_FOUND", "Program tidak ditemukan.")
+    const row = await programRepository.update(id, contentData(values))
     return actionSuccess(toDto(row), "Program diperbarui.")
   },
 

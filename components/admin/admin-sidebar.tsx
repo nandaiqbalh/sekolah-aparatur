@@ -27,6 +27,7 @@ type NavLabelKey =
   | "hero"
   | "mitra"
   | "rincianBiaya"
+  | "programStudi"
   | "pendaftaran"
   | "pesan"
   | "program"
@@ -177,6 +178,17 @@ const navSections: NavSection[] = [
         ],
       },
       {
+        id: "program-studi",
+        items: [
+          {
+            href: ADMIN_ROUTES.programStudi,
+            labelKey: "programStudi",
+            icon: GraduationCap,
+            permission: "prodi.view",
+          },
+        ],
+      },
+      {
         id: "kontak",
         items: [
           {
@@ -262,6 +274,8 @@ function getLabel(dict: ReturnType<typeof useDictionary>, key: NavLabelKey): str
       return dict.admin.nav.mitra
     case "rincianBiaya":
       return dict.admin.nav.rincianBiaya
+    case "programStudi":
+      return dict.admin.nav.programStudi
     case "pendaftaran":
       return dict.admin.nav.pendaftaran
     case "pesan":

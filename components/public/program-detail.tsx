@@ -83,7 +83,6 @@ export async function ProgramDetail({ program }: { program: PublicProgram }) {
   const mitra = program.mitraIds
     .map((id) => facilitators.find((item) => item.id === id))
     .filter((item) => item !== undefined)
-  const showStudies = program.studies.length > 0
   const showIntro = program.introParagraphs.length > 0
   const showHighlights = program.highlights.length > 0
   const showPeriods = program.registrationPeriods.length > 0
@@ -104,48 +103,13 @@ export async function ProgramDetail({ program }: { program: PublicProgram }) {
         </div>
       </section>
 
-      {showIntro || showStudies || showHighlights ? (
+      {showIntro || showHighlights ? (
         <section className="bg-white py-8 lg:py-10">
           <div className="mx-auto flex max-w-[1280px] flex-col gap-8 px-4 sm:px-6 lg:px-8">
             {showIntro ? (
               <div>
                 <SectionHeading title="Pengantar" />
                 <Paragraphs items={program.introParagraphs} />
-              </div>
-            ) : null}
-            {showStudies ? (
-              <div>
-                <SectionHeading title="Program studi yang ditawarkan" />
-                <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {program.studies.map((study) => (
-                    <li
-                      key={`${study.partnerId}-${study.study}-${study.strata}-${study.concentration}`}
-                      className="flex gap-3 rounded-2xl bg-[var(--sa-canvas)] px-4 py-4"
-                    >
-                      {study.logo ? (
-                        <Image
-                          src={study.logo}
-                          alt=""
-                          width={40}
-                          height={40}
-                          className="mt-0.5 size-10 shrink-0 object-contain"
-                        />
-                      ) : (
-                        <span className="mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-full bg-white text-xs text-[var(--sa-muted)]">
-                          {study.strata}
-                        </span>
-                      )}
-                      <div className="min-w-0">
-                        <p className="text-xs tracking-wide text-[var(--sa-muted)] uppercase">{study.strata}</p>
-                        <h3 className="mt-0.5 text-base font-medium text-[var(--sa-navy)]">{study.study}</h3>
-                        <p className="mt-1 text-sm leading-5 text-[var(--sa-muted)]">{study.university}</p>
-                        {study.concentration ? (
-                          <p className="mt-1 text-sm leading-5 text-[var(--sa-muted)]">{study.concentration}</p>
-                        ) : null}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
               </div>
             ) : null}
             {showHighlights ? (

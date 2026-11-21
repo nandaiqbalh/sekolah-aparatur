@@ -218,51 +218,6 @@ async function seedPartners(client: PrismaClient) {
   }
 }
 
-async function seedProgramStudies(client: PrismaClient) {
-  const programs = await client.program.findMany({ select: { id: true, slug: true } })
-  const bySlug = new Map(programs.map((row) => [row.slug, row.id]))
-  const universities = await client.partner.findMany({
-    where: { kind: "university" },
-    select: { id: true, name: true },
-  })
-  const partnerByName = new Map(universities.map((row) => [row.name, row.id]))
-
-  for (const program of programs) {
-    const count = await client.programStudy.count({ where: { programId: program.id } })
-    if (count > 0) continue
-
-    const rows = universityProgramSeeds.filter((item) => item.programSlug === program.slug)
-    if (rows.length === 0) continue
-
-    const data = []
-    for (const [index, item] of rows.entries()) {
-      const partnerId = partnerByName.get(item.partnerName)
-      if (!partnerId) {
-        console.warn(`University partner missing for study seed: ${item.partnerName}`)
-        continue
-      }
-      data.push({
-        programId: program.id,
-        partnerId,
-        study: item.study,
-        strata: item.strata,
-        concentration: item.concentration,
-        sortOrder: index,
-      })
-    }
-    if (data.length === 0) continue
-
-    await client.programStudy.createMany({ data })
-    console.log(`Program studies seeded: ${program.slug} (${data.length})`)
-  }
-
-  for (const slug of new Set(universityProgramSeeds.map((item) => item.programSlug))) {
-    if (!bySlug.has(slug)) {
-      console.warn(`Program missing for study seed: ${slug}`)
-    }
-  }
-}
-
 function campusName(value: unknown): string {
   if (!value || typeof value !== "object") return ""
   const name = (value as { name?: unknown }).name
@@ -360,7 +315,6 @@ async function seedPrograms(client: PrismaClient) {
     console.log(`Program seeded: ${kelas.slug}`)
   }
 
-  await seedProgramStudies(client)
 }
 
 async function seedSiteContact(client: PrismaClient) {
@@ -414,6 +368,41 @@ async function seedFeeSchedules(client: PrismaClient) {
   console.log("Fee schedule seeded: UNAS magister dan doktor")
 }
 
+async function seedUniversityPrograms(client: PrismaClient) {
+  const count = await client.universityProgram.count()
+  if (count > 0) return
+
+  const universities = await client.partner.findMany({
+    where: { kind: "university" },
+    select: { id: true, name: true },
+  })
+  const partnerByName = new Map(universities.map((row) => [row.name, row.id]))
+
+  const data = []
+  for (const [index, item] of universityProgramSeeds.entries()) {
+    const partnerId = partnerByName.get(item.partnerName)
+    if (!partnerId) {
+      console.warn(`University partner missing for program studi seed: ${item.partnerName}`)
+      continue
+    }
+    data.push({
+      partnerId,
+      study: item.study,
+      strata: item.strata,
+      concentration: item.concentration,
+      forAparaturDesa: item.forAparaturDesa,
+      forAparaturPemerintah: item.forAparaturPemerintah,
+      forLegislator: item.forLegislator,
+      sortOrder: index,
+      isPublished: true,
+    })
+  }
+  if (data.length === 0) return
+
+  await client.universityProgram.createMany({ data })
+  console.log(`University programs seeded: ${data.length}`)
+}
+
 async function main() {
   await seedStaff(prisma)
   await seedNewsArticles(prisma)
@@ -423,6 +412,7 @@ async function main() {
   await seedPrograms(prisma)
   await seedSiteContact(prisma)
   await seedFeeSchedules(prisma)
+  await seedUniversityPrograms(prisma)
 }
 
 main()

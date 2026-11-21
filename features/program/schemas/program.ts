@@ -14,16 +14,6 @@ export const programHighlightSchema = z.object({
   description: requiredText("Uraian poin wajib diisi."),
 })
 
-export const programStrata = ["S1", "S2", "S3"] as const
-export type ProgramStrata = (typeof programStrata)[number]
-
-export const programStudySchema = z.object({
-  partnerId: z.string().uuid("Kampus wajib dipilih."),
-  study: requiredText("Program studi wajib diisi."),
-  strata: z.enum(programStrata),
-  concentration: z.string().trim(),
-})
-
 export const programPeriodSchema = z.object({
   term: requiredText("Nama periode wajib diisi."),
   detail: requiredText("Uraian wajib diisi."),
@@ -56,7 +46,6 @@ export const programFormSchema = z.object({
   imageAlt: z.string().trim().min(2, "Teks alternatif gambar wajib diisi."),
   introParagraphs: z.array(requiredText("Paragraf wajib diisi.")),
   highlights: z.array(programHighlightSchema),
-  studies: z.array(programStudySchema),
   registrationPeriods: z.array(programPeriodSchema),
   campus: programCampusSchema,
   requirementGroups: z.array(programRequirementGroupSchema),
@@ -116,8 +105,6 @@ export const uploadProgramDocumentSchema = z.object({
 
 export type ProgramFormValues = z.infer<typeof programFormSchema>
 export type ProgramHighlight = z.infer<typeof programHighlightSchema>
-export type ProgramStudy = z.infer<typeof programStudySchema>
-export type ProgramStudyView = ProgramStudy & { university: string; logo: string }
 export type ProgramPeriod = z.infer<typeof programPeriodSchema>
 export type ProgramCampus = z.infer<typeof programCampusSchema>
 export type ProgramRequirementGroup = z.infer<typeof programRequirementGroupSchema>
@@ -131,10 +118,7 @@ export type PublicProgramCard = {
   imageAlt: string
 }
 
-export type PublicProgram = Omit<ProgramFormValues, "studies"> &
-  PublicProgramCard & {
-    studies: ProgramStudyView[]
-  }
+export type PublicProgram = ProgramFormValues & PublicProgramCard
 
 export type ProgramDto = PublicProgram & {
   id: string
@@ -158,7 +142,6 @@ export const emptyProgramForm: ProgramFormValues = {
   imageAlt: "",
   introParagraphs: [],
   highlights: [],
-  studies: [],
   registrationPeriods: [],
   campus: { name: "", logo: "", description: "", address: "" },
   requirementGroups: [],

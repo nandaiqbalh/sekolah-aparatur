@@ -182,6 +182,26 @@ export const PERMISSION_CATALOG: PermissionDefinition[] = [
     description: "Hapus rincian biaya",
   },
   {
+    key: "prodi.view",
+    module: "prodi",
+    description: "Lihat program studi universitas",
+  },
+  {
+    key: "prodi.create",
+    module: "prodi",
+    description: "Buat program studi universitas",
+  },
+  {
+    key: "prodi.update",
+    module: "prodi",
+    description: "Perbarui program studi universitas",
+  },
+  {
+    key: "prodi.delete",
+    module: "prodi",
+    description: "Hapus program studi universitas",
+  },
+  {
     key: "pendaftaran.view",
     module: "pendaftaran",
     description: "Lihat pendaftaran",
@@ -253,6 +273,7 @@ const ADMIN_ROLE_MODULES = new Set([
   "hero",
   "mitra",
   "biaya",
+  "prodi",
   "pendaftaran",
   "pesan",
   "program",
