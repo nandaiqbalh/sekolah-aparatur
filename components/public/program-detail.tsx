@@ -116,20 +116,33 @@ export async function ProgramDetail({ program }: { program: PublicProgram }) {
             {showStudies ? (
               <div>
                 <SectionHeading title="Program studi yang ditawarkan" />
-                <ul className="mt-6 flex flex-col gap-4">
+                <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {program.studies.map((study) => (
                     <li
-                      key={`${study.university}-${study.study}-${study.strata}-${study.concentration}`}
-                      className="rounded-2xl bg-[var(--sa-canvas)] px-5 py-4"
+                      key={`${study.partnerId}-${study.study}-${study.strata}-${study.concentration}`}
+                      className="flex gap-3 rounded-2xl bg-[var(--sa-canvas)] px-4 py-4"
                     >
-                      <p className="text-xs font-semibold tracking-wide text-[var(--sa-navy)] uppercase">
-                        {study.strata}
-                      </p>
-                      <h3 className="text-lg font-semibold text-[var(--sa-navy)]">{study.study}</h3>
-                      <p className="mt-1 text-sm font-semibold text-[var(--sa-navy)]">{study.university}</p>
-                      {study.concentration ? (
-                        <p className="mt-1 text-sm leading-6 text-[var(--sa-muted)]">{study.concentration}</p>
-                      ) : null}
+                      {study.logo ? (
+                        <Image
+                          src={study.logo}
+                          alt=""
+                          width={40}
+                          height={40}
+                          className="mt-0.5 size-10 shrink-0 object-contain"
+                        />
+                      ) : (
+                        <span className="mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-full bg-white text-xs text-[var(--sa-muted)]">
+                          {study.strata}
+                        </span>
+                      )}
+                      <div className="min-w-0">
+                        <p className="text-xs tracking-wide text-[var(--sa-muted)] uppercase">{study.strata}</p>
+                        <h3 className="mt-0.5 text-base font-medium text-[var(--sa-navy)]">{study.study}</h3>
+                        <p className="mt-1 text-sm leading-5 text-[var(--sa-muted)]">{study.university}</p>
+                        {study.concentration ? (
+                          <p className="mt-1 text-sm leading-5 text-[var(--sa-muted)]">{study.concentration}</p>
+                        ) : null}
+                      </div>
                     </li>
                   ))}
                 </ul>

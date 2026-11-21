@@ -269,6 +269,23 @@ function campusName(value: unknown): string {
   return typeof name === "string" ? name.trim() : ""
 }
 
+type HighlightItem = { title: string; description: string }
+
+function asHighlightList(value: unknown): HighlightItem[] {
+  if (!Array.isArray(value)) return []
+  return value.flatMap((item) => {
+    if (!item || typeof item !== "object") return []
+    const title = (item as { title?: unknown }).title
+    const description = (item as { description?: unknown }).description
+    if (typeof title !== "string" || typeof description !== "string") return []
+    return [{ title, description }]
+  })
+}
+
+function hasHighlightTitle(value: unknown, title: string): boolean {
+  return asHighlightList(value).some((item) => item.title === title)
+}
+
 async function seedPrograms(client: PrismaClient) {
   const facilitators = await client.partner.findMany({ where: { kind: "facilitator" } })
 
@@ -285,6 +302,7 @@ async function seedPrograms(client: PrismaClient) {
       const patch: {
         campus?: typeof program.campus
         mitraIds?: string[]
+        highlights?: typeof program.highlights
       } = {}
       if (!campusName(existing.campus) && campusName(program.campus)) {
         patch.campus = program.campus
@@ -297,6 +315,13 @@ async function seedPrograms(client: PrismaClient) {
           existing.mitraIds.length === 0 || existing.mitraIds.every((id) => mitraIds.includes(id))
         if (!same && onlySubset) {
           patch.mitraIds = mitraIds
+        }
+      }
+      if (!hasHighlightTitle(existing.highlights, "Pendampingan dari LPSDM")) {
+        const mentoring = program.highlights.find((item) => item.title === "Pendampingan dari LPSDM")
+        if (mentoring) {
+          const current = asHighlightList(existing.highlights)
+          patch.highlights = [...current, mentoring]
         }
       }
       if (Object.keys(patch).length > 0) {

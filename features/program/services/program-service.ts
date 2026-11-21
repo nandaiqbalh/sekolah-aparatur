@@ -56,6 +56,7 @@ function toStudy(row: ProgramRow["studies"][number]): ProgramStudyView {
   return {
     partnerId: row.partnerId,
     university: row.partner.name,
+    logo: row.partner.logo,
     study: row.study,
     strata,
     concentration: row.concentration ?? "",

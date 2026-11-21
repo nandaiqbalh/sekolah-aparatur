@@ -32,7 +32,7 @@ const studiesOrderBy = [{ sortOrder: "asc" as const }, { createdAt: "asc" as con
 const studiesInclude = {
   studies: {
     orderBy: studiesOrderBy,
-    include: { partner: { select: { id: true, name: true, kind: true } } },
+    include: { partner: { select: { id: true, name: true, kind: true, logo: true } } },
   },
 } as const
 
