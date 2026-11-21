@@ -9,6 +9,8 @@ import { institutionProfileSeed } from "../data/profile"
 import { newsArticles } from "../data/news"
 import { getProgram } from "../data/programs"
 import { sekolahClasses } from "../data/sekolah-classes"
+import { unasFeeScheduleSeed } from "../data/fee-schedules"
+import { universityProgramSeeds } from "../data/university-programs"
 import { siteContact } from "../lib/site-contact"
 import { seedRbac } from "./seed-rbac"
 
@@ -216,20 +218,81 @@ async function seedPartners(client: PrismaClient) {
   }
 }
 
+async function seedProgramStudies(client: PrismaClient) {
+  const programs = await client.program.findMany({ select: { id: true, slug: true } })
+  const bySlug = new Map(programs.map((row) => [row.slug, row.id]))
+
+  for (const program of programs) {
+    const count = await client.programStudy.count({ where: { programId: program.id } })
+    if (count > 0) continue
+
+    const rows = universityProgramSeeds.filter((item) => item.programSlug === program.slug)
+    if (rows.length === 0) continue
+
+    await client.programStudy.createMany({
+      data: rows.map((item, index) => ({
+        programId: program.id,
+        university: item.university,
+        study: item.study,
+        strata: item.strata,
+        concentration: item.concentration,
+        sortOrder: index,
+      })),
+    })
+    console.log(`Program studies seeded: ${program.slug} (${rows.length})`)
+  }
+
+  for (const slug of new Set(universityProgramSeeds.map((item) => item.programSlug))) {
+    if (!bySlug.has(slug)) {
+      console.warn(`Program missing for study seed: ${slug}`)
+    }
+  }
+}
+
+function campusName(value: unknown): string {
+  if (!value || typeof value !== "object") return ""
+  const name = (value as { name?: unknown }).name
+  return typeof name === "string" ? name.trim() : ""
+}
+
 async function seedPrograms(client: PrismaClient) {
   const facilitators = await client.partner.findMany({ where: { kind: "facilitator" } })
 
   for (const [index, kelas] of sekolahClasses.entries()) {
-    const existing = await client.program.findUnique({ where: { slug: kelas.slug } })
-    if (existing) continue
-
     const program = getProgram(kelas.programSlug)
     if (!program) continue
 
-    const intro = program.sections.find((section) => section.kind === "paragraphs" && section.title === "Pengantar")
     const mitraIds = program.mitra
       .map((name) => facilitators.find((item) => item.name === name)?.id)
       .filter((id): id is string => Boolean(id))
+
+    const existing = await client.program.findUnique({ where: { slug: kelas.slug } })
+    if (existing) {
+      const patch: {
+        campus?: typeof program.campus
+        mitraIds?: string[]
+      } = {}
+      if (!campusName(existing.campus) && campusName(program.campus)) {
+        patch.campus = program.campus
+      }
+      if (mitraIds.length > 0) {
+        const same =
+          existing.mitraIds.length === mitraIds.length &&
+          mitraIds.every((id) => existing.mitraIds.includes(id))
+        const onlySubset =
+          existing.mitraIds.length === 0 || existing.mitraIds.every((id) => mitraIds.includes(id))
+        if (!same && onlySubset) {
+          patch.mitraIds = mitraIds
+        }
+      }
+      if (Object.keys(patch).length > 0) {
+        await client.program.update({ where: { id: existing.id }, data: patch })
+        console.log(`Program backfilled: ${kelas.slug} (${Object.keys(patch).join(", ")})`)
+      }
+      continue
+    }
+
+    const intro = program.sections.find((section) => section.kind === "paragraphs" && section.title === "Pengantar")
 
     await client.program.create({
       data: {
@@ -240,7 +303,6 @@ async function seedPrograms(client: PrismaClient) {
         imageAlt: kelas.imageAlt,
         introParagraphs: intro?.kind === "paragraphs" ? intro.paragraphs : [],
         highlights: program.highlights,
-        studies: program.studies,
         registrationPeriods: program.registrationPeriods,
         campus: program.campus,
         requirementGroups: kelas.requirementGroups,
@@ -258,6 +320,8 @@ async function seedPrograms(client: PrismaClient) {
     })
     console.log(`Program seeded: ${kelas.slug}`)
   }
+
+  await seedProgramStudies(client)
 }
 
 async function seedSiteContact(client: PrismaClient) {
@@ -281,6 +345,36 @@ async function seedSiteContact(client: PrismaClient) {
   console.log("Site contact seeded: kontak")
 }
 
+async function seedFeeSchedules(client: PrismaClient) {
+  const count = await client.feeSchedule.count()
+  if (count > 0) return
+
+  await client.feeSchedule.create({
+    data: {
+      title: unasFeeScheduleSeed.title,
+      subtitle: unasFeeScheduleSeed.subtitle,
+      sortOrder: 0,
+      isPublished: true,
+      groups: {
+        create: unasFeeScheduleSeed.groups.map((group, groupIndex) => ({
+          title: group.title,
+          sortOrder: groupIndex,
+          lines: {
+            create: group.lines.map((line, lineIndex) => ({
+              kind: line.kind,
+              label: line.label,
+              amount: line.amount,
+              note: line.note ?? null,
+              sortOrder: lineIndex,
+            })),
+          },
+        })),
+      },
+    },
+  })
+  console.log("Fee schedule seeded: UNAS magister dan doktor")
+}
+
 async function main() {
   await seedStaff(prisma)
   await seedNewsArticles(prisma)
@@ -289,6 +383,7 @@ async function main() {
   await seedPartners(prisma)
   await seedPrograms(prisma)
   await seedSiteContact(prisma)
+  await seedFeeSchedules(prisma)
 }
 
 main()

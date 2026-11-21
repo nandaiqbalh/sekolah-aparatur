@@ -1,4 +1,13 @@
-import { ArrowRight, BookOpen, CalendarDays, Clock3, Download, FileCheck, GraduationCap, Handshake, Landmark, Laptop, Wallet, type LucideIcon } from "lucide-react"
+import {
+  ArrowRight,
+  BadgeCheck,
+  GraduationCap,
+  HandCoins,
+  Handshake,
+  MonitorSmartphone,
+  Timer,
+  type LucideIcon,
+} from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -9,7 +18,27 @@ import { getSiteContact } from "@/features/kontak/services/site-contact-service"
 import { partnerService } from "@/features/mitra/services/partner-service"
 import { registrationPath } from "@/lib/routes"
 
-const highlightIcons = [Laptop, Clock3, Wallet]
+const highlightIconFallback = [MonitorSmartphone, Timer, HandCoins]
+
+function highlightIconFor(title: string, index: number): LucideIcon {
+  const key = title.toLowerCase()
+  if (/fleksibel|daring|blended|pembelajaran|perkuliahan|adaptif|lms|hybrid/.test(key)) {
+    return MonitorSmartphone
+  }
+  if (/durasi|singkat|efisien|masa studi|waktu/.test(key)) {
+    return Timer
+  }
+  if (/biaya|terjangkau|ukt|pembiayaan|angsur/.test(key)) {
+    return HandCoins
+  }
+  if (/rpl|rekognisi/.test(key)) {
+    return BadgeCheck
+  }
+  if (/pendamping|mitra|dukungan/.test(key)) {
+    return Handshake
+  }
+  return highlightIconFallback[index % highlightIconFallback.length] ?? GraduationCap
+}
 
 function GoldIcon({ icon: Icon }: { icon: LucideIcon }) {
   return (
@@ -19,13 +48,8 @@ function GoldIcon({ icon: Icon }: { icon: LucideIcon }) {
   )
 }
 
-function SectionHeading({ icon, title }: { icon: LucideIcon; title: string }) {
-  return (
-    <div className="flex items-center gap-4">
-      <GoldIcon icon={icon} />
-      <h2 className="text-2xl font-semibold tracking-tight text-[var(--sa-navy)] sm:text-3xl">{title}</h2>
-    </div>
-  )
+function SectionHeading({ title }: { title: string }) {
+  return <h2 className="text-2xl font-semibold tracking-tight text-[var(--sa-navy)] sm:text-3xl">{title}</h2>
 }
 
 function Paragraphs({ items }: { items: string[] }) {
@@ -72,54 +96,51 @@ export async function ProgramDetail({ program }: { program: PublicProgram }) {
     <>
       <PageHero eyebrow="Program" title={program.title} description={program.summary} />
 
-      {showStudies ? (
-        <section className="bg-[var(--sa-canvas)] py-8 lg:py-10">
-          <div className="mx-auto grid max-w-[1280px] items-center gap-6 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
-            <div className="relative h-64 overflow-hidden rounded-3xl sm:h-80">
-              <Image src={program.image} alt={program.imageAlt} fill className="object-cover" sizes="(min-width: 1024px) 36rem, 100vw" priority />
-            </div>
-            <div>
-              <SectionHeading icon={GraduationCap} title="Program studi yang ditawarkan" />
-              <ul className="mt-6 flex flex-col gap-4">
-                {program.studies.map((study) => (
-                  <li key={`${study.level}-${study.name}`} className="rounded-2xl bg-white px-5 py-4">
-                    {study.level !== study.name ? (
-                      <p className="text-xs font-semibold tracking-wide text-[var(--sa-navy)] uppercase">{study.level}</p>
-                    ) : null}
-                    <h3 className="text-lg font-semibold text-[var(--sa-navy)]">{study.name}</h3>
-                    <p className="mt-1 text-sm font-semibold text-[var(--sa-navy)]">{study.track}</p>
-                    <p className="mt-1 text-sm leading-6 text-[var(--sa-muted)]">{study.detail}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
+      <section className="bg-[var(--sa-canvas)] py-8 lg:py-10">
+        <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
+          <div className="relative h-64 overflow-hidden rounded-3xl sm:h-80 lg:h-96">
+            <Image src={program.image} alt={program.imageAlt} fill className="object-cover" sizes="(min-width: 1024px) 72rem, 100vw" priority />
           </div>
-        </section>
-      ) : (
-        <section className="bg-[var(--sa-canvas)] py-8 lg:py-10">
-          <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
-            <div className="relative h-64 overflow-hidden rounded-3xl sm:h-80 lg:h-96">
-              <Image src={program.image} alt={program.imageAlt} fill className="object-cover" sizes="(min-width: 1024px) 72rem, 100vw" priority />
-            </div>
-          </div>
-        </section>
-      )}
+        </div>
+      </section>
 
-      {showIntro || showHighlights ? (
+      {showIntro || showStudies || showHighlights ? (
         <section className="bg-white py-8 lg:py-10">
           <div className="mx-auto flex max-w-[1280px] flex-col gap-8 px-4 sm:px-6 lg:px-8">
             {showIntro ? (
               <div>
-                <SectionHeading icon={BookOpen} title="Pengantar" />
+                <SectionHeading title="Pengantar" />
                 <Paragraphs items={program.introParagraphs} />
+              </div>
+            ) : null}
+            {showStudies ? (
+              <div>
+                <SectionHeading title="Program studi yang ditawarkan" />
+                <ul className="mt-6 flex flex-col gap-4">
+                  {program.studies.map((study) => (
+                    <li
+                      key={`${study.university}-${study.study}-${study.strata}-${study.concentration}`}
+                      className="rounded-2xl bg-[var(--sa-canvas)] px-5 py-4"
+                    >
+                      <p className="text-xs font-semibold tracking-wide text-[var(--sa-navy)] uppercase">
+                        {study.strata}
+                      </p>
+                      <h3 className="text-lg font-semibold text-[var(--sa-navy)]">{study.study}</h3>
+                      <p className="mt-1 text-sm font-semibold text-[var(--sa-navy)]">{study.university}</p>
+                      {study.concentration ? (
+                        <p className="mt-1 text-sm leading-6 text-[var(--sa-muted)]">{study.concentration}</p>
+                      ) : null}
+                    </li>
+                  ))}
+                </ul>
               </div>
             ) : null}
             {showHighlights ? (
               <div>
-                <SectionHeading icon={Laptop} title="Keunggulan program" />
-                <ul className="mt-8 grid gap-4 lg:grid-cols-3">
+                <SectionHeading title="Keunggulan program" />
+                <ul className="mt-8 grid gap-4 sm:grid-cols-2">
                   {program.highlights.map((item, index) => {
-                    const Icon = highlightIcons[index % highlightIcons.length] ?? Laptop
+                    const Icon = highlightIconFor(item.title, index)
                     return (
                       <li key={`${item.title}-${index}`} className="rounded-[28px] bg-[var(--sa-canvas)] p-6 sm:p-7">
                         <GoldIcon icon={Icon} />
@@ -140,7 +161,7 @@ export async function ProgramDetail({ program }: { program: PublicProgram }) {
           <div className="mx-auto flex max-w-[1280px] flex-col gap-8 px-4 sm:px-6 lg:px-8">
             {showPeriods ? (
               <div>
-                <SectionHeading icon={CalendarDays} title="Masa pendaftaran dan pemberkasan" />
+                <SectionHeading title="Masa pendaftaran dan pemberkasan" />
                 <ul className="mt-6 grid gap-4 lg:grid-cols-2">
                   {program.registrationPeriods.map((period) => (
                     <li key={period.term} className="rounded-[28px] bg-[var(--sa-canvas)] p-6">
@@ -151,34 +172,9 @@ export async function ProgramDetail({ program }: { program: PublicProgram }) {
                 </ul>
               </div>
             ) : null}
-            {showCampus ? (
-              <div>
-                <SectionHeading icon={Landmark} title="Kampus penyelenggara" />
-                <div className="mt-6 flex items-start gap-4">
-                  {program.campus.logo ? (
-                    <Image
-                      src={program.campus.logo}
-                      alt=""
-                      width={64}
-                      height={64}
-                      className="h-14 w-14 shrink-0 object-contain"
-                    />
-                  ) : null}
-                  <div>
-                    <h3 className="text-lg font-semibold text-[var(--sa-navy)]">{program.campus.name}</h3>
-                    {program.campus.description ? (
-                      <p className="mt-2 text-sm leading-6 text-[var(--sa-muted)]">{program.campus.description}</p>
-                    ) : null}
-                    {program.campus.address ? (
-                      <p className="mt-2 text-sm leading-6 text-[var(--sa-muted)]">{program.campus.address}</p>
-                    ) : null}
-                  </div>
-                </div>
-              </div>
-            ) : null}
             {showRequirements ? (
               <div>
-                <SectionHeading icon={FileCheck} title="Persyaratan" />
+                <SectionHeading title="Persyaratan" />
                 <div className="mt-6 flex flex-col gap-8">
                   {program.requirementGroups.map((group) =>
                     group.items.length > 0 ? (
@@ -193,7 +189,7 @@ export async function ProgramDetail({ program }: { program: PublicProgram }) {
             ) : null}
             {showDocuments ? (
               <div>
-                <SectionHeading icon={Download} title="Unduhan" />
+                <SectionHeading title="Unduhan" />
                 <ul className="mt-6 flex flex-col gap-5">
                   {program.documents.map((document) => (
                     <li key={document.name} className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -223,7 +219,7 @@ export async function ProgramDetail({ program }: { program: PublicProgram }) {
             ) : null}
             {mitra.length > 0 ? (
               <div>
-                <SectionHeading icon={Handshake} title="Mitra" />
+                <SectionHeading title="Mitra" />
                 <ul className="mt-6 flex flex-col gap-6 sm:flex-row sm:gap-12">
                   {mitra.map((item) => (
                     <li key={item.id} className="flex min-w-0 flex-col items-start text-left">
@@ -235,6 +231,31 @@ export async function ProgramDetail({ program }: { program: PublicProgram }) {
                     </li>
                   ))}
                 </ul>
+              </div>
+            ) : null}
+            {showCampus ? (
+              <div>
+                <SectionHeading title="Universitas penyelenggara" />
+                <div className="mt-6 flex items-start gap-4">
+                  {program.campus.logo ? (
+                    <Image
+                      src={program.campus.logo}
+                      alt=""
+                      width={64}
+                      height={64}
+                      className="h-14 w-14 shrink-0 object-contain"
+                    />
+                  ) : null}
+                  <div>
+                    <h3 className="text-lg font-semibold text-[var(--sa-navy)]">{program.campus.name}</h3>
+                    {program.campus.description ? (
+                      <p className="mt-2 text-sm leading-6 text-[var(--sa-muted)]">{program.campus.description}</p>
+                    ) : null}
+                    {program.campus.address ? (
+                      <p className="mt-2 text-sm leading-6 text-[var(--sa-muted)]">{program.campus.address}</p>
+                    ) : null}
+                  </div>
+                </div>
               </div>
             ) : null}
           </div>

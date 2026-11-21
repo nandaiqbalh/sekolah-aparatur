@@ -6,6 +6,8 @@ import { notFound } from "next/navigation"
 
 import { PageHero } from "@/components/public/page-hero"
 import { PartnersSection } from "@/components/public/partners-section"
+import { FeeSchedulesSection } from "@/components/public/fee-schedules-section"
+import { UniversityProgramsTable } from "@/components/public/university-programs-table"
 import { institutionProfileService } from "@/features/profil/services/institution-profile-service"
 import { getDictionary } from "@/lib/i18n/get-dictionary"
 import { getLocale } from "@/lib/i18n/get-locale"
@@ -137,7 +139,11 @@ export default async function ProfilPage() {
 
       <section className="bg-[var(--sa-canvas)] py-8 lg:py-10">
         <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
-          <PartnersSection />
+          <div className="space-y-10">
+            <UniversityProgramsTable />
+            <FeeSchedulesSection />
+            <PartnersSection />
+          </div>
           <div className="mt-6">
             <Link
               href={ROUTES.sekolahAparatur}

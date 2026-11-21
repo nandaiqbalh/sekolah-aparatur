@@ -10,6 +10,7 @@ import {
   listProgramsSchema,
   reorderProgramsSchema,
   updateProgramSchema,
+  uploadProgramDocumentSchema,
   uploadProgramImageSchema,
   type ProgramDto,
   type ProgramListResult,
@@ -17,11 +18,12 @@ import {
 import { actionFailure, type ActionResult } from "@/lib/action-result"
 import { requirePermission } from "@/lib/auth/require-permission"
 import { parseInput } from "@/lib/parse-input"
-import { registrationPath } from "@/lib/routes"
+import { ROUTES, registrationPath } from "@/lib/routes"
 
 function revalidatePrograms(slug?: string) {
   revalidatePath("/", "layout")
   revalidatePath("/admin/program")
+  revalidatePath(ROUTES.profil)
   if (!slug) return
   revalidatePath(`/sekolah-aparatur/${slug}`)
   revalidatePath(registrationPath(slug))
@@ -154,4 +156,31 @@ export async function uploadProgramImageAction(
 
   const bytes = Buffer.from(await file.arrayBuffer())
   return programService.saveImage({ type: parsed.data.type, bytes })
+}
+
+export async function uploadProgramDocumentAction(
+  formData: FormData,
+): Promise<ActionResult<{ path: string; format: string; size: string; suggestedName: string }>> {
+  const createAuth = await requirePermission("program.create")
+  const auth = createAuth.ok ? createAuth : await requirePermission("program.update")
+  if (!auth.ok) return auth
+
+  const file = formData.get("file")
+  if (!(file instanceof File)) {
+    return actionFailure("VALIDATION_ERROR", "Berkas unduhan wajib diunggah.")
+  }
+
+  const parsed = parseInput(uploadProgramDocumentSchema, {
+    type: file.type,
+    size: file.size,
+    name: file.name,
+  })
+  if (!parsed.ok) return parsed.result
+
+  const bytes = Buffer.from(await file.arrayBuffer())
+  return programService.saveDocument({
+    type: parsed.data.type,
+    bytes,
+    originalName: file.name,
+  })
 }

@@ -21,7 +21,13 @@ describe("resolveUploadPath", () => {
     assert.equal(resolveUploadPath(root, ["program", "..", "secret.png"]), null)
   })
 
-  it("rejects files that are not images", () => {
+  it("resolves uploaded program documents", () => {
+    const resolved = resolveUploadPath(root, ["program", "documents", "guide.pdf"])
+    assert.equal(resolved?.contentType, "application/pdf")
+    assert.equal(resolved?.filePath, path.join(root, "program", "documents", "guide.pdf"))
+  })
+
+  it("rejects unsupported file types", () => {
     assert.equal(resolveUploadPath(root, ["program", "notes.txt"]), null)
     assert.equal(resolveUploadPath(root, []), null)
   })

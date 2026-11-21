@@ -5,20 +5,31 @@ import { useRouter } from "next/navigation"
 import { useState, type ReactNode } from "react"
 import { Controller, useFieldArray, useForm, useWatch, type FieldPath } from "react-hook-form"
 
+import { AdminFileButton } from "@/components/admin/admin-file-button"
 import { AdminPageHeader } from "@/components/admin/admin-page-header"
 import { ImageFileButton } from "@/components/admin/image-file-button"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { createProgramAction, updateProgramAction, uploadProgramImageAction } from "@/features/program/actions/program-actions"
+import {
+  createProgramAction,
+  updateProgramAction,
+  uploadProgramDocumentAction,
+  uploadProgramImageAction,
+} from "@/features/program/actions/program-actions"
 import {
   emptyProgramForm,
   programFormSchema,
   type ProgramDto,
   type ProgramFormValues,
 } from "@/features/program/schemas/program"
+import {
+  DOCUMENT_TOO_LARGE_MESSAGE,
+  isDocumentTooLarge,
+} from "@/lib/document-upload"
 import { useDictionary } from "@/lib/i18n/dictionary-provider"
 import { IMAGE_TOO_LARGE_MESSAGE, isBodyLimitError, isImageTooLarge } from "@/lib/image-upload"
 import { toastError, toastSuccess } from "@/lib/notification"
@@ -42,7 +53,7 @@ export function ProgramForm({
   const dict = useDictionary()
   const copy = dict.admin.program
   const router = useRouter()
-  const [uploading, setUploading] = useState<"image" | "logo" | null>(null)
+  const [uploading, setUploading] = useState<"image" | "logo" | `document-${number}` | null>(null)
 
   const {
     register,
@@ -82,6 +93,7 @@ export function ProgramForm({
   const campusLogo = useWatch({ control, name: "campus.logo" })
   const introParagraphs = useWatch({ control, name: "introParagraphs" })
   const requirementGroups = useWatch({ control, name: "requirementGroups" })
+  const documentValues = useWatch({ control, name: "documents" })
   const mitraIds = useWatch({ control, name: "mitraIds" })
 
   async function upload(file: File, target: "image" | "logo") {
@@ -107,6 +119,37 @@ export function ProgramForm({
       toastError(
         dict.common.toastErrorTitle,
         isBodyLimitError(error) ? IMAGE_TOO_LARGE_MESSAGE : copy.uploadFailed,
+      )
+    } finally {
+      setUploading(null)
+    }
+  }
+
+  async function uploadDocument(file: File, index: number) {
+    if (isDocumentTooLarge(file)) {
+      toastError(dict.common.toastErrorTitle, DOCUMENT_TOO_LARGE_MESSAGE)
+      return
+    }
+    setUploading(`document-${index}`)
+    try {
+      const body = new FormData()
+      body.set("file", file)
+      const result = await uploadProgramDocumentAction(body)
+      if (!result.ok || !result.data) {
+        toastError(dict.common.toastErrorTitle, result.message || copy.documentUploadFailed)
+        return
+      }
+      const currentName = getValues(`documents.${index}.name`)
+      if (!currentName.trim() && result.data.suggestedName) {
+        setValue(`documents.${index}.name`, result.data.suggestedName, { shouldValidate: true })
+      }
+      setValue(`documents.${index}.format`, result.data.format, { shouldValidate: true })
+      setValue(`documents.${index}.size`, result.data.size, { shouldValidate: true })
+      setValue(`documents.${index}.href`, result.data.path, { shouldValidate: true })
+    } catch (error) {
+      toastError(
+        dict.common.toastErrorTitle,
+        isBodyLimitError(error) ? DOCUMENT_TOO_LARGE_MESSAGE : copy.documentUploadFailed,
       )
     } finally {
       setUploading(null)
@@ -236,24 +279,45 @@ export function ProgramForm({
       <Section title={copy.studies}>
         {studies.fields.map((field, index) => (
           <div key={field.id} className="grid gap-3 rounded-lg border border-border p-3">
-            <Field label={copy.studyLevel} error={errors.studies?.[index]?.level?.message}>
-              <Input {...register(`studies.${index}.level`)} />
+            <Field label={copy.studyUniversity} error={errors.studies?.[index]?.university?.message}>
+              <Input
+                placeholder={copy.studyUniversityPlaceholder}
+                {...register(`studies.${index}.university`)}
+              />
             </Field>
-            <Field label={copy.studyName} error={errors.studies?.[index]?.name?.message}>
-              <Input {...register(`studies.${index}.name`)} />
+            <Field label={copy.studyName} error={errors.studies?.[index]?.study?.message}>
+              <Input placeholder={copy.studyNamePlaceholder} {...register(`studies.${index}.study`)} />
             </Field>
-            <Field label={copy.studyTrack} error={errors.studies?.[index]?.track?.message}>
-              <Input {...register(`studies.${index}.track`)} />
+            <Field label={copy.studyStrata} error={errors.studies?.[index]?.strata?.message}>
+              <Controller
+                name={`studies.${index}.strata`}
+                control={control}
+                render={({ field }) => (
+                  <Select value={field.value} onValueChange={(value) => value && field.onChange(value)}>
+                    <SelectTrigger className="w-full cursor-pointer">
+                      <SelectValue>{(value: string | null) => value || "S1"}</SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="S1">S1</SelectItem>
+                      <SelectItem value="S2">S2</SelectItem>
+                      <SelectItem value="S3">S3</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
             </Field>
-            <Field label={copy.studyDetail} error={errors.studies?.[index]?.detail?.message}>
-              <Textarea rows={3} {...register(`studies.${index}.detail`)} />
+            <Field label={copy.studyConcentration} error={errors.studies?.[index]?.concentration?.message}>
+              <Input
+                placeholder={copy.studyConcentrationPlaceholder}
+                {...register(`studies.${index}.concentration`)}
+              />
             </Field>
             <RemoveButton label={copy.remove} onClick={() => studies.remove(index)} />
           </div>
         ))}
         <AddButton
           label={copy.studyAdd}
-          onClick={() => studies.append({ level: "", name: "", track: "", detail: "" })}
+          onClick={() => studies.append({ university: "", study: "", strata: "S1", concentration: "" })}
         />
       </Section>
 
@@ -337,26 +401,47 @@ export function ProgramForm({
       </Section>
 
       <Section title={copy.documents}>
-        {documents.fields.map((field, index) => (
-          <div key={field.id} className="grid gap-3 rounded-lg border border-border p-3">
-            <Field label={copy.documentName} error={errors.documents?.[index]?.name?.message}>
-              <Input {...register(`documents.${index}.name`)} />
-            </Field>
-            <Field label={copy.documentFormat} error={errors.documents?.[index]?.format?.message}>
-              <Input {...register(`documents.${index}.format`)} />
-            </Field>
-            <Field label={copy.documentSize} error={errors.documents?.[index]?.size?.message}>
-              <Input {...register(`documents.${index}.size`)} />
-            </Field>
-            <Field label={copy.documentDescription} error={errors.documents?.[index]?.description?.message}>
-              <Textarea rows={2} {...register(`documents.${index}.description`)} />
-            </Field>
-            <Field label={copy.documentHref} error={errors.documents?.[index]?.href?.message}>
-              <Input {...register(`documents.${index}.href`)} />
-            </Field>
-            <RemoveButton label={copy.remove} onClick={() => documents.remove(index)} />
-          </div>
-        ))}
+        <p className="text-sm text-muted-foreground">{copy.documentHint}</p>
+        {documents.fields.map((field, index) => {
+          const current = documentValues?.[index]
+          const href = current?.href?.trim() ?? ""
+          const meta = [current?.format, current?.size].filter(Boolean).join(" · ")
+          return (
+            <div key={field.id} className="grid gap-3 rounded-lg border border-border p-3">
+              <Field label={copy.documentName} error={errors.documents?.[index]?.name?.message}>
+                <Input {...register(`documents.${index}.name`)} />
+              </Field>
+              <Field label={copy.documentDescription} error={errors.documents?.[index]?.description?.message}>
+                <Textarea rows={2} {...register(`documents.${index}.description`)} />
+              </Field>
+              <Field label={copy.documentFile} error={errors.documents?.[index]?.href?.message}>
+                <div className="flex flex-wrap items-center gap-3">
+                  <AdminFileButton
+                    label={href ? copy.documentReplace : copy.documentUpload}
+                    accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    disabled={uploading !== null}
+                    onFile={(file) => void uploadDocument(file, index)}
+                  />
+                  {href ? (
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="cursor-pointer text-sm font-medium text-primary underline-offset-4 hover:underline"
+                    >
+                      {copy.documentOpen}
+                    </a>
+                  ) : null}
+                </div>
+                <input type="hidden" {...register(`documents.${index}.href`)} />
+                <input type="hidden" {...register(`documents.${index}.format`)} />
+                <input type="hidden" {...register(`documents.${index}.size`)} />
+                {meta ? <p className="mt-2 text-xs text-muted-foreground">{meta}</p> : null}
+              </Field>
+              <RemoveButton label={copy.remove} onClick={() => documents.remove(index)} />
+            </div>
+          )
+        })}
         <AddButton
           label={copy.documentAdd}
           onClick={() => documents.append({ name: "", format: "", size: "", description: "", href: "" })}

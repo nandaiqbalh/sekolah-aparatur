@@ -1,5 +1,10 @@
 import { z } from "zod"
 
+import {
+  DOCUMENT_MIME_TYPES,
+  DOCUMENT_TOO_LARGE_MESSAGE,
+  MAX_DOCUMENT_BYTES,
+} from "@/lib/document-upload"
 import { IMAGE_TOO_LARGE_MESSAGE, MAX_IMAGE_BYTES } from "@/lib/image-upload"
 
 const requiredText = (message: string) => z.string().trim().min(1, message)
@@ -9,11 +14,14 @@ export const programHighlightSchema = z.object({
   description: requiredText("Uraian poin wajib diisi."),
 })
 
+export const programStrata = ["S1", "S2", "S3"] as const
+export type ProgramStrata = (typeof programStrata)[number]
+
 export const programStudySchema = z.object({
-  level: requiredText("Jenjang wajib diisi."),
-  name: requiredText("Nama wajib diisi."),
-  track: requiredText("Jalur wajib diisi."),
-  detail: requiredText("Uraian wajib diisi."),
+  university: requiredText("Universitas wajib diisi."),
+  study: requiredText("Program studi wajib diisi."),
+  strata: z.enum(programStrata),
+  concentration: z.string().trim(),
 })
 
 export const programPeriodSchema = z.object({
@@ -38,7 +46,7 @@ export const programDocumentSchema = z.object({
   format: z.string().trim(),
   size: z.string().trim(),
   description: z.string().trim(),
-  href: z.string().trim(),
+  href: requiredText("Berkas unduhan wajib diunggah."),
 })
 
 export const programFormSchema = z.object({
@@ -93,6 +101,17 @@ export const uploadProgramImageSchema = z.object({
       "Gambar harus JPEG, PNG, atau WebP.",
     ),
   size: z.number().int().positive().max(MAX_IMAGE_BYTES, IMAGE_TOO_LARGE_MESSAGE),
+})
+
+export const uploadProgramDocumentSchema = z.object({
+  type: z
+    .string()
+    .refine(
+      (value) => (DOCUMENT_MIME_TYPES as readonly string[]).includes(value),
+      "Berkas harus PDF, DOC, atau DOCX.",
+    ),
+  size: z.number().int().positive().max(MAX_DOCUMENT_BYTES, DOCUMENT_TOO_LARGE_MESSAGE),
+  name: z.string().trim().optional(),
 })
 
 export type ProgramFormValues = z.infer<typeof programFormSchema>

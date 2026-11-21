@@ -45,6 +45,7 @@ export function programBodyHtml(program: Program): string {
   const pengantar = program.sections.find((block) => block.title === "Pengantar")
   const rest = program.sections.filter((block) => block.title !== "Pengantar")
   const parts = [
+    ...(pengantar ? [blockHtml(pengantar)] : []),
     section(
       "Program studi yang ditawarkan",
       `<ul>${program.studies
@@ -54,7 +55,6 @@ export function programBodyHtml(program: Program): string {
         })
         .join("")}</ul>`,
     ),
-    ...(pengantar ? [blockHtml(pengantar)] : []),
     section(
       "Keunggulan program",
       `<ul>${program.highlights
@@ -69,7 +69,7 @@ export function programBodyHtml(program: Program): string {
         .join("")}</ul>`,
     ),
     section(
-      "Kampus penyelenggara",
+      "Universitas penyelenggara",
       `<p><strong>${escapeHtml(program.campus.name)}.</strong> ${escapeHtml(program.campus.description)}</p><p>${escapeHtml(program.campus.address)}</p>`,
     ),
   ]

@@ -28,6 +28,8 @@ function buildWhere(params: {
 }
 
 const orderBy = [{ sortOrder: "asc" as const }, { createdAt: "asc" as const }]
+const studiesOrderBy = [{ sortOrder: "asc" as const }, { createdAt: "asc" as const }]
+const studiesInclude = { studies: { orderBy: studiesOrderBy } } as const
 
 export const programRepository = {
   findMany(params: {
@@ -39,6 +41,7 @@ export const programRepository = {
   }) {
     return prisma.program.findMany({
       where: buildWhere(params),
+      include: studiesInclude,
       orderBy,
       skip: params.skip,
       take: params.take,
@@ -50,27 +53,68 @@ export const programRepository = {
   },
 
   findById(id: string) {
-    return prisma.program.findUnique({ where: { id } })
+    return prisma.program.findUnique({ where: { id }, include: studiesInclude })
   },
 
   findBySlug(slug: string) {
-    return prisma.program.findUnique({ where: { slug } })
+    return prisma.program.findUnique({ where: { slug }, include: studiesInclude })
   },
 
   findPublishedBySlug(slug: string) {
-    return prisma.program.findFirst({ where: { slug, isPublished: true } })
+    return prisma.program.findFirst({ where: { slug, isPublished: true }, include: studiesInclude })
   },
 
   create(data: Prisma.ProgramCreateInput) {
-    return prisma.program.create({ data })
+    return prisma.program.create({ data, include: studiesInclude })
   },
 
   update(id: string, data: Prisma.ProgramUpdateInput) {
-    return prisma.program.update({ where: { id }, data })
+    return prisma.program.update({ where: { id }, data, include: studiesInclude })
   },
 
   delete(id: string) {
     return prisma.program.delete({ where: { id } })
+  },
+
+  replaceStudies(
+    programId: string,
+    studies: {
+      university: string
+      study: string
+      strata: string
+      concentration: string | null
+      sortOrder: number
+    }[],
+  ) {
+    return prisma.$transaction(async (tx) => {
+      await tx.programStudy.deleteMany({ where: { programId } })
+      if (studies.length === 0) return
+      await tx.programStudy.createMany({
+        data: studies.map((item) => ({
+          programId,
+          university: item.university,
+          study: item.study,
+          strata: item.strata,
+          concentration: item.concentration,
+          sortOrder: item.sortOrder,
+        })),
+      })
+    })
+  },
+
+  listPublishedStudies() {
+    return prisma.programStudy.findMany({
+      where: { program: { isPublished: true } },
+      orderBy: [{ program: { sortOrder: "asc" } }, { sortOrder: "asc" }, { createdAt: "asc" }],
+      select: {
+        id: true,
+        university: true,
+        study: true,
+        strata: true,
+        concentration: true,
+        sortOrder: true,
+      },
+    })
   },
 
   async applySortOrders(entries: { id: string; sortOrder: number }[]) {

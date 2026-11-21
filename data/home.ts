@@ -77,9 +77,9 @@ export const homeContent = {
     },
     {
       icon: "handshake",
-      title: "Pendampingan Selama Masa Studi",
+      title: "Pendampingan dari LPSDM",
       description:
-        "Peserta Sekolah Aparatur mendapatkan layanan pendampingan dari LPSDM sepanjang masa studi, mulai dari proses pendaftaran, administrasi akademik, hingga penyelesaian pendidikan. Pendampingan ini bertujuan membantu kelancaran studi peserta sesuai dengan ketentuan perguruan tinggi penyelenggara.",
+        "LPSDM memberikan dukungan dan pendampingan kepada peserta sejak proses pendaftaran, pemberkasan, hingga selama masa studi, guna memastikan kelancaran proses pendidikan dan penyelesaian studi secara optimal.",
     },
   ],
   faqs: [

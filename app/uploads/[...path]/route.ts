@@ -19,10 +19,15 @@ export async function GET(_request: Request, context: RouteContext) {
 
   try {
     const bytes = await readFile(resolved.filePath)
+    const filename = segments.at(-1) ?? "download"
+    const isDocument = resolved.contentType.startsWith("application/")
     return new NextResponse(new Uint8Array(bytes), {
       headers: {
         "Content-Type": resolved.contentType,
         "Cache-Control": "public, max-age=31536000, immutable",
+        ...(isDocument
+          ? { "Content-Disposition": `attachment; filename="${filename.replaceAll('"', "")}"` }
+          : {}),
       },
     })
   } catch {

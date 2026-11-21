@@ -162,6 +162,26 @@ export const PERMISSION_CATALOG: PermissionDefinition[] = [
     description: "Hapus mitra",
   },
   {
+    key: "biaya.view",
+    module: "biaya",
+    description: "Lihat rincian biaya",
+  },
+  {
+    key: "biaya.create",
+    module: "biaya",
+    description: "Buat rincian biaya",
+  },
+  {
+    key: "biaya.update",
+    module: "biaya",
+    description: "Perbarui rincian biaya",
+  },
+  {
+    key: "biaya.delete",
+    module: "biaya",
+    description: "Hapus rincian biaya",
+  },
+  {
     key: "pendaftaran.view",
     module: "pendaftaran",
     description: "Lihat pendaftaran",
@@ -232,6 +252,7 @@ const ADMIN_ROLE_MODULES = new Set([
   "profil",
   "hero",
   "mitra",
+  "biaya",
   "pendaftaran",
   "pesan",
   "program",

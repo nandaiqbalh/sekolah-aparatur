@@ -105,6 +105,11 @@ export const programs: Program[] = [
         description:
           "Biaya dirancang seefisien mungkin dan dibayarkan melalui Uang Kuliah Tunggal (UKT). Program dapat didukung skema pendanaan Dana Desa sesuai ketentuan yang berlaku.",
       },
+      {
+        title: "Pendampingan dari LPSDM",
+        description:
+          "LPSDM memberikan dukungan dan pendampingan kepada peserta sejak proses pendaftaran, pemberkasan, hingga selama masa studi, guna memastikan kelancaran proses pendidikan dan penyelesaian studi secara optimal.",
+      },
     ],
     studies: [
       {
@@ -151,7 +156,7 @@ export const programs: Program[] = [
     feeNote:
       "Magister (S-2) Ilmu Politik: Rp17.500.000 per semester, total Rp35.000.000 untuk dua semester, di luar biaya tugas akhir. Doktor (S-3) Administrasi Publik: Rp17.500.000 per semester, total Rp105.000.000 untuk enam semester, di luar biaya tugas akhir. Pembayaran melalui sistem UKT dan dapat diangsur.",
     documents: [],
-    mitra: [],
+    mitra: ["ADKASI", "ADEKSI", "APDESI"],
     highlights: [
       {
         title: "Sistem perkuliahan yang fleksibel",
@@ -167,6 +172,11 @@ export const programs: Program[] = [
         title: "Biaya yang terjangkau",
         description:
           "Magister (S2) Ilmu Politik Rp17.500.000 per semester, total Rp35.000.000 untuk dua semester, di luar biaya tugas akhir. Doktor (S3) Administrasi Publik Rp17.500.000 per semester, total Rp105.000.000 untuk enam semester, di luar biaya tugas akhir. Pembayaran melalui UKT dan dapat diangsur.",
+      },
+      {
+        title: "Pendampingan dari LPSDM",
+        description:
+          "LPSDM memberikan dukungan dan pendampingan kepada peserta sejak proses pendaftaran, pemberkasan, hingga selama masa studi, guna memastikan kelancaran proses pendidikan dan penyelesaian studi secara optimal.",
       },
     ],
     studies: [

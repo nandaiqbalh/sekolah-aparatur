@@ -11,14 +11,23 @@ import {
   programHighlightSchema,
   programPeriodSchema,
   programRequirementGroupSchema,
-  programStudySchema,
+  programStrata,
   type ProgramDto,
   type ProgramFormValues,
   type ProgramListResult,
+  type ProgramStrata,
+  type ProgramStudy,
   type PublicProgram,
   type PublicProgramCard,
 } from "@/features/program/schemas/program"
 import { actionFailure, actionSuccess, type ActionResult } from "@/lib/action-result"
+import {
+  documentExtensionFor,
+  documentFormatFor,
+  formatDocumentSize,
+  isAllowedDocumentType,
+  type DocumentMimeType,
+} from "@/lib/document-upload"
 import { slugifyTitle } from "@/lib/slug"
 import type { Prisma } from "@/generated/prisma/client"
 import { z } from "zod"
@@ -36,6 +45,20 @@ function readJson<T>(schema: z.ZodType<T>, value: unknown, fallback: T): T {
   return parsed.success ? parsed.data : fallback
 }
 
+function storedConcentration(value: string) {
+  return value.length > 0 ? value : null
+}
+
+function toStudy(row: ProgramRow["studies"][number]): ProgramStudy {
+  const strata = programStrata.includes(row.strata as ProgramStrata) ? (row.strata as ProgramStrata) : "S1"
+  return {
+    university: row.university,
+    study: row.study,
+    strata,
+    concentration: row.concentration ?? "",
+  }
+}
+
 function toPublic(row: ProgramRow): PublicProgram {
   return {
     slug: row.slug,
@@ -45,7 +68,7 @@ function toPublic(row: ProgramRow): PublicProgram {
     imageAlt: row.imageAlt,
     introParagraphs: row.introParagraphs,
     highlights: readJson(z.array(programHighlightSchema), row.highlights, []),
-    studies: readJson(z.array(programStudySchema), row.studies, []),
+    studies: row.studies.map(toStudy),
     registrationPeriods: readJson(z.array(programPeriodSchema), row.registrationPeriods, []),
     campus: readJson(programCampusSchema, row.campus, { name: "", logo: "", description: "", address: "" }),
     requirementGroups: readJson(z.array(programRequirementGroupSchema), row.requirementGroups, []),
@@ -79,7 +102,7 @@ function toJson(value: unknown): Prisma.InputJsonValue {
   return value as Prisma.InputJsonValue
 }
 
-function contentData(values: ProgramFormValues) {
+function contentData(values: Omit<ProgramFormValues, "studies">) {
   return {
     title: values.title,
     summary: values.summary,
@@ -87,7 +110,6 @@ function contentData(values: ProgramFormValues) {
     imageAlt: values.imageAlt,
     introParagraphs: values.introParagraphs,
     highlights: toJson(values.highlights),
-    studies: toJson(values.studies),
     registrationPeriods: toJson(values.registrationPeriods),
     campus: toJson(values.campus),
     requirementGroups: toJson(values.requirementGroups),
@@ -95,6 +117,16 @@ function contentData(values: ProgramFormValues) {
     mitraIds: values.mitraIds,
     isPublished: values.isPublished,
   }
+}
+
+function studyRows(studies: ProgramStudy[]) {
+  return studies.map((item, index) => ({
+    university: item.university,
+    study: item.study,
+    strata: item.strata,
+    concentration: storedConcentration(item.concentration),
+    sortOrder: index,
+  }))
 }
 
 async function uniqueSlug(title: string): Promise<string> {
@@ -108,6 +140,13 @@ async function uniqueSlug(title: string): Promise<string> {
     candidate = `${base}-${suffix}`
     suffix += 1
   }
+}
+
+export type PublicUniversityProgramRow = {
+  university: string
+  study: string
+  strata: ProgramStrata
+  concentration: string | null
 }
 
 export const programService = {
@@ -127,6 +166,17 @@ export const programService = {
     await connection()
     const row = await programRepository.findPublishedBySlug(slug)
     return row ? toPublic(row) : null
+  },
+
+  async listPublishedStudies(): Promise<PublicUniversityProgramRow[]> {
+    await connection()
+    const rows = await programRepository.listPublishedStudies()
+    return rows.map((row) => ({
+      university: row.university,
+      study: row.study,
+      strata: programStrata.includes(row.strata as ProgramStrata) ? (row.strata as ProgramStrata) : "S1",
+      concentration: row.concentration,
+    }))
   },
 
   count() {
@@ -172,18 +222,26 @@ export const programService = {
   async create(values: ProgramFormValues): Promise<ActionResult<ProgramDto>> {
     const slug = await uniqueSlug(values.title)
     const sortOrder = await programRepository.count({})
+    const { studies, ...rest } = values
     const row = await programRepository.create({
       slug,
       sortOrder,
-      ...contentData(values),
+      ...contentData(rest),
     })
-    return actionSuccess(toDto(row), "Program disimpan.")
+    await programRepository.replaceStudies(row.id, studyRows(studies))
+    const refreshed = await programRepository.findById(row.id)
+    if (!refreshed) return actionFailure("NOT_FOUND", "Program tidak ditemukan.")
+    return actionSuccess(toDto(refreshed), "Program disimpan.")
   },
 
   async update(id: string, values: ProgramFormValues): Promise<ActionResult<ProgramDto>> {
     const current = await programRepository.findById(id)
     if (!current) return actionFailure("NOT_FOUND", "Program tidak ditemukan.")
-    const row = await programRepository.update(id, contentData(values))
+    const { studies, ...rest } = values
+    await programRepository.update(id, contentData(rest))
+    await programRepository.replaceStudies(id, studyRows(studies))
+    const row = await programRepository.findById(id)
+    if (!row) return actionFailure("NOT_FOUND", "Program tidak ditemukan.")
     return actionSuccess(toDto(row), "Program diperbarui.")
   },
 
@@ -214,5 +272,34 @@ export const programService = {
     await mkdir(directory, { recursive: true })
     await writeFile(path.join(directory, filename), file.bytes)
     return actionSuccess({ path: `/uploads/program/${filename}` })
+  },
+
+  async saveDocument(file: {
+    type: string
+    bytes: Buffer
+    originalName?: string
+  }): Promise<ActionResult<{ path: string; format: string; size: string; suggestedName: string }>> {
+    if (!isAllowedDocumentType(file.type)) {
+      return actionFailure("VALIDATION_ERROR", "Berkas harus PDF, DOC, atau DOCX.")
+    }
+
+    const mime = file.type as DocumentMimeType
+    const extension = documentExtensionFor(mime)
+    const filename = `${crypto.randomUUID()}.${extension}`
+    const directory = path.join(process.cwd(), "public", "uploads", "program", "documents")
+    await mkdir(directory, { recursive: true })
+    await writeFile(path.join(directory, filename), file.bytes)
+
+    const suggestedName = (file.originalName ?? "")
+      .replace(/\.[^.]+$/, "")
+      .replaceAll("_", " ")
+      .trim()
+
+    return actionSuccess({
+      path: `/uploads/program/documents/${filename}`,
+      format: documentFormatFor(mime),
+      size: formatDocumentSize(file.bytes.length),
+      suggestedName,
+    })
   },
 }
