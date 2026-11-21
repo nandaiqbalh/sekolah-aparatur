@@ -491,7 +491,7 @@ const admin = {
     studies: "Study programs",
     studyAdd: "Add study program",
     studyUniversity: "University",
-    studyUniversityPlaceholder: "Organizing university name",
+    studyUniversityPlaceholder: "Select university",
     studyName: "Study program",
     studyNamePlaceholder: "Public Administration",
     studyStrata: "Level",

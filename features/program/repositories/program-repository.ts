@@ -29,7 +29,12 @@ function buildWhere(params: {
 
 const orderBy = [{ sortOrder: "asc" as const }, { createdAt: "asc" as const }]
 const studiesOrderBy = [{ sortOrder: "asc" as const }, { createdAt: "asc" as const }]
-const studiesInclude = { studies: { orderBy: studiesOrderBy } } as const
+const studiesInclude = {
+  studies: {
+    orderBy: studiesOrderBy,
+    include: { partner: { select: { id: true, name: true, kind: true } } },
+  },
+} as const
 
 export const programRepository = {
   findMany(params: {
@@ -79,7 +84,7 @@ export const programRepository = {
   replaceStudies(
     programId: string,
     studies: {
-      university: string
+      partnerId: string
       study: string
       strata: string
       concentration: string | null
@@ -92,7 +97,7 @@ export const programRepository = {
       await tx.programStudy.createMany({
         data: studies.map((item) => ({
           programId,
-          university: item.university,
+          partnerId: item.partnerId,
           study: item.study,
           strata: item.strata,
           concentration: item.concentration,
@@ -108,11 +113,11 @@ export const programRepository = {
       orderBy: [{ program: { sortOrder: "asc" } }, { sortOrder: "asc" }, { createdAt: "asc" }],
       select: {
         id: true,
-        university: true,
         study: true,
         strata: true,
         concentration: true,
         sortOrder: true,
+        partner: { select: { name: true } },
       },
     })
   },

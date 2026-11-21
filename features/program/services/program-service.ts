@@ -17,9 +17,11 @@ import {
   type ProgramListResult,
   type ProgramStrata,
   type ProgramStudy,
+  type ProgramStudyView,
   type PublicProgram,
   type PublicProgramCard,
 } from "@/features/program/schemas/program"
+import { partnerRepository } from "@/features/mitra/repositories/partner-repository"
 import { actionFailure, actionSuccess, type ActionResult } from "@/lib/action-result"
 import {
   documentExtensionFor,
@@ -49,10 +51,11 @@ function storedConcentration(value: string) {
   return value.length > 0 ? value : null
 }
 
-function toStudy(row: ProgramRow["studies"][number]): ProgramStudy {
+function toStudy(row: ProgramRow["studies"][number]): ProgramStudyView {
   const strata = programStrata.includes(row.strata as ProgramStrata) ? (row.strata as ProgramStrata) : "S1"
   return {
-    university: row.university,
+    partnerId: row.partnerId,
+    university: row.partner.name,
     study: row.study,
     strata,
     concentration: row.concentration ?? "",
@@ -121,12 +124,24 @@ function contentData(values: Omit<ProgramFormValues, "studies">) {
 
 function studyRows(studies: ProgramStudy[]) {
   return studies.map((item, index) => ({
-    university: item.university,
+    partnerId: item.partnerId,
     study: item.study,
     strata: item.strata,
     concentration: storedConcentration(item.concentration),
     sortOrder: index,
   }))
+}
+
+async function assertUniversityPartners(partnerIds: string[]): Promise<ActionResult<null> | null> {
+  const uniqueIds = [...new Set(partnerIds)]
+  if (uniqueIds.length === 0) return null
+
+  const rows = await partnerRepository.findMany({ kind: "university" })
+  const known = new Set(rows.map((row) => row.id))
+  if (uniqueIds.some((id) => !known.has(id))) {
+    return actionFailure("VALIDATION_ERROR", "Kampus harus dipilih dari mitra universitas.")
+  }
+  return null
 }
 
 async function uniqueSlug(title: string): Promise<string> {
@@ -172,7 +187,7 @@ export const programService = {
     await connection()
     const rows = await programRepository.listPublishedStudies()
     return rows.map((row) => ({
-      university: row.university,
+      university: row.partner.name,
       study: row.study,
       strata: programStrata.includes(row.strata as ProgramStrata) ? (row.strata as ProgramStrata) : "S1",
       concentration: row.concentration,
@@ -220,9 +235,12 @@ export const programService = {
   },
 
   async create(values: ProgramFormValues): Promise<ActionResult<ProgramDto>> {
+    const { studies, ...rest } = values
+    const partnerError = await assertUniversityPartners(studies.map((item) => item.partnerId))
+    if (partnerError) return partnerError
+
     const slug = await uniqueSlug(values.title)
     const sortOrder = await programRepository.count({})
-    const { studies, ...rest } = values
     const row = await programRepository.create({
       slug,
       sortOrder,
@@ -238,6 +256,9 @@ export const programService = {
     const current = await programRepository.findById(id)
     if (!current) return actionFailure("NOT_FOUND", "Program tidak ditemukan.")
     const { studies, ...rest } = values
+    const partnerError = await assertUniversityPartners(studies.map((item) => item.partnerId))
+    if (partnerError) return partnerError
+
     await programRepository.update(id, contentData(rest))
     await programRepository.replaceStudies(id, studyRows(studies))
     const row = await programRepository.findById(id)

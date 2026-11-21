@@ -199,15 +199,16 @@ model InstitutionProfile {
 }
 
 model Partner {
-  id          String   @id @default(uuid()) @db.Uuid
-  kind        String
-  name        String
-  detail      String?
-  logo        String
-  sortOrder   Int      @default(0) @map("sort_order")
-  isPublished Boolean  @default(true) @map("is_published")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  id             String         @id @default(uuid()) @db.Uuid
+  kind           String
+  name           String
+  detail         String?
+  logo           String
+  sortOrder      Int            @default(0) @map("sort_order")
+  isPublished    Boolean        @default(true) @map("is_published")
+  createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @updatedAt @map("updated_at")
+  programStudies ProgramStudy[]
 
   @@unique([kind, name])
   @@index([kind, sortOrder])
@@ -277,7 +278,8 @@ model ProgramStudy {
   id             String   @id @default(uuid()) @db.Uuid
   programId      String   @map("program_id") @db.Uuid
   program        Program  @relation(fields: [programId], references: [id], onDelete: Cascade)
-  university     String
+  partnerId      String   @map("partner_id") @db.Uuid
+  partner        Partner  @relation(fields: [partnerId], references: [id], onDelete: Restrict)
   study          String
   strata         String
   concentration  String?
@@ -286,6 +288,7 @@ model ProgramStudy {
   updatedAt      DateTime @updatedAt @map("updated_at")
 
   @@index([programId, sortOrder])
+  @@index([partnerId])
   @@map("program_studies")
 }
 

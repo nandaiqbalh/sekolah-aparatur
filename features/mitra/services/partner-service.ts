@@ -57,6 +57,11 @@ export const partnerService = {
     return rows.map(toPublic)
   },
 
+  async listOptions(kind: PartnerKind): Promise<{ id: string; name: string }[]> {
+    const rows = await partnerRepository.findMany({ kind })
+    return rows.map((row) => ({ id: row.id, name: row.name }))
+  },
+
   async list(params: {
     page: number
     limit: number

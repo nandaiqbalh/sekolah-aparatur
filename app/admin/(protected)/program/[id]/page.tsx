@@ -14,17 +14,22 @@ const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3
 
 export default async function AdminProgramFormPage({ params }: PageProps) {
   const { id } = await params
-  const facilitators = (await partnerService.listPublished("facilitator")).map((item) => ({
-    id: item.id,
-    name: item.name,
-    detail: item.detail ?? "",
-  }))
+  const [facilitators, universities] = await Promise.all([
+    partnerService.listPublished("facilitator").then((rows) =>
+      rows.map((item) => ({
+        id: item.id,
+        name: item.name,
+        detail: item.detail ?? "",
+      })),
+    ),
+    partnerService.listOptions("university"),
+  ])
 
   if (id === "baru") {
     if (!(await canAccessPage("program.create"))) {
       return <AccessDenied />
     }
-    return <ProgramForm mode="create" facilitators={facilitators} />
+    return <ProgramForm mode="create" facilitators={facilitators} universities={universities} />
   }
 
   if (!UUID_PATTERN.test(id)) notFound()
@@ -35,5 +40,12 @@ export default async function AdminProgramFormPage({ params }: PageProps) {
   const program = await programService.getById(id)
   if (!program.ok || !program.data) notFound()
 
-  return <ProgramForm mode="edit" program={program.data} facilitators={facilitators} />
+  return (
+    <ProgramForm
+      mode="edit"
+      program={program.data}
+      facilitators={facilitators}
+      universities={universities}
+    />
+  )
 }

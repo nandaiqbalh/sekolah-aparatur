@@ -98,8 +98,8 @@ export async function ProgramDetail({ program }: { program: PublicProgram }) {
 
       <section className="bg-[var(--sa-canvas)] py-8 lg:py-10">
         <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
-          <div className="relative h-64 overflow-hidden rounded-3xl sm:h-80 lg:h-96">
-            <Image src={program.image} alt={program.imageAlt} fill className="object-cover" sizes="(min-width: 1024px) 72rem, 100vw" priority />
+          <div className="relative aspect-[4/3] overflow-hidden rounded-3xl sm:aspect-[3/2] lg:aspect-[16/10]">
+            <Image src={program.image} alt={program.imageAlt} fill className="object-cover object-center" sizes="(min-width: 1024px) 72rem, 100vw" priority />
           </div>
         </div>
       </section>

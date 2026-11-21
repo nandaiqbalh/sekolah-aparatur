@@ -491,7 +491,7 @@ const admin = {
     studies: "Program studi",
     studyAdd: "Tambah program studi",
     studyUniversity: "Universitas",
-    studyUniversityPlaceholder: "Nama universitas penyelenggara",
+    studyUniversityPlaceholder: "Pilih universitas",
     studyName: "Program studi",
     studyNamePlaceholder: "Ilmu Administrasi Publik",
     studyStrata: "Strata",

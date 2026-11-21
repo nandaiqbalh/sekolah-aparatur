@@ -41,14 +41,21 @@ type FacilitatorOption = {
   detail: string
 }
 
+type UniversityOption = {
+  id: string
+  name: string
+}
+
 export function ProgramForm({
   mode,
   program,
   facilitators,
+  universities,
 }: {
   mode: "create" | "edit"
   program?: ProgramDto
   facilitators: FacilitatorOption[]
+  universities: UniversityOption[]
 }) {
   const dict = useDictionary()
   const copy = dict.admin.program
@@ -73,7 +80,12 @@ export function ProgramForm({
           imageAlt: program.imageAlt,
           introParagraphs: program.introParagraphs,
           highlights: program.highlights,
-          studies: program.studies,
+          studies: program.studies.map((item) => ({
+            partnerId: item.partnerId,
+            study: item.study,
+            strata: item.strata,
+            concentration: item.concentration,
+          })),
           registrationPeriods: program.registrationPeriods,
           campus: program.campus,
           requirementGroups: program.requirementGroups,
@@ -279,10 +291,28 @@ export function ProgramForm({
       <Section title={copy.studies}>
         {studies.fields.map((field, index) => (
           <div key={field.id} className="grid gap-3 rounded-lg border border-border p-3">
-            <Field label={copy.studyUniversity} error={errors.studies?.[index]?.university?.message}>
-              <Input
-                placeholder={copy.studyUniversityPlaceholder}
-                {...register(`studies.${index}.university`)}
+            <Field label={copy.studyUniversity} error={errors.studies?.[index]?.partnerId?.message}>
+              <Controller
+                name={`studies.${index}.partnerId`}
+                control={control}
+                render={({ field }) => (
+                  <Select value={field.value || null} onValueChange={(value) => value && field.onChange(value)}>
+                    <SelectTrigger className="w-full cursor-pointer">
+                      <SelectValue placeholder={copy.studyUniversityPlaceholder}>
+                        {(value: string | null) =>
+                          universities.find((item) => item.id === value)?.name || copy.studyUniversityPlaceholder
+                        }
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {universities.map((item) => (
+                        <SelectItem key={item.id} value={item.id}>
+                          {item.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
               />
             </Field>
             <Field label={copy.studyName} error={errors.studies?.[index]?.study?.message}>
@@ -317,7 +347,14 @@ export function ProgramForm({
         ))}
         <AddButton
           label={copy.studyAdd}
-          onClick={() => studies.append({ university: "", study: "", strata: "S1", concentration: "" })}
+          onClick={() =>
+            studies.append({
+              partnerId: universities[0]?.id ?? "",
+              study: "",
+              strata: "S1",
+              concentration: "",
+            })
+          }
         />
       </Section>
 

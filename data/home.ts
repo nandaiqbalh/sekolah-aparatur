@@ -25,6 +25,26 @@ export const homeContent = {
       program: "Kelas Legislator",
       logo: "/brand/universitas-nasional.png",
     },
+    {
+      name: "Universitas Ekasakti Padang",
+      program: "Kelas Aparatur Pemerintah Daerah",
+      logo: "/brand/universitas-nasional.png",
+    },
+    {
+      name: "Universitas Nurdin Hamzah Jambi",
+      program: "Kelas Aparatur Pemerintah Daerah",
+      logo: "/brand/universitas-nasional.png",
+    },
+    {
+      name: "Universitas Lancang Kuning Pekanbaru",
+      program: "Kelas Aparatur Pemerintah Daerah",
+      logo: "/brand/universitas-nasional.png",
+    },
+    {
+      name: "Universitas Muara Bungo Jambi",
+      program: "Kelas Aparatur Pemerintah Daerah",
+      logo: "/brand/universitas-nasional.png",
+    },
   ],
   facilitatorsTitle: "Mitra fasilitator",
   facilitators: [
