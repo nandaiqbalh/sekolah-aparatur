@@ -132,7 +132,9 @@ function studyRows(studies: ProgramStudy[]) {
   }))
 }
 
-async function assertUniversityPartners(partnerIds: string[]): Promise<ActionResult<null> | null> {
+async function assertUniversityPartners(
+  partnerIds: string[],
+): Promise<Extract<ActionResult<never>, { ok: false }> | null> {
   const uniqueIds = [...new Set(partnerIds)]
   if (uniqueIds.length === 0) return null
 
