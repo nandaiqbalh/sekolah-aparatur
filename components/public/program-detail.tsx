@@ -194,6 +194,23 @@ export async function ProgramDetail({ program }: { program: PublicProgram }) {
                 </ul>
               </div>
             ) : null}
+            {showCampus ? (
+              <div>
+                <SectionHeading title="Universitas penyelenggara" />
+                <div className="mt-6 flex items-center gap-4">
+                  {program.campus.logo ? (
+                    <Image
+                      src={program.campus.logo}
+                      alt=""
+                      width={64}
+                      height={64}
+                      className="h-14 w-14 shrink-0 object-contain"
+                    />
+                  ) : null}
+                  <h3 className="text-lg font-semibold text-[var(--sa-navy)]">{program.campus.name}</h3>
+                </div>
+              </div>
+            ) : null}
             {mitra.length > 0 ? (
               <div>
                 <SectionHeading title="Mitra" />
@@ -208,31 +225,6 @@ export async function ProgramDetail({ program }: { program: PublicProgram }) {
                     </li>
                   ))}
                 </ul>
-              </div>
-            ) : null}
-            {showCampus ? (
-              <div>
-                <SectionHeading title="Universitas penyelenggara" />
-                <div className="mt-6 flex items-start gap-4">
-                  {program.campus.logo ? (
-                    <Image
-                      src={program.campus.logo}
-                      alt=""
-                      width={64}
-                      height={64}
-                      className="h-14 w-14 shrink-0 object-contain"
-                    />
-                  ) : null}
-                  <div>
-                    <h3 className="text-lg font-semibold text-[var(--sa-navy)]">{program.campus.name}</h3>
-                    {program.campus.description ? (
-                      <p className="mt-2 text-sm leading-6 text-[var(--sa-muted)]">{program.campus.description}</p>
-                    ) : null}
-                    {program.campus.address ? (
-                      <p className="mt-2 text-sm leading-6 text-[var(--sa-muted)]">{program.campus.address}</p>
-                    ) : null}
-                  </div>
-                </div>
               </div>
             ) : null}
           </div>
