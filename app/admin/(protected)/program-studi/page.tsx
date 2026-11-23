@@ -23,7 +23,7 @@ export default async function AdminProgramStudiPage({ searchParams }: PageProps)
   const page = parsePageParam(sp.page)
   const search = parseSearchParam(sp.search)
   const status = parseEnumParam(sp.status, ["all", "published", "hidden"] as const, "all")
-  const programs = await universityProgramService.list({ page, limit: 20, search, status })
+  const programs = await universityProgramService.list({ page, limit: 100, search, status })
 
   return (
     <Suspense>
@@ -31,7 +31,7 @@ export default async function AdminProgramStudiPage({ searchParams }: PageProps)
         initialData={
           programs.ok && programs.data
             ? programs.data
-            : { programs: [], total: 0, page: 1, limit: 20, totalPages: 1 }
+            : { programs: [], total: 0, page: 1, limit: 100, totalPages: 1 }
         }
       />
     </Suspense>

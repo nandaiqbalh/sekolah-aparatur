@@ -1,8 +1,8 @@
 "use client"
 
-import { Check, GraduationCap, GripVertical, Pencil, Plus, Trash2 } from "lucide-react"
+import { GraduationCap, Pencil, Plus, Trash2 } from "lucide-react"
 import Link from "next/link"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 
 import { usePermissions } from "@/components/admin/admin-permissions-provider"
 import { AdminFilterActions } from "@/components/admin/admin-filter-actions"
@@ -12,24 +12,16 @@ import {
   AdminFilterField,
 } from "@/components/admin/admin-filter-bar"
 import { AdminPageHeader } from "@/components/admin/admin-page-header"
-import { AdminPagination } from "@/components/admin/admin-pagination"
-import { AdminStatusBadge } from "@/components/admin/admin-status-badge"
-import {
-  AdminTableCard,
-  AdminTableCell,
-  AdminTableHead,
-  AdminTableHeaderCell,
-  AdminTableRow,
-} from "@/components/admin/admin-table-card"
 import { EmptyState } from "@/components/shared/empty-state"
 import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import { ConfirmDialog } from "@/components/ui/confirm-dialog"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
   deleteUniversityProgramAction,
   listUniversityProgramsAction,
-  reorderUniversityProgramsAction,
+  updateUniversityProgramAction,
 } from "@/features/prodi/actions/university-program-actions"
 import type {
   UniversityProgramDto,
@@ -40,26 +32,48 @@ import { useDictionary } from "@/lib/i18n/dictionary-provider"
 import { toastError, toastSuccess } from "@/lib/notification"
 import { ADMIN_ROUTES, adminProgramStudiPath } from "@/lib/routes"
 
-const PAGE_SIZE = 20
+const PAGE_SIZE = 100
 
-function Mark({ on }: { on: boolean }) {
-  if (!on) return <span className="text-muted-foreground">—</span>
-  return <Check className="mx-auto size-4 text-[var(--sa-navy)]" aria-hidden />
+type ClassField = "forAparaturDesa" | "forAparaturPemerintah" | "forLegislator"
+
+function buildSpans(values: string[]) {
+  const spans = values.map(() => 0)
+  let index = 0
+  while (index < values.length) {
+    let count = 1
+    while (index + count < values.length && values[index + count] === values[index]) {
+      count += 1
+    }
+    spans[index] = count
+    index += count
+  }
+  return spans
+}
+
+function withUniversityNumbers(rows: UniversityProgramDto[]) {
+  const numbers = new Map<string, number>()
+  let next = 1
+  return rows.map((row) => {
+    let no = numbers.get(row.university)
+    if (!no) {
+      no = next
+      numbers.set(row.university, no)
+      next += 1
+    }
+    return { ...row, no }
+  })
 }
 
 export function UniversityProgramsManager({ initialData }: { initialData: UniversityProgramListResult }) {
   const dict = useDictionary()
   const copy = dict.admin.programStudi
   const { can } = usePermissions()
-  const { page, setPage, queryKey, getParam, replaceQuery } = useUrlListParams()
+  const { page, queryKey, getParam, replaceQuery } = useUrlListParams()
   const [programs, setPrograms] = useState(initialData.programs)
-  const [totalPages, setTotalPages] = useState(initialData.totalPages)
-  const [total, setTotal] = useState(initialData.total)
   const [search, setSearch] = useState(() => getParam("search"))
   const [status, setStatus] = useState(() => getParam("status") || "all")
   const [deleteTarget, setDeleteTarget] = useState<UniversityProgramDto | null>(null)
-  const [dragIndex, setDragIndex] = useState<number | null>(null)
-  const [reordering, setReordering] = useState(false)
+  const [savingId, setSavingId] = useState<string | null>(null)
   const skipUrlSync = useRef(true)
   const filterQueryKey = queryKey
     .split("&")
@@ -73,17 +87,15 @@ export function UniversityProgramsManager({ initialData }: { initialData: Univer
     }
   }
 
-  async function refresh(nextPage = page, nextSearch = search, nextStatus = status) {
+  async function refresh(nextSearch = search, nextStatus = status) {
     const result = await listUniversityProgramsAction({
-      page: nextPage,
+      page: 1,
       limit: PAGE_SIZE,
       search: nextSearch || undefined,
       status: nextStatus === "published" || nextStatus === "hidden" ? nextStatus : "all",
     })
     if (result.ok && result.data) {
       setPrograms(result.data.programs)
-      setTotalPages(result.data.totalPages)
-      setTotal(result.data.total)
     }
   }
 
@@ -101,7 +113,7 @@ export function UniversityProgramsManager({ initialData }: { initialData: Univer
       return
     }
     const filters = readFiltersFromUrl()
-    void refresh(page, filters.search, filters.status)
+    void refresh(filters.search, filters.status)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryKey])
 
@@ -114,7 +126,7 @@ export function UniversityProgramsManager({ initialData }: { initialData: Univer
     const current = readFiltersFromUrl()
     const unchanged = page === 1 && current.search === nextSearch && current.status === nextStatus
     if (unchanged) {
-      void refresh(1, nextSearch, nextStatus)
+      void refresh(nextSearch, nextStatus)
       return
     }
 
@@ -127,27 +139,39 @@ export function UniversityProgramsManager({ initialData }: { initialData: Univer
     )
   }
 
-  const canReorder = can("prodi.update") && !reordering && status === "all" && !search.trim()
+  const displayRows = useMemo(() => withUniversityNumbers(programs), [programs])
+  const universityKeys = displayRows.map((row) => `${row.no}:${row.university}`)
+  const studyKeys = displayRows.map((row) => `${row.no}:${row.university}:${row.study}`)
+  const universitySpans = buildSpans(universityKeys)
+  const studySpans = buildSpans(studyKeys)
 
-  async function handleReorder(from: number, to: number) {
-    if (from === to || !canReorder) return
+  async function toggleClass(row: UniversityProgramDto, field: ClassField) {
+    if (!can("prodi.update") || savingId) return
+
+    const nextValue = !row[field]
     const previous = programs
-    const next = [...programs]
-    const [moved] = next.splice(from, 1)
-    next.splice(to, 0, moved)
-    const withOrder = next.map((item, index) => ({ ...item, sortOrder: index }))
-    setPrograms(withOrder)
-    setReordering(true)
-    const result = await reorderUniversityProgramsAction({
-      items: withOrder.map((item) => ({ id: item.id, sortOrder: item.sortOrder })),
+    setPrograms((rows) => rows.map((item) => (item.id === row.id ? { ...item, [field]: nextValue } : item)))
+    setSavingId(row.id)
+
+    const result = await updateUniversityProgramAction({
+      id: row.id,
+      partnerId: row.partnerId,
+      study: row.study,
+      strata: row.strata,
+      concentration: row.concentration ?? "",
+      forAparaturDesa: field === "forAparaturDesa" ? nextValue : row.forAparaturDesa,
+      forAparaturPemerintah: field === "forAparaturPemerintah" ? nextValue : row.forAparaturPemerintah,
+      forLegislator: field === "forLegislator" ? nextValue : row.forLegislator,
+      isPublished: row.isPublished,
     })
-    setReordering(false)
+
+    setSavingId(null)
     if (result.ok) {
-      toastSuccess(copy.reordered, dict.common.toastSavedDesc)
+      toastSuccess(copy.updated, dict.common.toastSavedDesc)
       return
     }
     setPrograms(previous)
-    toastError(dict.common.toastErrorTitle, result.message || dict.common.toastTryAgainDesc)
+    toastError(dict.common.toastErrorTitle, result.message || copy.saveFailed)
   }
 
   return (
@@ -214,111 +238,113 @@ export function UniversityProgramsManager({ initialData }: { initialData: Univer
         />
       </AdminFilterBar>
 
-      {programs.length === 0 ? (
+      {displayRows.length === 0 ? (
         <EmptyState icon={GraduationCap} title={copy.empty} />
       ) : (
-        <>
-          <AdminTableCard>
-            <AdminTableHead>
-              <AdminTableRow>
-                {can("prodi.update") ? <AdminTableHeaderCell className="w-10" /> : null}
-                <AdminTableHeaderCell>{copy.columnUniversity}</AdminTableHeaderCell>
-                <AdminTableHeaderCell>{copy.columnStudy}</AdminTableHeaderCell>
-                <AdminTableHeaderCell>{copy.columnStrata}</AdminTableHeaderCell>
-                <AdminTableHeaderCell className="text-center">{copy.classAparaturDesaShort}</AdminTableHeaderCell>
-                <AdminTableHeaderCell className="text-center">{copy.classAparaturPemerintahShort}</AdminTableHeaderCell>
-                <AdminTableHeaderCell className="text-center">{copy.classLegislatorShort}</AdminTableHeaderCell>
-                <AdminTableHeaderCell>{copy.columnStatus}</AdminTableHeaderCell>
-                <AdminTableHeaderCell align="right">{dict.admin.actions}</AdminTableHeaderCell>
-              </AdminTableRow>
-            </AdminTableHead>
+        <div className="overflow-x-auto rounded-3xl border border-border bg-white">
+          <table className="w-full min-w-[56rem] border-collapse text-left text-sm">
+            <thead>
+              <tr className="bg-[var(--sa-navy)] text-white">
+                <th className="px-4 py-3 font-semibold">No</th>
+                <th className="px-4 py-3 font-semibold">{copy.columnUniversity}</th>
+                <th className="px-4 py-3 font-semibold">{copy.columnStudy}</th>
+                <th className="px-4 py-3 font-semibold">{copy.columnStrata}</th>
+                <th className="px-4 py-3 font-semibold">{copy.concentration}</th>
+                <th className="px-3 py-3 text-center font-semibold">{copy.classAparaturDesa}</th>
+                <th className="px-3 py-3 text-center font-semibold">{copy.classAparaturPemerintah}</th>
+                <th className="px-3 py-3 text-center font-semibold">{copy.classLegislator}</th>
+                <th className="px-3 py-3 text-right font-semibold">{dict.admin.actions}</th>
+              </tr>
+            </thead>
             <tbody>
-              {programs.map((item, index) => (
-                <AdminTableRow
-                  key={item.id}
-                  draggable={canReorder}
-                  onDragStart={() => setDragIndex(index)}
-                  onDragOver={(event) => {
-                    if (!canReorder) return
-                    event.preventDefault()
-                  }}
-                  onDrop={() => {
-                    if (dragIndex === null) return
-                    void handleReorder(dragIndex, index)
-                    setDragIndex(null)
-                  }}
-                  onDragEnd={() => setDragIndex(null)}
-                  className={`hover:bg-muted/30 ${dragIndex === index ? "opacity-50" : ""} ${canReorder ? "cursor-grab active:cursor-grabbing" : ""}`}
-                >
-                  {can("prodi.update") ? (
-                    <AdminTableCell className="w-10 text-muted-foreground">
-                      <GripVertical className="size-4" aria-label={copy.dragHandle} />
-                    </AdminTableCell>
-                  ) : null}
-                  <AdminTableCell className="font-medium">{item.university}</AdminTableCell>
-                  <AdminTableCell>
-                    <div>{item.study}</div>
-                    {item.concentration ? (
-                      <div className="text-xs text-muted-foreground">{item.concentration}</div>
+              {displayRows.map((row, index) => {
+                const showUniversity = universitySpans[index] > 0
+                const showStudy = studySpans[index] > 0
+                const zebra = index % 2 === 0 ? "bg-white" : "bg-muted/40"
+                const busy = savingId === row.id
+
+                return (
+                  <tr key={row.id} className={zebra}>
+                    {showUniversity ? (
+                      <td
+                        rowSpan={universitySpans[index]}
+                        className="align-top px-4 py-3 font-semibold text-[var(--sa-navy)]"
+                      >
+                        {row.no}
+                      </td>
                     ) : null}
-                  </AdminTableCell>
-                  <AdminTableCell>{item.strata}</AdminTableCell>
-                  <AdminTableCell className="text-center">
-                    <Mark on={item.forAparaturDesa} />
-                  </AdminTableCell>
-                  <AdminTableCell className="text-center">
-                    <Mark on={item.forAparaturPemerintah} />
-                  </AdminTableCell>
-                  <AdminTableCell className="text-center">
-                    <Mark on={item.forLegislator} />
-                  </AdminTableCell>
-                  <AdminTableCell>
-                    <AdminStatusBadge
-                      isActive={item.isPublished}
-                      activeLabel={copy.statusPublished}
-                      inactiveLabel={copy.statusHidden}
-                    />
-                  </AdminTableCell>
-                  <AdminTableCell align="right">
-                    <div className="flex justify-end gap-1" onDragStart={(event) => event.stopPropagation()}>
-                      {can("prodi.update") ? (
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="cursor-pointer"
-                          nativeButton={false}
-                          render={<Link href={adminProgramStudiPath(item.id)} />}
-                          aria-label={copy.edit}
-                        >
-                          <Pencil className="size-4" />
-                        </Button>
-                      ) : null}
-                      {can("prodi.delete") ? (
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="cursor-pointer"
-                          onClick={() => setDeleteTarget(item)}
-                          aria-label={dict.admin.delete}
-                        >
-                          <Trash2 className="size-4" />
-                        </Button>
-                      ) : null}
-                    </div>
-                  </AdminTableCell>
-                </AdminTableRow>
-              ))}
+                    {showUniversity ? (
+                      <td
+                        rowSpan={universitySpans[index]}
+                        className="align-top px-4 py-3 font-semibold text-[var(--sa-navy)]"
+                      >
+                        {row.university}
+                      </td>
+                    ) : null}
+                    {showStudy ? (
+                      <td rowSpan={studySpans[index]} className="align-top px-4 py-3 text-muted-foreground">
+                        {row.study}
+                      </td>
+                    ) : null}
+                    <td className="px-4 py-3 font-semibold text-[var(--sa-navy)]">{row.strata}</td>
+                    <td className="px-4 py-3 text-muted-foreground">{row.concentration ?? "—"}</td>
+                    <td className="px-3 py-3 text-center">
+                      <EditableCheck
+                        checked={row.forAparaturDesa}
+                        disabled={!can("prodi.update") || busy}
+                        label={copy.classAparaturDesa}
+                        onToggle={() => void toggleClass(row, "forAparaturDesa")}
+                      />
+                    </td>
+                    <td className="px-3 py-3 text-center">
+                      <EditableCheck
+                        checked={row.forAparaturPemerintah}
+                        disabled={!can("prodi.update") || busy}
+                        label={copy.classAparaturPemerintah}
+                        onToggle={() => void toggleClass(row, "forAparaturPemerintah")}
+                      />
+                    </td>
+                    <td className="px-3 py-3 text-center">
+                      <EditableCheck
+                        checked={row.forLegislator}
+                        disabled={!can("prodi.update") || busy}
+                        label={copy.classLegislator}
+                        onToggle={() => void toggleClass(row, "forLegislator")}
+                      />
+                    </td>
+                    <td className="px-3 py-3">
+                      <div className="flex justify-end gap-1">
+                        {can("prodi.update") ? (
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="cursor-pointer"
+                            nativeButton={false}
+                            render={<Link href={adminProgramStudiPath(row.id)} />}
+                            aria-label={copy.edit}
+                          >
+                            <Pencil className="size-4" />
+                          </Button>
+                        ) : null}
+                        {can("prodi.delete") ? (
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="cursor-pointer"
+                            onClick={() => setDeleteTarget(row)}
+                            aria-label={dict.admin.delete}
+                          >
+                            <Trash2 className="size-4" />
+                          </Button>
+                        ) : null}
+                      </div>
+                    </td>
+                  </tr>
+                )
+              })}
             </tbody>
-          </AdminTableCard>
-          <AdminPagination
-            page={page}
-            totalPages={totalPages}
-            onPageChange={setPage}
-            countLabel={copy.count.replace("{count}", String(total))}
-            previousLabel={dict.admin.paginationPrevious}
-            nextLabel={dict.admin.paginationNext}
-          />
-        </>
+          </table>
+        </div>
       )}
 
       <ConfirmDialog
@@ -345,5 +371,29 @@ export function UniversityProgramsManager({ initialData }: { initialData: Univer
         }}
       />
     </div>
+  )
+}
+
+function EditableCheck({
+  checked,
+  disabled,
+  label,
+  onToggle,
+}: {
+  checked: boolean
+  disabled: boolean
+  label: string
+  onToggle: () => void
+}) {
+  return (
+    <label className="inline-flex cursor-pointer items-center justify-center">
+      <Checkbox
+        checked={checked}
+        disabled={disabled}
+        onCheckedChange={() => onToggle()}
+        aria-label={label}
+        className={disabled ? "cursor-not-allowed" : "cursor-pointer"}
+      />
+    </label>
   )
 }
