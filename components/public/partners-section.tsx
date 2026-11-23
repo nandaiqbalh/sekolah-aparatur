@@ -80,7 +80,15 @@ export async function PartnersSection() {
           labelOf={(partner) => (partner.detail ? `${partner.name}. ${partner.detail}` : partner.name)}
           render={(partner) => (
             <div className="flex w-56 shrink-0 flex-col items-center text-center">
-              <Image src={partner.logo} alt="" width={72} height={72} className="h-14 w-14 object-contain" />
+              <span className="flex size-16 items-center justify-center">
+                <Image
+                  src={partner.logo}
+                  alt=""
+                  width={64}
+                  height={64}
+                  className="max-h-full max-w-full object-contain"
+                />
+              </span>
               <p className="mt-3 text-sm font-semibold tracking-tight text-[var(--sa-navy)]">{partner.name}</p>
               {partner.detail ? (
                 <p className="mt-1 text-sm leading-6 text-[var(--sa-muted)]">{partner.detail}</p>
@@ -95,7 +103,15 @@ export async function PartnersSection() {
           labelOf={(item) => (item.detail ? `${item.detail}, ${item.name}` : item.name)}
           render={(item) => (
             <div className="flex w-52 shrink-0 flex-col items-center text-center">
-              <Image src={item.logo} alt="" width={96} height={96} className="h-16 w-full object-contain" />
+              <span className="flex size-16 items-center justify-center">
+                <Image
+                  src={item.logo}
+                  alt=""
+                  width={64}
+                  height={64}
+                  className="max-h-full max-w-full object-contain"
+                />
+              </span>
               <p className="mt-3 text-sm font-semibold leading-snug tracking-tight text-[var(--sa-navy)]">{item.detail}</p>
               <p className="mt-1 text-sm font-semibold tracking-tight text-[var(--sa-muted)]">{item.name}</p>
             </div>

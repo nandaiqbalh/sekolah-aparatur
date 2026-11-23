@@ -199,13 +199,15 @@ export async function ProgramDetail({ program }: { program: PublicProgram }) {
                 <SectionHeading title="Universitas penyelenggara" />
                 <div className="mt-6 flex items-center gap-4">
                   {program.campus.logo ? (
-                    <Image
-                      src={program.campus.logo}
-                      alt=""
-                      width={64}
-                      height={64}
-                      className="h-14 w-14 shrink-0 object-contain"
-                    />
+                    <span className="flex size-16 shrink-0 items-center justify-center">
+                      <Image
+                        src={program.campus.logo}
+                        alt=""
+                        width={64}
+                        height={64}
+                        className="max-h-full max-w-full object-contain"
+                      />
+                    </span>
                   ) : null}
                   <h3 className="text-lg font-semibold text-[var(--sa-navy)]">{program.campus.name}</h3>
                 </div>
@@ -217,7 +219,15 @@ export async function ProgramDetail({ program }: { program: PublicProgram }) {
                 <ul className="mt-6 flex flex-col gap-6 sm:flex-row sm:gap-12">
                   {mitra.map((item) => (
                     <li key={item.id} className="flex min-w-0 flex-col items-start text-left">
-                      <Image src={item.logo} alt={item.detail ?? item.name} width={96} height={96} className="h-16 w-auto object-contain object-left" />
+                      <span className="flex size-16 items-center justify-center">
+                        <Image
+                          src={item.logo}
+                          alt={item.detail ?? item.name}
+                          width={64}
+                          height={64}
+                          className="max-h-full max-w-full object-contain"
+                        />
+                      </span>
                       {item.detail ? (
                         <p className="mt-3 text-sm font-semibold leading-snug text-[var(--sa-navy)]">{item.detail}</p>
                       ) : null}
